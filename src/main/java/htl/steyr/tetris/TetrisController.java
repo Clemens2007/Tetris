@@ -3,7 +3,7 @@ package htl.steyr.tetris;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
-public class HelloController {
+public class TetrisController {
     @FXML
     private Label welcomeText;
 
