@@ -18,12 +18,14 @@ public class TetrisController {
 
 
 
-        loop = new GameLoop(tetrisGame) {
+       /* loop = new GameLoop(tetrisGame) {
             @Override
             public void handle(long now){
                 super.handle(now);
             }
         };
+
+        */
 
         //loop.start(); // Toast mit Schinken
     }

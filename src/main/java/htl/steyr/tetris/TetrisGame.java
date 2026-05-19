@@ -12,10 +12,10 @@ import javafx.scene.layout.AnchorPane;
 
 public class TetrisGame {
 
-    @FXML
-    private int x = 0;
+    private boolean x = false;
     private AnchorPane root;
     private Tile tile = new Tile();
+    private Tile spare = new Tile();
     private String keyString;
 
 
@@ -33,37 +33,36 @@ public class TetrisGame {
 
                     }
                     //System.out.println(keyString);
-                    rotate(keyString);
+                    move(keyString);
                 });
             }
         });
     }
 
-    public void tetrahedrionShape(){
-
-        if (x==0){
-            Bloecke block = new Bloecke();
-            root.getChildren().add(block);
-            x = 1;
-        }
-    }
-
-
     public void update(double dt){
 
     }
 
-
-    public void rotate(String keybind){
+    public void move(String keybind){
         switch (keybind){
             case "LEFT": {
-                System.out.println("wwwwuuuuuush");
-                tile.setRotate(tile.getRotate() - 90);
+                tile.moveVertic(40);
                 break;
             }
             case "RIGHT": {
-                tile.setRotate(tile.getRotate() + 90);
-                System.out.println("wwwwaaaaaaaaa");
+                tile.moveVertic(- 40);
+                break;
+            }
+            case "UP": {
+                tile.rotato(90);
+                break;
+            }
+            case "X": {
+                tile.rotato(- 90);
+                break;
+            }
+            case "DOWN": {
+                tile.moveHorizon(- 40);
                 break;
             }
 
