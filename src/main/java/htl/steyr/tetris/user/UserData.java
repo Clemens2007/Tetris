@@ -69,9 +69,13 @@ public class UserData {
             e.printStackTrace();
         }
     }
-
     public void setSetting(String action, KeyCode key) {
-        settings.replaceAll(s -> s.setting().equals(action) ? new Setting(action, key) : s);
+        for (int i = 0; i < settings.size(); i++) {
+            if (settings.get(i).setting().equals(action)) {
+                settings.set(i, new Setting(action, key));
+                return;
+            }
+        }
     }
 
     public KeyCode getSetting(String action) {
