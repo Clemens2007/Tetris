@@ -4,7 +4,7 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="htl.steyr.tetris.Controller.GameController"
+            fx:controller="htl.steyr.tetris.controller.GameController"
             prefWidth="800" prefHeight="640">
 
     <!-- Schließen Button -->

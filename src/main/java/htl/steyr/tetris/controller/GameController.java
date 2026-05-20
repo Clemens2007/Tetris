@@ -1,4 +1,4 @@
-package htl.steyr.tetris.Controller;
+package htl.steyr.tetris.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
