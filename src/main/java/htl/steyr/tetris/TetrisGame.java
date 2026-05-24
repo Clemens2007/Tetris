@@ -1,5 +1,3 @@
-
-
 package htl.steyr.tetris;
 
 import javafx.application.Platform;
@@ -8,70 +6,44 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 
-
-
 public class TetrisGame {
-
-    private boolean x = false;
     private AnchorPane root;
-    private Tile tile = new Tile();
-    private Tile spare = new Tile();
-    private String keyString;
-
+    private Block currentBlock;
+    private double fallTimer = 0;
+    private final double fallSpeed = 0.5;
 
     public TetrisGame(AnchorPane root){
         this.root = root;
-        root.getChildren().add(tile);
+
+        spawnBlock();
 
         root.sceneProperty().addListener((obs, oldScene, scene) -> {
+
             if (scene != null) {
                 root.setFocusTraversable(true);
-                Platform.runLater(() -> root.requestFocus());
-                root.setOnKeyPressed(event -> {
-                    keyString = event.getCode().toString();
-                    if(keyString == "I"){
 
-                    }
-                    //System.out.println(keyString);
-                    move(keyString);
-                });
+                Platform.runLater(
+                        () -> root.requestFocus()
+                );
             }
         });
     }
 
     public void update(double dt){
+        fallTimer += dt;
 
-    }
-
-    public void move(String keybind){
-        switch (keybind){
-            case "LEFT": {
-                tile.moveVertic(40);
-                break;
-            }
-            case "RIGHT": {
-                tile.moveVertic(- 40);
-                break;
-            }
-            case "UP": {
-                tile.rotato(90);
-                break;
-            }
-            case "X": {
-                tile.rotato(- 90);
-                break;
-            }
-            case "DOWN": {
-                tile.moveHorizon(- 40);
-                break;
-            }
-
+        if (fallTimer >= fallSpeed) {
+            fallTimer = 0;
         }
     }
 
-    public void getKey(String key){
-        this.keyString = key;
-    }
+    private void spawnBlock() {
+        currentBlock = Block.randomBlock();
 
+        currentBlock.setLayoutX(200);
+        currentBlock.setLayoutY(0);
+
+        root.getChildren().add(currentBlock);
+    }
 
 }
