@@ -4,8 +4,6 @@ package htl.steyr.tetris;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 
 
@@ -42,7 +40,7 @@ public class TetrisGame {
     public void tetrahedrionShape(){
 
         if (x==0){
-            Bloecke block = new Bloecke();
+            Block block = new Block();
             root.getChildren().add(block);
             x = 1;
         }
