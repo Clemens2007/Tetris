@@ -20,34 +20,67 @@ public class GameLoop extends AnimationTimer {
         this.tetrisGame = tetrisGame;
     }
 
-    public void hanlde(long now) {
-
-    }
-
-    public void pause() {
+    public void pause(){
         running = false;
     }
 
-    public void resume() {
+    public void resume(){
         lastTime = 0;
         running = true;
     }
 
-    @Override
-    public void handle(long l) {
+    public void stop(){running = false;}
 
-    }
-
-    public void stop() {
-        running = false;
-    }
-
-    public void setSpeed(double speed) {
+    public void setSpeed(double speed){
         this.speed = speed;
     }
 
     public double getSpeed(){
         return this.speed;
+    }
+
+
+    @Override
+    public void handle(long now) {
+        if (running) {
+
+            if (lastTime == 0) {
+                lastTime = now;
+                return;
+            }
+
+            double dt = (now - lastTime) / 1_000_000_000.0;
+            lastTime = now;
+
+            dt *= speed;
+
+            tetrisGame.update(dt);
+            framerate(now);
+        }
+
+    }
+
+    public void framerate(long now){
+        // Framerate display in console
+        if(framerateSwitch) {
+            frames++;
+            if (now - lastFpsTime >= 1_000_000_000.0) {
+                fps = frames;
+                frames = 0;
+                lastFpsTime = now;
+
+
+                System.out.print("----\n" + "Memory: " + Runtime.getRuntime().totalMemory()/1_000_000 + "MB" + "\nFPS: " + fps + "\n" + "----\n");
+            }
+        }
+    }
+
+    public void framerateActive(){
+        if(framerateSwitch){
+            framerateSwitch = false;
+        } else if (!framerateSwitch){
+            framerateSwitch = true;
+        }
     }
 
 

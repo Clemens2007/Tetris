@@ -2,14 +2,14 @@ package htl.steyr.tetris;
 
 import javafx.scene.shape.Rectangle;
 
-public class Block extends Rectangle {
+public class Bloecke extends Rectangle {
 
 
 
     private int x;
     private int y;
 
-    public Block(){
+    public Bloecke(){
         setWidth(40);
         setHeight(40);
 
