@@ -4,11 +4,6 @@ import javafx.scene.shape.Rectangle;
 
 public class Block extends Rectangle {
 
-
-
-    private int x;
-    private int y;
-
     public Block(){
         setWidth(40);
         setHeight(40);
@@ -17,9 +12,17 @@ public class Block extends Rectangle {
         setY(100);
     }
 
-    public void startingPosition(){
-
+    public void setScale(double scale){
+        setWidth(getWidth() * scale);
+        setHeight(getHeight() * scale);
     }
+
+    public void setStartingPosition(int x, int y){
+        setX(x);
+        setY(y);
+    }
+
+
 
 
 
