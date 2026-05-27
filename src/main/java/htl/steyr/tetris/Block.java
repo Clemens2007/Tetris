@@ -9,7 +9,7 @@ import java.util.Random;
 public class Block extends Group {
     public static final int TILE_SIZE = 40;
 
-    private Block() {
+    public Block() {
 
     }
 
