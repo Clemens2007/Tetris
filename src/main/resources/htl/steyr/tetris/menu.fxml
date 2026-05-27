@@ -1,60 +1,92 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="htl.steyr.tetris.controller.MenuController"
-            prefWidth="900" prefHeight="600">
+            prefWidth="900"
+            prefHeight="600">
 
-<!--    X Button oben rechts-->
-    <Button text="X"
-            fx:id="closeButton"
-            AnchorPane.topAnchor="10"
-            AnchorPane.rightAnchor="10"
-            prefWidth="35" prefHeight="35"
-            style="-fx-font-size: 14; -fx-font-weight: bold;"/>
+    <!-- X Button oben rechts -->
+    <top>
+        <HBox alignment="TOP_RIGHT">
+            <padding>
+                <Insets top="10" right="10"/>
+            </padding>
 
-    <!-- Willkommen Text oben mitte -->
-    <Label fx:id="welcomeLabel"
-           text="Willkommen zurück, User!"
-           AnchorPane.topAnchor="30"
-           AnchorPane.leftAnchor="250"
-           style="-fx-font-size: 28; -fx-font-weight: bold;"/>
+            <Button text="X"
+                    fx:id="closeButton"
+                    prefWidth="35"
+                    prefHeight="35"
+                    style="-fx-font-size: 14; -fx-font-weight: bold;"/>
+        </HBox>
+    </top>
 
-    <!-- Highscore Liste links -->
-    <VBox AnchorPane.topAnchor="80"
-          AnchorPane.leftAnchor="30"
-          prefWidth="150" prefHeight="350"
-          spacing="8">
-        <Label text="Highscore" style="-fx-font-size: 18; -fx-font-weight: bold;"/>
-        <ListView fx:id="highscoreList" prefHeight="300"
-                  style="-fx-font-size: 14;"/>
-    </VBox>
+    <!-- Highscore links -->
+    <left>
+        <VBox spacing="8"
+              prefWidth="180"
+              alignment="TOP_CENTER">
+            <padding>
+                <Insets top="40" left="20"/>
+            </padding>
 
-    <!-- Spielen + Optionen Buttons mitte -->
-    <VBox spacing="15"
-          AnchorPane.topAnchor="200"
-          AnchorPane.leftAnchor="340">
-        <Button text="Spielen"   fx:id="playButton"
-                prefWidth="180" prefHeight="60"
-                style="-fx-font-size: 22; -fx-font-weight: bold;"/>
-        <Button text="Optionen"  fx:id="optionsButton"
-                prefWidth="180" prefHeight="45"
-                style="-fx-font-size: 16;"/>
-    </VBox>
+            <Label text="Highscore"
+                   style="-fx-font-size: 18; -fx-font-weight: bold;"/>
 
-    <!-- Werbebanner -->
-    <VBox AnchorPane.topAnchor="80"
-          AnchorPane.rightAnchor="30"
-          prefWidth="160" prefHeight="250"
-          alignment="CENTER"
-          spacing="10">
-        <ImageView fx:id="werbebanner"
-                   fitWidth="150" fitHeight="150"
-                   preserveRatio="true">
-        </ImageView>
-    </VBox>
+            <ListView fx:id="highscoreList"
+                      prefHeight="300"
+                      style="-fx-font-size: 14;"/>
+        </VBox>
+    </left>
 
-</AnchorPane>
+    <!-- Mitte -->
+    <center>
+        <VBox alignment="CENTER"
+              spacing="25">
+
+            <Label fx:id="welcomeLabel"
+                   text="Willkommen zurück, User!"
+                   style="-fx-font-size: 28; -fx-font-weight: bold;"/>
+
+            <VBox spacing="15"
+                  alignment="CENTER">
+
+                <Button text="Spielen"
+                        fx:id="playButton"
+                        prefWidth="180"
+                        prefHeight="60"
+                        style="-fx-font-size: 22; -fx-font-weight: bold;"/>
+
+                <Button text="Optionen"
+                        fx:id="optionsButton"
+                        prefWidth="180"
+                        prefHeight="45"
+                        style="-fx-font-size: 16;"/>
+
+            </VBox>
+
+        </VBox>
+    </center>
+
+    <!-- Werbebanner rechts -->
+    <right>
+        <VBox alignment="TOP_CENTER"
+              prefWidth="180"
+              spacing="10">
+            <padding>
+                <Insets top="40" right="20"/>
+            </padding>
+
+            <ImageView fx:id="werbebanner"
+                       fitWidth="150"
+                       fitHeight="150"
+                       preserveRatio="true"/>
+        </VBox>
+    </right>
+
+</BorderPane>

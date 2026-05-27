@@ -1,50 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.control.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="htl.steyr.tetris.controller.StartController"
-            prefWidth="900" prefHeight="600">
+            prefWidth="900"
+            prefHeight="600">
 
-    <!-- X Button oben rechts -->
-    <Button text="X"
-            fx:id="closeButton"
-            AnchorPane.topAnchor="10"
-            AnchorPane.rightAnchor="10"
-            prefWidth="35" prefHeight="35"
-            style="-fx-font-size: 14; -fx-font-weight: bold;"/>
+    <!-- Top-Bar -->
+    <top>
+        <BorderPane>
+            <padding>
+                <Insets top="10" left="20" right="20"/>
+            </padding>
 
-    <!-- Registrieren oben links -->
-    <Label text="Registrieren"
-           AnchorPane.topAnchor="20"
-           AnchorPane.leftAnchor="20"
-           style="-fx-font-size: 24;"/>
+            <!-- Registrieren links -->
+            <left>
+                <Label text="Registrieren"
+                       style="-fx-font-size: 24;"/>
+            </left>
 
-    <!-- TETRIS Titel mitte -->
-    <Label text="TETRIS"
-           AnchorPane.topAnchor="80"
-           AnchorPane.leftAnchor="350"
-           style="-fx-font-size: 42; -fx-font-weight: bold;"/>
+            <!-- X rechts -->
+            <right>
+                <Button text="X"
+                        fx:id="closeButton"
+                        prefWidth="35"
+                        prefHeight="35"
+                        style="-fx-font-size: 14; -fx-font-weight: bold;"/>
+            </right>
+        </BorderPane>
+    </top>
 
-    <!-- Login Box mitte -->
-    <VBox spacing="10"
-          AnchorPane.topAnchor="180"
-          AnchorPane.leftAnchor="300"
-          prefWidth="300">
+    <!-- Mitte -->
+    <center>
+        <StackPane>
 
-        <Label text="Username" style="-fx-font-size: 16;"/>
-        <TextField fx:id="usernameField" prefHeight="40"/>
+            <VBox spacing="20"
+                  alignment="CENTER"
+                  maxWidth="300">
 
-        <Label text="Passwort" style="-fx-font-size: 16;"/>
-        <PasswordField fx:id="passwordField" prefHeight="40"/>
+                <!-- Titel -->
+                <Label text="TETRIS"
+                       style="-fx-font-size: 42; -fx-font-weight: bold;"/>
 
-        <Button text="OK"
-                fx:id="okButton"
-                prefWidth="100" prefHeight="35"
-                style="-fx-font-size: 16;"
-                VBox.vgrow="NEVER"/>
+                <!-- Username -->
+                <Label text="Username"
+                       style="-fx-font-size: 16;"/>
 
-    </VBox>
+                <TextField fx:id="usernameField"
+                           prefHeight="40"/>
 
-</AnchorPane>
+                <!-- Passwort -->
+                <Label text="Passwort"
+                       style="-fx-font-size: 16;"/>
+
+                <PasswordField fx:id="passwordField"
+                               prefHeight="40"/>
+
+                <!-- Button -->
+                <Button text="OK"
+                        fx:id="okButton"
+                        prefWidth="120"
+                        prefHeight="40"
+                        style="-fx-font-size: 16;"/>
+
+            </VBox>
+
+        </StackPane>
+    </center>
+
+</BorderPane>
