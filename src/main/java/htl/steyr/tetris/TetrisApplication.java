@@ -10,8 +10,8 @@ import java.io.IOException;
 public class TetrisApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(TetrisApplication.class.getResource("tetris-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 800, 800);
+        FXMLLoader fxmlLoader = new FXMLLoader(TetrisApplication.class.getResource("menu.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Hello!");
         stage.setScene(scene);
         stage.show();
