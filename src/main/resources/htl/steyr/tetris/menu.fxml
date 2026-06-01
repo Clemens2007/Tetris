@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="htl.steyr.tetris.controller.MenuController"
+            prefWidth="900" prefHeight="600">
+
+<!--    X Button oben rechts-->
+    <Button text="X"
+            fx:id="closeButton"
+            AnchorPane.topAnchor="10"
+            AnchorPane.rightAnchor="10"
+            prefWidth="35" prefHeight="35"
+            style="-fx-font-size: 14; -fx-font-weight: bold;"/>
+
+    <!-- Willkommen Text oben mitte -->
+    <Label fx:id="welcomeLabel"
+           text="Willkommen zurück, User!"
+           AnchorPane.topAnchor="30"
+           AnchorPane.leftAnchor="250"
+           style="-fx-font-size: 28; -fx-font-weight: bold;"/>
+
+    <!-- Highscore Liste links -->
+    <VBox AnchorPane.topAnchor="80"
+          AnchorPane.leftAnchor="30"
+          prefWidth="150" prefHeight="350"
+          spacing="8">
+        <Label text="Highscore" style="-fx-font-size: 18; -fx-font-weight: bold;"/>
+        <ListView fx:id="highscoreList" prefHeight="300"
+                  style="-fx-font-size: 14;"/>
+    </VBox>
+
+    <!-- Spielen + Optionen Buttons mitte -->
+    <VBox spacing="15"
+          AnchorPane.topAnchor="200"
+          AnchorPane.leftAnchor="340">
+        <Button text="Spielen"   fx:id="playButton"
+                prefWidth="180" prefHeight="60"
+                style="-fx-font-size: 22; -fx-font-weight: bold;"/>
+        <Button text="Optionen"  fx:id="optionsButton"
+                prefWidth="180" prefHeight="45"
+                style="-fx-font-size: 16;"/>
+    </VBox>
+
+    <!-- Werbebanner -->
+    <VBox AnchorPane.topAnchor="80"
+          AnchorPane.rightAnchor="30"
+          prefWidth="160" prefHeight="250"
+          alignment="CENTER"
+          spacing="10">
+        <ImageView fx:id="werbebanner"
+                   fitWidth="150" fitHeight="150"
+                   preserveRatio="true">
+        </ImageView>
+    </VBox>
+
+</AnchorPane>
