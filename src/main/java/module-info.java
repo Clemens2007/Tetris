@@ -3,6 +3,7 @@ module htl.steyr.tetris {
     requires javafx.fxml;
     requires com.google.common;
     requires com.google.gson;
+    requires java.sql;
 
 
     opens htl.steyr.tetris to javafx.fxml;
