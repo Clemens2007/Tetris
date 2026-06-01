@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="htl.steyr.tetris.controller.StartController"
+            prefWidth="900"
+            prefHeight="600">
+
+    <!-- Top-Bar -->
+    <top>
+        <BorderPane>
+            <padding>
+                <Insets top="10" left="20" right="20"/>
+            </padding>
+
+            <!-- Registrieren links -->
+            <left>
+                <Label text="Registrieren"
+                       style="-fx-font-size: 24;"/>
+            </left>
+
+            <!-- X rechts -->
+            <right>
+                <Button text="X"
+                        fx:id="closeButton"
+                        prefWidth="35"
+                        prefHeight="35"
+                        style="-fx-font-size: 14; -fx-font-weight: bold;"/>
+            </right>
+        </BorderPane>
+    </top>
+
+    <!-- Mitte -->
+    <center>
+        <StackPane>
+
+            <VBox spacing="20"
+                  alignment="CENTER"
+                  maxWidth="300">
+
+                <!-- Titel -->
+                <Label text="TETRIS"
+                       style="-fx-font-size: 42; -fx-font-weight: bold;"/>
+
+                <!-- Username -->
+                <Label text="Username"
+                       style="-fx-font-size: 16;"/>
+
+                <TextField fx:id="usernameField"
+                           prefHeight="40"/>
+
+                <!-- Passwort -->
+                <Label text="Passwort"
+                       style="-fx-font-size: 16;"/>
+
+                <PasswordField fx:id="passwordField"
+                               prefHeight="40"/>
+
+                <!-- Button -->
+                <Button text="OK"
+                        fx:id="okButton"
+                        prefWidth="120"
+                        prefHeight="40"
+                        style="-fx-font-size: 16;"/>
+
+            </VBox>
+
+        </StackPane>
+    </center>
+
+</BorderPane>

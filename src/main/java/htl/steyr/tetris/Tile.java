@@ -19,184 +19,116 @@ public class Tile extends Group {
     private int x;
     private int y;
     private double oldDreh = 0;
+    private double scale = 1;
     private Rotate rotate = new Rotate();
+    private boolean noRotate = false;
+    private boolean halfRotate = false;
 
     private Point3D startpoint = new Point3D(10, 40, 0);
 
     public Tile(){
-        double centerX = a.getBoundsInLocal().getCenterX();
-        double centerY = a.getBoundsInLocal().getCenterY();
+
+        createZ();
+        this.getChildren().addAll(base, a, b, c);
+
+        double centerX = base.getBoundsInLocal().getCenterX();
+        double centerY = base.getBoundsInLocal().getCenterY();
 
         rotate.setPivotX(centerX);
         rotate.setPivotY(centerY);
 
         this.getTransforms().add(rotate);
 
-
         System.out.println(a.getBoundsInLocal());
         System.out.println(b.getBoundsInParent());
-
-        a.setX(a.getX() - 40);
-        b.setX(b.getX() + 40);
-        c.setY(c.getY() + 40);
-
-        this.getChildren().add(a);
-        this.getChildren().add(b);
-        this.getChildren().add(c);
     }
 
-
-
     public void createT(){
-
-        a.setX(a.getX() + 40);
-
-        b.setY(b.getY() + 40);
-
-        c.setX(c.getX() - 40);
-
+        a.setX(a.getX() + (40 * scale));
+        b.setY(b.getY() + (40 * scale));
+        c.setX(c.getX() - (40 * scale));
     }
 
     public void createL(){
-
-        a.setX(a.getX() + 40);
-
-        b.setX(b.getX() - 40);
-
-        c.setY(c.getY() + 40);
-
-        c.setX(c.getX() + 40);
-
+        a.setX(a.getX() + (40 * scale));
+        b.setX(b.getX() - (40 * scale));
+        c.setY(c.getY() + (40 * scale));
+        c.setX(c.getX() + (40 * scale));
     }
 
     public void createRL(){
-
-        a.setX(a.getX() + 40);
-
-        b.setX(b.getX() - 40);
-
-        c.setY(c.getY() + 40);
-
-        c.setX(c.getX() - 40);
-
+        a.setX(a.getX() + (40 * scale));
+        b.setX(b.getX() - (40 * scale));
+        c.setY(c.getY() + (40 * scale));
+        c.setX(c.getX() - (40 * scale));
     }
 
     public void createI(){
-
-        a.setX(a.getX() + 40);
-
-        b.setX(b.getX() - 40);
-
-        c.setY(c.getY() - 40);
-
+        halfRotate = true;
+        a.setX(a.getX() + (40 * scale));
+        b.setX(b.getX() - (40 * scale));
+        c.setY(c.getY() - (40 * scale));
     }
 
     public void createO(){
-
-        a.setX(a.getX() + 40);
-
-        b.setY(b.getY() + 40);
-
-        c.setX(c.getX() + 40);
-
-        c.setY(c.getY() + 40);
-
+        noRotate = true;
+        a.setX(a.getX() + (40 * scale));
+        b.setY(b.getY() + (40 * scale));
+        c.setX(c.getX() + (40 * scale));
+        c.setY(c.getY() + (40 * scale));
     }
 
     public void createZ(){
-
-        a.setX(a.getX() + 40);
-
-        b.setY(b.getY() - 40);
-
-        c.setX(c.getY() - 40);
-
-        c.setY(c.getY() - 40);
-
+        halfRotate = true;
+        a.setX(a.getX() + (40 * scale));
+        b.setY(b.getY() - (40 * scale));
+        c.setX(c.getX() - (40 * scale));
+        c.setY(c.getY() - (40 * scale));
     }
 
     public void createRZ(){
-
-        a.setX(a.getX() + 40);
-
-        b.setY(b.getY() + 40);
-
-        c.setX(c.getY() + 40);
-
-        c.setY(c.getY() - 40);
-
+        halfRotate = true;
+        a.setX(a.getX() + (40 * scale));
+        b.setY(b.getY() + (40 * scale));
+        c.setX(c.getX() + (40 * scale));
+        c.setY(c.getY() - (40 * scale));
     }
 
-    public void randomTile(){
-
+    public void randomTile(String oldTile){
         Random rand = new Random();
-
         int random = rand.nextInt(7);
 
         switch (random) {
-
             case 0: {
-
                 createT();
-
                 break;
-
             }
-
             case 1: {
-
                 createL();
-
                 break;
-
             }
-
             case 2: {
-
                 createRL();
-
                 break;
-
             }
-
             case 3: {
-
                 createI();
-
                 break;
-
             }
-
             case 4: {
-
                 createO();
-
                 break;
-
             }
-
             case 5: {
-
                 createZ();
-
                 break;
-
             }
-
             case 6: {
-
                 createRZ();
-
                 break;
-
             }
-
-        }
-
-        this.getChildren().addAll(base, a, b, c);
-
+        };
     }
-
 
     public void moveVertic(int n){
         this.setLayoutX(this.getLayoutX() - n);
@@ -206,9 +138,32 @@ public class Tile extends Group {
         this.setLayoutY(this.getLayoutY() - n);
     }
 
+    public double getScale(){
+        System.out.println(base.getLayoutBounds().getWidth());
+        return base.getLayoutBounds().getWidth();
+    }
+
+    public void setScale(double scale) {
+        this.scale = scale;
+    }
+
     public void rotato(double dreh){
-        rotate.setAngle(oldDreh + dreh);
-        oldDreh = oldDreh + dreh;
+        if(!noRotate){
+            if(halfRotate && oldDreh != 0){
+                rotate.setAngle(0);
+                oldDreh = 0;
+                return;
+            }
+
+            if(halfRotate && dreh < 0){
+                rotate.setAngle(0 - dreh);
+                oldDreh = dreh;
+                return;
+            }
+
+            rotate.setAngle(oldDreh + dreh);
+            oldDreh = oldDreh + dreh;
+        }
     }
 
 }

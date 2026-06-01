@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="htl.steyr.tetris.controller.GameController"
+            prefWidth="900"
+            prefHeight="640">
+
+    <!-- Schließen Button oben rechts -->
+    <top>
+        <HBox alignment="TOP_RIGHT">
+            <padding>
+                <Insets top="10" right="10"/>
+            </padding>
+
+            <Button text="✕"
+                    fx:id="closeButton"
+                    prefWidth="30"
+                    prefHeight="30"/>
+        </HBox>
+    </top>
+
+    <!-- Hauptbereich -->
+    <center>
+
+        <StackPane>
+
+            <HBox spacing="40"
+                  alignment="CENTER">
+
+                <!-- Linke Seite -->
+                <VBox spacing="20"
+                      prefWidth="120"
+                      alignment="TOP_CENTER">
+
+                    <Label text="SCORE"/>
+                    <Label text="000"
+                           fx:id="scoreLabel"/>
+
+                    <Label text="HOLD"/>
+                    <Pane fx:id="holdPane"
+                          prefWidth="100"
+                          prefHeight="100"/>
+
+                    <Button text="⏸"
+                            fx:id="pauseButton"
+                            prefWidth="60"
+                            prefHeight="40"/>
+                </VBox>
+
+                <!-- Spielfeld -->
+                <GridPane fx:id="gameField"/>
+
+                <!-- Rechte Seite -->
+                <VBox spacing="20"
+                      prefWidth="120"
+                      alignment="TOP_CENTER">
+
+                    <Label text="NEXT"/>
+                    <Pane fx:id="nextPane"
+                          prefWidth="100"
+                          prefHeight="100"/>
+
+                    <Label text="LINES"/>
+                    <Label text="00"
+                           fx:id="linesLabel"/>
+
+                    <Label text="LEVEL"/>
+                    <Label text="01"
+                           fx:id="levelLabel"/>
+                </VBox>
+
+            </HBox>
+
+        </StackPane>
+
+    </center>
+
+</BorderPane>

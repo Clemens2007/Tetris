@@ -3,23 +3,25 @@
 package htl.steyr.tetris;
 
 import javafx.application.Platform;
-import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
 
 
 
 public class TetrisGame {
 
-    @FXML
-    private int x = 0;
     private AnchorPane root;
     private Tile tile = new Tile();
+    private Tile spare = new Tile();
+    private Tile hold = new Tile();
+    private int scale;
+    private boolean holdBool = false;
     private String keyString;
-
 
     public TetrisGame(AnchorPane root){
         this.root = root;
+
         root.getChildren().add(tile);
+        scale = (int) tile.getScale();
 
         root.sceneProperty().addListener((obs, oldScene, scene) -> {
             if (scene != null) {
@@ -31,37 +33,37 @@ public class TetrisGame {
 
                     }
                     //System.out.println(keyString);
-                    rotate(keyString);
+                    move(keyString);
                 });
             }
         });
     }
 
-    public void tetrahedrionShape(){
-
-        if (x==0){
-            Block block = new Block();
-            root.getChildren().add(block);
-            x = 1;
-        }
-    }
-
-
     public void update(double dt){
-
+        // tile.moveHorizon(-1);
     }
 
-
-    public void rotate(String keybind){
+    public void move(String keybind){
         switch (keybind){
-            case "LEFT": {
-                System.out.println("wwwwuuuuuush");
-                tile.setRotate(tile.getRotate() - 90);
+            case "LEFT": {tile.moveVertic(scale); break;}
+            case "RIGHT": {tile.moveVertic(- scale); break;}
+            case "DOWN": {tile.moveHorizon(- scale); break;}
+            case "UP": {tile.rotato(90); break;}
+            case "X": {tile.rotato(- 90); break;}
+            case "Y": {
+                if(!holdBool){
+                    hold = tile;
+                    // new random tile spawn here
+                    holdBool = true;
+                    break;
+                }
+                spare = tile;
+                tile = hold;
+                hold = spare;
                 break;
             }
-            case "RIGHT": {
-                tile.setRotate(tile.getRotate() + 90);
-                System.out.println("wwwwaaaaaaaaa");
+            case "SPACE": {
+                // the moveDown function (collision check needed)
                 break;
             }
 

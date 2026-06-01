@@ -1,5 +1,6 @@
 package htl.steyr.tetris;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Slider;
 import javafx.scene.input.MouseEvent;
@@ -11,13 +12,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TetrisController {
+
     public Slider musicSlider;
     private List<String> songList = new ArrayList<>();
     private int currentSongIndex = 0;
     private MediaPlayer mediaPlayer;
     @FXML
     private AnchorPane root;
-    private TetrisGame tetrisGame;;
+    private TetrisGame tetrisGame;
     private GameLoop loop;
 
     public void initialize(){
