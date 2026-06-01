@@ -1,5 +1,6 @@
 package htl.steyr.tetris;
 
+import htl.steyr.tetris.utility.ViewSwitcher;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -10,9 +11,12 @@ import java.io.IOException;
 public class TetrisApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(TetrisApplication.class.getResource("tetris-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 800, 800);
+        ViewSwitcher.setStage(stage);
+        FXMLLoader fxmlLoader = new FXMLLoader(TetrisApplication.class.getResource("game.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        scene.getStylesheets().add(getClass().getResource("/stylesheets/darkmode.css").toExternalForm());
         stage.setTitle("Hello!");
+        ViewSwitcher.setDarkMode();
         stage.setScene(scene);
         stage.show();
 
