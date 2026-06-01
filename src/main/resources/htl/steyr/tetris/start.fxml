@@ -20,7 +20,7 @@
             <!-- Registrieren links -->
             <left>
                 <Label text="Registrieren"
-                       style="-fx-font-size: 24;"/>
+                       style="-fx-font-size: 24;" styleClass="Label-darkmode"/>
             </left>
 
             <!-- X rechts -->
@@ -44,18 +44,18 @@
 
                 <!-- Titel -->
                 <Label text="TETRIS"
-                       style="-fx-font-size: 42; -fx-font-weight: bold;"/>
+                       style="-fx-font-size: 42; -fx-font-weight: bold;" styleClass="Label-darkmode"/>
 
                 <!-- Username -->
                 <Label text="Username"
-                       style="-fx-font-size: 16;"/>
+                       style="-fx-font-size: 16;" styleClass="Label-darkmode"/>
 
                 <TextField fx:id="usernameField"
                            prefHeight="40"/>
 
                 <!-- Passwort -->
                 <Label text="Passwort"
-                       style="-fx-font-size: 16;"/>
+                       style="-fx-font-size: 16;" styleClass="Label-darkmode"/>
 
                 <PasswordField fx:id="passwordField"
                                prefHeight="40"/>
