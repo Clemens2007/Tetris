@@ -1,4 +1,4 @@
-package htl.steyr.tetris.user;
+package htl.steyr.tetris.utility;
 
 import com.google.common.hash.Hashing;
 
