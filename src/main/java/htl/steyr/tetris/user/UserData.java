@@ -1,6 +1,7 @@
 package htl.steyr.tetris.user;
 
 import com.google.gson.*;
+import htl.steyr.tetris.utility.Hasher;
 import javafx.scene.input.KeyCode;
 
 import java.io.*;
