@@ -1,0 +1,102 @@
+/* ===========================
+   GLOBAL ROOT
+   =========================== */
+.root {
+    -fx-background-color: #f4f7ff;
+    -fx-background-image: url("../image/whitemodehintergrund.png");
+    -fx-background-size: cover;
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+}
+
+    /* ===========================
+       PANELS / CARDS
+       =========================== */
+
+    .panel, .card {
+        -fx-background-color: #ffffff;
+        -fx-background-radius: 16;
+        -fx-padding: 16;
+        -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 15, 0.2, 0, 2);
+        -fx-text-fill: #1a1a1a;
+    }
+
+    /* ===========================
+       BUTTONS (TETRIS COLORS)
+       =========================== */
+
+    .button {
+        -fx-background-radius: 8;
+        -fx-padding: 6 16;
+        -fx-font-size: 14px;
+        -fx-text-fill: white;
+        -fx-cursor: hand;
+        -fx-background-color: linear-gradient(
+                to bottom,
+                #ffb84d, /* L‑Piece Orange */ #ff9933
+        );
+    }
+
+    .button:hover {
+        -fx-background-color: linear-gradient(
+                to bottom,
+                #ffd280,
+                #ffb84d
+        );
+    }
+
+    .button:pressed {
+        -fx-background-color: linear-gradient(
+                to bottom,
+                #ff9933,
+                #e67a00
+        );
+    }
+
+    /* ===========================
+       TOGGLE BUTTONS
+       =========================== */
+
+    .toggle-button {
+        -fx-background-color: #e6e6e6;
+        -fx-text-fill: #1a1a1a;
+        -fx-background-radius: 8;
+    }
+
+    .toggle-button:hover {
+        -fx-background-color: #d4d4d4;
+    }
+
+    .toggle-button:selected {
+        -fx-background-color: #3f8df0;
+        -fx-text-fill: white;
+    }
+
+    /* ===========================
+       LISTS
+       =========================== */
+
+    .list-view {
+        -fx-background-color: transparent;
+    }
+
+    .list-cell {
+        -fx-background-color: #e6e6e6;
+        -fx-text-fill: #1a1a1a;
+        -fx-padding: 10;
+    }
+
+    .list-cell:hover {
+        -fx-background-color: #d4d4d4;
+    }
+
+    /* ===========================
+       TEXT AREAS
+       =========================== */
+
+    .text-area {
+        -fx-control-inner-background: #ffffff;
+        -fx-text-fill: #1a1a1a;
+        -fx-font-size: 14px;
+        -fx-font-weight: bold;
+    }
