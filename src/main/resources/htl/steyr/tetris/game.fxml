@@ -1,53 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.control.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="htl.steyr.tetris.controller.GameController"
-            prefWidth="800" prefHeight="640">
+            prefWidth="900"
+            prefHeight="640">
 
-    <!-- Schließen Button -->
-    <Button text="✕"
-            fx:id="closeButton"
-            AnchorPane.topAnchor="10"
-            AnchorPane.rightAnchor="10"
-            prefWidth="30" prefHeight="30"/>
+    <!-- Schließen Button oben rechts -->
+    <top>
+        <HBox alignment="TOP_RIGHT">
+            <padding>
+                <Insets top="10" right="10"/>
+            </padding>
 
-    <!-- Hauplayout -->
-    <HBox spacing="30"
-          AnchorPane.topAnchor="50"
-          AnchorPane.bottomAnchor="20"
-          AnchorPane.leftAnchor="30"
-          AnchorPane.rightAnchor="30"
-          alignment="CENTER">
+            <Button text="✕"
+                    fx:id="closeButton"
+                    prefWidth="30"
+                    prefHeight="30"/>
+        </HBox>
+    </top>
 
-        <!-- Linke Seite -->
-        <VBox spacing="20" prefWidth="120" alignment="TOP_CENTER">
+    <!-- Hauptbereich -->
+    <center>
 
-            <Label text="SCORE"/>
-            <Label text="000" fx:id="scoreLabel"/>
+        <StackPane>
 
-            <Label text="HOLD"/>
-            <Pane fx:id="holdPane" prefWidth="100" prefHeight="100"/>
+            <HBox spacing="40"
+                  alignment="CENTER">
 
-            <Button text="⏸" fx:id="pauseButton"
-                    prefWidth="60" prefHeight="40"/>
-        </VBox>
+                <!-- Linke Seite -->
+                <VBox spacing="20"
+                      prefWidth="120"
+                      alignment="TOP_CENTER">
 
-        <!-- Spielfeld -->
-        <GridPane fx:id="gameField"/>
+                    <Label text="SCORE"/>
+                    <Label text="000"
+                           fx:id="scoreLabel"/>
 
-        <!-- Rechte Seite -->
-        <VBox spacing="20" prefWidth="120" alignment="TOP_CENTER">
+                    <Label text="HOLD"/>
+                    <Pane fx:id="holdPane"
+                          prefWidth="100"
+                          prefHeight="100"/>
 
-            <Label text="NEXT"/>
-            <Pane fx:id="nextPane" prefWidth="100" prefHeight="100"/>
-            <Label text="LINES"/>
-            <Label text="00" fx:id="linesLabel"/>
-            <Label text="LEVEL"/>
-            <Label text="01" fx:id="levelLabel"/>
-        </VBox>
+                    <Button text="⏸"
+                            fx:id="pauseButton"
+                            prefWidth="60"
+                            prefHeight="40"/>
+                </VBox>
 
-    </HBox>
-</AnchorPane>
+                <!-- Spielfeld -->
+                <GridPane fx:id="gameField"/>
+
+                <!-- Rechte Seite -->
+                <VBox spacing="20"
+                      prefWidth="120"
+                      alignment="TOP_CENTER">
+
+                    <Label text="NEXT"/>
+                    <Pane fx:id="nextPane"
+                          prefWidth="100"
+                          prefHeight="100"/>
+
+                    <Label text="LINES"/>
+                    <Label text="00"
+                           fx:id="linesLabel"/>
+
+                    <Label text="LEVEL"/>
+                    <Label text="01"
+                           fx:id="levelLabel"/>
+                </VBox>
+
+            </HBox>
+
+        </StackPane>
+
+    </center>
+
+</BorderPane>
