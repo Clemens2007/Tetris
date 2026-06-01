@@ -36,7 +36,7 @@
             </padding>
 
             <Label text="Highscore"
-                   style="-fx-font-size: 18; -fx-font-weight: bold;"/>
+                   style="-fx-font-size: 18; -fx-font-weight: bold;" styleClass="Label-darkmode"/>
 
             <ListView fx:id="highscoreList"
                       prefHeight="300"
@@ -51,7 +51,7 @@
 
             <Label fx:id="welcomeLabel"
                    text="Willkommen zurück, User!"
-                   style="-fx-font-size: 28; -fx-font-weight: bold;"/>
+                   style="-fx-font-size: 28; -fx-font-weight: bold;" styleClass="Label-darkmode"/>
 
             <VBox spacing="15"
                   alignment="CENTER">

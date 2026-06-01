@@ -1,0 +1,87 @@
+/* ===========================
+   GLOBAL ROOT
+   =========================== */
+.root {
+    -fx-background-image: url("../image/darkmodehintergrund.png");
+    -fx-background-size: cover;
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-text-fill: #e6e6e6;
+}
+
+/* ===========================
+   PANELS / CARDS
+   =========================== */
+.panel, .card {
+    -fx-background-color: rgba(25, 25, 30, 0.75);
+    -fx-background-radius: 12;
+    -fx-padding: 16;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.45), 20, 0.3, 0, 4);
+    -fx-text-fill: #e6e6e6;
+}
+
+/* ===========================
+   BUTTONS
+   =========================== */
+.button {
+    -fx-background-color: linear-gradient(to bottom, #3f8df0, #2c74d1);
+    -fx-text-fill: white;
+    -fx-background-radius: 8;
+    -fx-padding: 6 16;
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: linear-gradient(to bottom, #5fa9ff, #3f8df0);
+}
+
+.button:pressed {
+    -fx-background-color: linear-gradient(to bottom, #2c74d1, #1f5cad);
+}
+
+/* ===========================
+   TOGGLE BUTTONS
+   =========================== */
+.toggle-button {
+    -fx-background-color: #1a1f2b;
+    -fx-text-fill: #e6e6e6;
+    -fx-background-radius: 8;
+}
+
+.toggle-button:selected {
+    -fx-background-color: #3f8df0;
+    -fx-text-fill: white;
+}
+
+/* ===========================
+   LISTS
+   =========================== */
+.list-view {
+    -fx-background-color: transparent;
+}
+
+.list-cell {
+    -fx-background-color: rgba(255, 255, 255, 0.08);
+    -fx-text-fill: white;
+    -fx-padding: 10;
+}
+
+.list-cell:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.15);
+}
+
+/* ===========================
+   TEXT AREAS
+   =========================== */
+.text-area {
+    -fx-control-inner-background: rgba(255, 255, 255, 0.08);
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+.Label-darkmode {
+    -fx-text-fill: white;
+}

@@ -1,5 +1,6 @@
 package htl.steyr.tetris;
 
+import htl.steyr.tetris.utility.ViewSwitcher;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -13,6 +14,7 @@ public class TetrisApplication extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(TetrisApplication.class.getResource("menu.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Hello!");
+        ViewSwitcher.setDarkMode();
         stage.setScene(scene);
         stage.show();
 
