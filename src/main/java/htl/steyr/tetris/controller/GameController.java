@@ -1,5 +1,7 @@
 package htl.steyr.tetris.controller;
 
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -38,4 +40,10 @@ public class GameController {
     }
 
 
+    public void onCloseButtonClicked(ActionEvent actionEvent) {
+        Platform.exit();
+    }
+
+    public void onPauseButtonClicked(ActionEvent actionEvent) {
+    }
 }
