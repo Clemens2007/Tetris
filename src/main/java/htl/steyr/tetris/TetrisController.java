@@ -38,9 +38,9 @@ public class TetrisController {
             }
         };
 
-        songList.add(new File("/music/music1.mp3").toURI().toString());
-        songList.add(new File("/music/music2.mp3").toURI().toString());
-        songList.add(new File("/music/music3.mp3").toURI().toString());
+        songList.add(getClass().getResource("/htl/steyr/tetris/music/music1.mp3").toExternalForm());
+        songList.add(getClass().getResource("/htl/steyr/tetris/music/music2.mp3").toExternalForm());
+        songList.add(getClass().getResource("/htl/steyr/tetris/music/music3.mp3").toExternalForm());
 
         loadSong(currentSongIndex);
 

@@ -131,11 +131,16 @@ public class Tile extends Group {
     }
 
     public void moveVertic(int n){
-        this.setLayoutX(this.getLayoutX() - n);
+        this.setLayoutY(this.getLayoutY() - n);
     }
 
     public void moveHorizon(int n){
-        this.setLayoutY(this.getLayoutY() - n);
+        this.setLayoutX(this.getLayoutX() - n);
+    }
+
+    public void move(int dx, int dy){
+        setTranslateX(getTranslateX() + dx);
+        setTranslateY(getTranslateY() + dy);
     }
 
     public double getScale(){
@@ -166,4 +171,22 @@ public class Tile extends Group {
         }
     }
 
+    public void hardDrop() {
+        double step = 40 * scale;
+
+        int safety = 0;
+
+        while (!collidesBelow() && safety < 50) {
+            this.setTranslateY(this.getTranslateY() + step);
+            safety++;
+        }
+    }
+
+    private boolean collidesBelow() {
+        double blockSize = 40 * scale;
+
+        double nextY = getTranslateY() + blockSize;
+
+        return nextY >= 20 * blockSize;
+    }
 }
