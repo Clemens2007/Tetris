@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="700" prefWidth="900" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="htl.steyr.tetris.controller.OptionsController">
+
+    <!-- Zentrierter Inhalt -->
+    <center>
+
+        <StackPane>
+
+            <VBox alignment="CENTER" maxWidth="500" spacing="20">
+
+                <!-- Titel -->
+                <HBox alignment="CENTER_RIGHT" spacing="20">
+
+                    <Label text="Options">
+                        <font>
+                            <Font size="34" />
+                        </font>
+                    </Label>
+
+                    <Region HBox.hgrow="ALWAYS" />
+
+                    <Button fx:id="closeButton" prefHeight="40" prefWidth="40" text="X" />
+                </HBox>
+
+                <!-- Scrollbarer Content -->
+                <ScrollPane fitToWidth="true" prefViewportHeight="500" prefViewportWidth="450">
+
+                    <content>
+
+                        <VBox alignment="CENTER" fillWidth="true" spacing="25">
+
+                            <!-- AUDIO -->
+                            <VBox alignment="CENTER" spacing="10">
+
+                                <Label text="Music and Sound">
+                                    <font>
+                                        <Font size="24" />
+                                    </font>
+                                </Label>
+
+                                <HBox alignment="CENTER" spacing="10">
+
+                                    <Label text="Music" />
+                                    <Slider fx:id="musicSlider" prefWidth="250" />
+                                </HBox>
+
+                                <HBox alignment="CENTER" spacing="10">
+
+                                    <Label text="Sound" />
+                                    <Slider fx:id="soundSlider" prefWidth="250" />
+                                </HBox>
+                            </VBox>
+                     <VBox alignment="CENTER" prefHeight="72.0" prefWidth="484.0">
+                        <children>
+                           <Label alignment="CENTER" contentDisplay="CENTER" text="Dark/Whitemode" />
+                           <Button fx:id="white_darkmode_button" prefHeight="45" prefWidth="220" text="White/Dark" />
+                        </children>
+                     </VBox>
+
+                                  <!-- DATA -->
+                            <VBox alignment="CENTER" spacing="10">
+
+                                      <Label text="Data">
+                                    <font>
+                                        <Font size="22" />
+                                    </font>
+                                </Label>
+
+                                      <Button fx:id="clearDataButton" prefHeight="45" prefWidth="220" text="Clear all Data" />
+                            </VBox>
+
+                            <!-- KEYBINDS -->
+                            <VBox alignment="CENTER" spacing="15">
+
+                                <Label text="Keybinds">
+                                    <font>
+                                        <Font size="22" />
+                                    </font>
+                                </Label>
+
+                                <GridPane alignment="CENTER" hgap="15" vgap="12">
+
+                                    <Label text="UP" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                                    <Button fx:id="upKeyButton" prefWidth="140" text="W" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                                    <Label text="DOWN" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                                    <Button fx:id="downKeyButton" prefWidth="140" text="S" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                                    <Label text="LEFT" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                                    <Button fx:id="leftKeyButton" prefWidth="140" text="A" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                                    <Label text="RIGHT" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                                    <Button fx:id="rightKeyButton" prefWidth="140" text="D" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+                                    <Label text="ROTATE LEFT" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                                    <Button fx:id="rotateLeftButton" prefWidth="140" text="Q" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+
+                                    <Label text="ROTATE RIGHT" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                                    <Button fx:id="rotateRightButton" prefWidth="140" text="E" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+
+                                    <Label text="HOLD" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+                                    <Button fx:id="holdButton" prefWidth="140" text="SHIFT" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+
+                                    <Label text="SOFTDROP" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+                                    <Button fx:id="softdropButton" prefWidth="140" text="S" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+
+                                    <Label text="HARDDROP" GridPane.columnIndex="0" GridPane.rowIndex="8" />
+                                    <Button fx:id="harddropButton" prefWidth="140" text="SPACE" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                           <columnConstraints>
+                              <ColumnConstraints />
+                              <ColumnConstraints />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints />
+                              <RowConstraints />
+                              <RowConstraints />
+                              <RowConstraints />
+                              <RowConstraints />
+                              <RowConstraints />
+                              <RowConstraints />
+                              <RowConstraints />
+                              <RowConstraints />
+                           </rowConstraints>
+
+                                </GridPane>
+                            </VBox>
+
+                        </VBox>
+
+                    </content>
+
+                </ScrollPane>
+
+                <!-- Save -->
+                <Button fx:id="saveButton" prefHeight="45" prefWidth="180" text="SAVE" />
+
+            </VBox>
+
+        </StackPane>
+
+    </center>
+
+</BorderPane>
