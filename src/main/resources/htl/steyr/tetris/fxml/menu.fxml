@@ -22,7 +22,9 @@
                     fx:id="closeButton"
                     prefWidth="35"
                     prefHeight="35"
-                    style="-fx-font-size: 14; -fx-font-weight: bold;"/>
+                    style="-fx-font-size: 14; -fx-font-weight: bold;"
+                    onAction="#onClosedButtonClicked"
+            />
         </HBox>
     </top>
 
@@ -60,13 +62,17 @@
                         fx:id="playButton"
                         prefWidth="180"
                         prefHeight="60"
-                        style="-fx-font-size: 22; -fx-font-weight: bold;"/>
+                        style="-fx-font-size: 22; -fx-font-weight: bold;"
+                        onAction="#onPlayButtonClicked"
+                />
 
                 <Button text="Optionen"
                         fx:id="optionsButton"
                         prefWidth="180"
                         prefHeight="45"
-                        style="-fx-font-size: 16;"/>
+                        style="-fx-font-size: 16;"
+                        onAction="#onOptionsButtonClicked"
+                />
 
             </VBox>
 
