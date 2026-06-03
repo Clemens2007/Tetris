@@ -22,6 +22,6 @@ public class StartController {
 
     public void onOKButtonClicked(ActionEvent actionEvent) {
         //@ToDo Logik
-        ViewSwitcher.switchTo("menu");
+        ViewSwitcher.switchTo("menu.fxml");
     }
 }

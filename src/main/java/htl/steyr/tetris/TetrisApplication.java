@@ -11,8 +11,9 @@ import java.io.IOException;
 public class TetrisApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(TetrisApplication.class.getResource("menu.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(TetrisApplication.class.getResource("fxml/start.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
+        ViewSwitcher.setStage(stage);
         stage.setTitle("Hello!");
         ViewSwitcher.setDarkMode();
         stage.setScene(scene);

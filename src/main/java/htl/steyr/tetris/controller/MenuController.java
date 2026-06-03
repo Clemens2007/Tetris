@@ -36,10 +36,10 @@ public class MenuController {
     }
 
     public void onPlayButtonClicked(ActionEvent actionEvent) {
-        ViewSwitcher.switchTo("game");
+        ViewSwitcher.switchTo("game.fxml");
     }
 
     public void onOptionsButtonClicked(ActionEvent actionEvent) {
-        ViewSwitcher.switchTo("options");
+        ViewSwitcher.switchTo("options.fxml");
     }
 }
