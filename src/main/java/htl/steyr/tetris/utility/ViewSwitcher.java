@@ -5,6 +5,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.util.Objects;
+
 public class ViewSwitcher {
 
     private static Stage stage;
@@ -32,9 +34,10 @@ public class ViewSwitcher {
     }
 
     public static void switchTo(String fxml) {
+
         try {
-            FXMLLoader loader = new FXMLLoader(ViewSwitcher.class.getResource(fxml));
-            Parent root = loader.load();
+            String fxmlFilePath = "/htl/steyr/tetris/fxml/" + fxml;
+            Parent root = FXMLLoader.load(Objects.requireNonNull(ViewSwitcher.class.getResource(fxmlFilePath)));
 
             Scene scene = new Scene(root);
 
@@ -43,11 +46,11 @@ public class ViewSwitcher {
 
             if (darkMode) {
                 scene.getStylesheets().add(
-                        ViewSwitcher.class.getResource("/stylesheets/darkmode.css").toExternalForm()
+                        ViewSwitcher.class.getResource("/htl/steyr/tetris/stylesheets/darkmode.css").toExternalForm()
                 );
             } else {
                 scene.getStylesheets().add(
-                        ViewSwitcher.class.getResource("/stylesheets/whitemode.css").toExternalForm()
+                        ViewSwitcher.class.getResource("/htl/steyr/tetris/stylesheets/whitemode.css").toExternalForm()
                 );
             }
 
@@ -60,6 +63,6 @@ public class ViewSwitcher {
     }
 
     public static FXMLLoader getLoader(String fxml) {
-        return new FXMLLoader(ViewSwitcher.class.getResource(fxml));
+        return new FXMLLoader(ViewSwitcher.class.getResource("/htl/steyr/tetris/fxml/" + fxml));
     }
 }

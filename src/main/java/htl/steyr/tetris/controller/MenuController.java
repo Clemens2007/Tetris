@@ -1,5 +1,10 @@
 package htl.steyr.tetris.controller;
 
+import htl.steyr.tetris.highscore_management.HighscoreManager;
+import htl.steyr.tetris.highscore_management.Score;
+import htl.steyr.tetris.utility.ViewSwitcher;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -18,8 +23,23 @@ public class MenuController {
     @FXML
     private Label welcomeLabel;
     @FXML
-    private ListView<String> highscoreList;
+    private ListView<Score> highscoreList;
     @FXML
     private Pane adBanner;
 
+    public void initialize(){
+        highscoreList.getItems().addAll(HighscoreManager.loadHighscores());
+    }
+
+    public void onClosedButtonClicked(ActionEvent actionEvent) {
+        Platform.exit();
+    }
+
+    public void onPlayButtonClicked(ActionEvent actionEvent) {
+        ViewSwitcher.switchTo("game.fxml");
+    }
+
+    public void onOptionsButtonClicked(ActionEvent actionEvent) {
+        ViewSwitcher.switchTo("options.fxml");
+    }
 }

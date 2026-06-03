@@ -20,7 +20,7 @@
             <!-- Registrieren links -->
             <left>
                 <Label text="Registrieren"
-                       style="-fx-font-size: 24;"/>
+                       style="-fx-font-size: 24;" styleClass="Label-darkmode"/>
             </left>
 
             <!-- X rechts -->
@@ -29,7 +29,9 @@
                         fx:id="closeButton"
                         prefWidth="35"
                         prefHeight="35"
-                        style="-fx-font-size: 14; -fx-font-weight: bold;"/>
+                        style="-fx-font-size: 14; -fx-font-weight: bold;"
+                        onAction="#onClosedButtonClicked"
+                />
             </right>
         </BorderPane>
     </top>
@@ -44,18 +46,18 @@
 
                 <!-- Titel -->
                 <Label text="TETRIS"
-                       style="-fx-font-size: 42; -fx-font-weight: bold;"/>
+                       style="-fx-font-size: 42; -fx-font-weight: bold;" styleClass="Label-darkmode"/>
 
                 <!-- Username -->
                 <Label text="Username"
-                       style="-fx-font-size: 16;"/>
+                       style="-fx-font-size: 16;" styleClass="Label-darkmode"/>
 
                 <TextField fx:id="usernameField"
                            prefHeight="40"/>
 
                 <!-- Passwort -->
                 <Label text="Passwort"
-                       style="-fx-font-size: 16;"/>
+                       style="-fx-font-size: 16;" styleClass="Label-darkmode"/>
 
                 <PasswordField fx:id="passwordField"
                                prefHeight="40"/>
@@ -65,7 +67,9 @@
                         fx:id="okButton"
                         prefWidth="120"
                         prefHeight="40"
-                        style="-fx-font-size: 16;"/>
+                        style="-fx-font-size: 16;"
+                        onAction="#onOKButtonClicked"
+                />
 
             </VBox>
 
