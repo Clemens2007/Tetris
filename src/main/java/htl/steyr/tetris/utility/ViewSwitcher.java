@@ -37,6 +37,7 @@ public class ViewSwitcher {
 
         try {
             String fxmlFilePath = "/htl/steyr/tetris/fxml/" + fxml;
+            System.out.println("URL: " + ViewSwitcher.class.getResource(fxmlFilePath));
             Parent root = FXMLLoader.load(Objects.requireNonNull(ViewSwitcher.class.getResource(fxmlFilePath)));
 
             Scene scene = new Scene(root);
