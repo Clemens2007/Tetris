@@ -222,12 +222,58 @@ public class OptionsController {
         scene.setOnKeyPressed(event -> {
 
             KeyCode keyCode = event.getCode();
+            String newKey = keyCode.toString();
 
-            button.setText(keyCode.toString());
+            // Prüfen ob Key schon vergeben ist
+            if (isKeyAlreadyUsed(keyName, newKey)) {
 
-            prefs.put(keyName, keyCode.toString());
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Taste bereits vergeben");
+                alert.setHeaderText(null);
+                alert.setContentText("Die Taste \"" + newKey + "\" wird bereits verwendet!");
+                alert.showAndWait();
+
+                // Alten Wert wiederherstellen
+                button.setText(prefs.get(keyName, button.getText()));
+
+            } else {
+                // Key übernehmen
+                button.setText(newKey);
+                prefs.put(keyName, newKey);
+            }
 
             scene.setOnKeyPressed(null);
         });
+    }
+
+
+    private boolean isKeyAlreadyUsed(String keyName, String newKey) {
+
+        // Alle Buttons in ein Array packen
+        Button[] allButtons = {
+                upKeyButton, downKeyButton, leftKeyButton, rightKeyButton,
+                rotateLeftButton, rotateRightButton,
+                holdButton, softdropButton, harddropButton
+        };
+
+        // Alle Key-Namen in gleicher Reihenfolge
+        String[] keyNames = {
+                "UP", "DOWN", "LEFT", "RIGHT",
+                "ROTATE_LEFT", "ROTATE_RIGHT",
+                "HOLD", "SOFTDROP", "HARDDROP"
+        };
+
+        for (int i = 0; i < allButtons.length; i++) {
+
+            // Diesen Key ignorieren (sonst blockiert er sich selbst)
+            if (keyNames[i].equals(keyName)) continue;
+
+            // Prüfen gegen den Text des Buttons (nicht prefs!)
+            if (allButtons[i].getText().equals(newKey)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
