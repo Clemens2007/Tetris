@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="700" prefWidth="900" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="htl.steyr.tetris.controller.OptionsController">
+<BorderPane prefHeight="700" prefWidth="900" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="htl.steyr.tetris.controller.OptionsController">
 
     <!-- Zentrierter Inhalt -->
     <center>
@@ -82,6 +82,17 @@
                                 </Label>
 
                                       <Button fx:id="clearDataButton" prefHeight="45" prefWidth="220" text="Clear all Data" />
+                            </VBox>
+
+                            <VBox alignment="CENTER" spacing="10">
+
+                                <Label text="Highscore">
+                                    <font>
+                                        <Font size="22" />
+                                    </font>
+                                </Label>
+
+                                <Button fx:id="resetHighscoreButton" onAction="#resetHighscoreClicked" prefHeight="45" prefWidth="220" text="Reset highscore" />
                             </VBox>
 
                             <!-- KEYBINDS -->

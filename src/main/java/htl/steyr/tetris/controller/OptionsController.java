@@ -1,6 +1,8 @@
 package htl.steyr.tetris.controller;
 
+import htl.steyr.tetris.highscore_management.HighscoreManager;
 import htl.steyr.tetris.user.UserSession;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -10,6 +12,8 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.prefs.Preferences;
@@ -17,6 +21,9 @@ import java.util.prefs.Preferences;
 public class OptionsController {
 
     public Button white_darkmode_button;
+
+    @FXML
+    public Button resetHighscoreButton;
 
     @FXML
     private Slider musicSlider;
@@ -257,6 +264,8 @@ public class OptionsController {
                 }
             }
         });
+
+        resetHighscoreClicked(new ActionEvent());
     }
 
     // ---------------- KEYBINDS ----------------
@@ -331,5 +340,9 @@ public class OptionsController {
         }
 
         return false;
+    }
+
+    public static void resetHighscoreClicked(ActionEvent actionEvent) {
+       HighscoreManager.clearData();
     }
 }

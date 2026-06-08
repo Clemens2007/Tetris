@@ -59,4 +59,15 @@ public class HighscoreManager {
             e.printStackTrace();
         }
     }
+
+    public static void clearData() {
+        try {
+            Files.createDirectories(FILE.getParent());
+            JsonArray empty = new JsonArray();
+            String json = new GsonBuilder().setPrettyPrinting().create().toJson(empty);
+            Files.writeString(FILE, json);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
