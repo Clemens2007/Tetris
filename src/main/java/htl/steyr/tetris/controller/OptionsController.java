@@ -145,12 +145,12 @@ public class OptionsController {
 
         if (darkMode) {
             scene.getStylesheets().add(
-                    getClass().getResource("/stylesheets/darkmode.css").toExternalForm()
+                    getClass().getResource("/htl/steyr/tetris/stylesheets/darkmode.css").toExternalForm()
             );
             white_darkmode_button.setText("Dark Mode");
         } else {
             scene.getStylesheets().add(
-                    getClass().getResource("/stylesheets/whitemode.css").toExternalForm()
+                    getClass().getResource("/htl/steyr/tetris/stylesheets/whitemode.css").toExternalForm()
             );
             white_darkmode_button.setText("Light Mode");
         }
