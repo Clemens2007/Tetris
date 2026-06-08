@@ -39,7 +39,7 @@ public class StartController {
         String username = usernameField.getText().trim();
         String password = passwordField.getText();
 
-        boolean userExists = Files.exists(Paths.get("users", username + ".txt"));
+        boolean userExists = Files.exists(Paths.get("users", username.toLowerCase() + ".txt"));
 
         if (isRegister) {
             if (userExists) {
@@ -71,7 +71,7 @@ public class StartController {
         }
 
         ViewSwitcher.switchTo("menu.fxml");
-        UserData ud = new UserData(username,password, isRegister);
+        UserData ud = new UserData(username.toLowerCase(),password, isRegister);
         UserSession.setUserData(ud);
     }
 

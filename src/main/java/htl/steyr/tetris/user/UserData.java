@@ -18,7 +18,7 @@ public class UserData {
 
     public UserData(String username, String password, boolean isNew) {
         if (isNew) {
-            if (Files.exists(Paths.get("users", username + ".txt"))) {
+            if (Files.exists(Paths.get("users", username.toLowerCase() + ".txt"))) {
                 throw new IllegalArgumentException("User '" + username + "' existiert bereits");
             }
             this.username = username;
@@ -42,7 +42,7 @@ public class UserData {
         json.addProperty("volumeMusic", volumeMusic);
         json.addProperty("volumeSfx", volumeSfx);
 
-        Path file = Paths.get("users", username + ".txt");
+        Path file = Paths.get("users", username.toLowerCase() + ".txt");
         try {
             Files.createDirectories(file.getParent());
             Files.writeString(file, new GsonBuilder().setPrettyPrinting().create().toJson(json));
@@ -56,7 +56,7 @@ public class UserData {
 
         try {
             JsonObject json = JsonParser.parseString(
-                    Files.readString(Paths.get("users", username + ".txt"))
+                    Files.readString(Paths.get("users", username.toLowerCase() + ".txt"))
             ).getAsJsonObject();
 
             passwordHash = json.get("password").getAsString();
