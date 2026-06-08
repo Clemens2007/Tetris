@@ -46,12 +46,12 @@
                 <!-- Username -->
                 <Label style="-fx-font-size: 16;" styleClass="Label-darkmode" text="Username" />
 
-                <TextField fx:id="usernameField" prefHeight="40" />
+                <TextField fx:id="usernameField" onAction="#onUserFieldAction" prefHeight="40" />
 
                 <!-- Passwort -->
                 <Label style="-fx-font-size: 16;" styleClass="Label-darkmode" text="Passwort" />
 
-                <PasswordField fx:id="passwordField" prefHeight="40" />
+                <PasswordField fx:id="passwordField" onAction="#onTextFieldAction" prefHeight="40" />
 
                 <!-- Button -->
                 <Button fx:id="okButton" onAction="#onOKButtonClicked" prefHeight="40" prefWidth="120" style="-fx-font-size: 16;" text="OK" />

@@ -92,4 +92,12 @@ public class StartController {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
+    public void onUserFieldAction(ActionEvent actionEvent) {
+        passwordField.requestFocus();
+    }
+
+    public void onTextFieldAction(ActionEvent actionEvent) {
+        onOKButtonClicked(new ActionEvent());
+    }
 }
