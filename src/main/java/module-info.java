@@ -4,10 +4,20 @@ module htl.steyr.tetris {
     requires com.google.common;
     requires com.google.gson;
     requires java.sql;
-
+    requires java.prefs;
 
     opens htl.steyr.tetris to javafx.fxml;
     exports htl.steyr.tetris;
+
     exports htl.steyr.tetris.controller;
     opens htl.steyr.tetris.controller to javafx.fxml;
+
+    exports htl.steyr.tetris.user;
+    opens htl.steyr.tetris.user to javafx.fxml;
+
+    exports htl.steyr.tetris.utility;
+    opens htl.steyr.tetris.utility to javafx.fxml;
+
+    exports htl.steyr.tetris.highscore_management;
+    opens htl.steyr.tetris.highscore_management to javafx.fxml;
 }
