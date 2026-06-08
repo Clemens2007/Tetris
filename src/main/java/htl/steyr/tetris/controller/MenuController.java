@@ -2,6 +2,8 @@ package htl.steyr.tetris.controller;
 
 import htl.steyr.tetris.highscore_management.HighscoreManager;
 import htl.steyr.tetris.highscore_management.Score;
+import htl.steyr.tetris.user.UserData;
+import htl.steyr.tetris.user.UserSession;
 import htl.steyr.tetris.utility.ViewSwitcher;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -27,8 +29,12 @@ public class MenuController {
     @FXML
     private Pane adBanner;
 
+    private UserData ud;
+
     public void initialize(){
         highscoreList.getItems().addAll(HighscoreManager.loadHighscores());
+        ud = UserSession.getUserData();
+        welcomeLabel.setText(welcomeLabel.getText().replace("User", ud.getUsername()));
     }
 
     public void onClosedButtonClicked(ActionEvent actionEvent) {
