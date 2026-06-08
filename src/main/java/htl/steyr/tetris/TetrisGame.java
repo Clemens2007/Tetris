@@ -1,7 +1,7 @@
 package htl.steyr.tetris;
 
 import htl.steyr.tetris.key.KeyAssignment;
-import htl.steyr.tetris.key.SaveKey;
+import htl.steyr.tetris.user.UserSession;
 import javafx.application.Platform;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
@@ -20,7 +20,14 @@ public class TetrisGame {
 
     public TetrisGame(AnchorPane root){
         this.root = root;
-        this.keys = SaveKey.load("default");
+        this.keys = new KeyAssignment();
+
+        keys.setMoveLeft(UserSession.getUserData().getSetting("left"));
+        keys.setMoveRight(UserSession.getUserData().getSetting("right"));
+        keys.setSoftDrop(UserSession.getUserData().getSetting("softdrop"));
+        keys.setHardDrop(UserSession.getUserData().getSetting("harddrop"));
+        keys.setHold(UserSession.getUserData().getSetting("hold"));
+        keys.setRotate(UserSession.getUserData().getSetting("rotate_right"));
 
         root.getChildren().add(tile);
         scale = (int) tile.getScale();
@@ -91,24 +98,30 @@ public class TetrisGame {
         switch (action) {
             case "left":
                 keys.setMoveLeft(key);
+                UserSession.getUserData().setSetting("left", key);
                 break;
             case "right":
                 keys.setMoveRight(key);
+                UserSession.getUserData().setSetting("right", key);
                 break;
             case "rotate":
                 keys.setRotate(key);
+                UserSession.getUserData().setSetting("rotate_right", key);
                 break;
             case "down":
                 keys.setSoftDrop(key);
+                UserSession.getUserData().setSetting("softdrop", key);
                 break;
             case "hard":
                 keys.setHardDrop(key);
+                UserSession.getUserData().setSetting("harddrop", key);
                 break;
             case "hold":
                 keys.setHold(key);
+                UserSession.getUserData().setSetting("hold", key);
                 break;
         }
 
-        SaveKey.save("default", keys);
+        UserSession.getUserData().save();
     }
 }

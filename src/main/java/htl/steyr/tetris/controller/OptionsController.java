@@ -1,11 +1,17 @@
 package htl.steyr.tetris.controller;
 
+import htl.steyr.tetris.user.UserSession;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.prefs.Preferences;
 
 public class OptionsController {
@@ -55,12 +61,20 @@ public class OptionsController {
     private Button currentKeyButton;
 
     private boolean darkMode = false;
+    private List<String> songList = new ArrayList<>();
+    private int currentSongIndex = 0;
+    private MediaPlayer mediaPlayer;
 
     @FXML
     public void initialize() {
 
         loadSettings();
         loadTheme();
+        loadSong(currentSongIndex);
+
+        songList.add(getClass().getResource("/htl/steyr/tetris/music/music1.mp3").toExternalForm());
+        songList.add(getClass().getResource("/htl/steyr/tetris/music/music2.mp3").toExternalForm());
+        songList.add(getClass().getResource("/htl/steyr/tetris/music/music3.mp3").toExternalForm());
 
         setupKeyButton(upKeyButton, "UP");
         setupKeyButton(downKeyButton, "DOWN");
@@ -88,11 +102,13 @@ public class OptionsController {
 
         upKeyButton.setText(prefs.get("UP", "W"));
         downKeyButton.setText(prefs.get("DOWN", "S"));
-        leftKeyButton.setText(prefs.get("LEFT", "A"));
-        rightKeyButton.setText(prefs.get("RIGHT", "D"));
-
-        rotateLeftButton.setText(prefs.get("ROTATE_LEFT", "Q"));
-        rotateRightButton.setText(prefs.get("ROTATE_RIGHT", "E"));
+        leftKeyButton.setText(UserSession.getUserData().getSetting("left").getName());
+        rightKeyButton.setText(UserSession.getUserData().getSetting("right").getName());
+        holdButton.setText(UserSession.getUserData().getSetting("hold").getName());
+        softdropButton.setText(UserSession.getUserData().getSetting("softdrop").getName());
+        harddropButton.setText(UserSession.getUserData().getSetting("harddrop").getName());
+        rotateLeftButton.setText(UserSession.getUserData().getSetting("rotate_left").getName());
+        rotateRightButton.setText(UserSession.getUserData().getSetting("rotate_right").getName());
 
         holdButton.setText(prefs.get("HOLD", "SHIFT"));
         softdropButton.setText(prefs.get("SOFTDROP", "S"));
@@ -106,11 +122,14 @@ public class OptionsController {
 
         prefs.put("UP", upKeyButton.getText());
         prefs.put("DOWN", downKeyButton.getText());
-        prefs.put("LEFT", leftKeyButton.getText());
-        prefs.put("RIGHT", rightKeyButton.getText());
-
-        prefs.put("ROTATE_LEFT", rotateLeftButton.getText());
-        prefs.put("ROTATE_RIGHT", rotateRightButton.getText());
+        UserSession.getUserData().setSetting("left", KeyCode.valueOf(leftKeyButton.getText()));
+        UserSession.getUserData().setSetting("right", KeyCode.valueOf(rightKeyButton.getText()));
+        UserSession.getUserData().setSetting("hold", KeyCode.valueOf(holdButton.getText()));
+        UserSession.getUserData().setSetting("softdrop", KeyCode.valueOf(softdropButton.getText()));
+        UserSession.getUserData().setSetting("harddrop", KeyCode.valueOf(harddropButton.getText()));
+        UserSession.getUserData().setSetting("rotate_left", KeyCode.valueOf(rotateLeftButton.getText()));
+        UserSession.getUserData().setSetting("rotate_right", KeyCode.valueOf(rotateRightButton.getText()));
+        UserSession.getUserData().save();
 
         prefs.put("HOLD", holdButton.getText());
         prefs.put("SOFTDROP", softdropButton.getText());
@@ -121,6 +140,43 @@ public class OptionsController {
         alert.setHeaderText(null);
         alert.setContentText("Einstellungen wurden gespeichert!");
         alert.showAndWait();
+    }
+
+    // ---------------- MUSIC ----------------
+
+    private void loadSong(int index) {
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+        }
+
+        Media media = new Media(songList.get(index));
+        mediaPlayer = new MediaPlayer(media);
+        mediaPlayer.play();
+
+        mediaPlayer.setOnEndOfMedia(() -> {
+            nextSong();
+        });
+    }
+
+    public void nextSong() {
+        if (songList.isEmpty()) return;
+        currentSongIndex = (currentSongIndex + 1) % songList.size();
+        loadSong(currentSongIndex);
+    }
+
+    public void prevSong() {
+        if (songList.isEmpty()) return;
+        currentSongIndex = (currentSongIndex - 1 + songList.size()) % songList.size();
+        loadSong(currentSongIndex);
+    }
+
+    public void musicVolumeSlider(MouseEvent mouseEvent) {
+        musicSlider.setMin(0);
+        musicSlider.setMax(100);
+        musicSlider.setValue(40);
+
+        // passt die Lautstärke an:
+        mediaPlayer.volumeProperty().bind(musicSlider.valueProperty());
     }
 
     // ---------------- THEME ----------------
