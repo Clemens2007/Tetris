@@ -77,6 +77,9 @@ public class OptionsController {
         clearDataButton.setOnAction(e -> clearAllData());
 
         white_darkmode_button.setOnAction(e -> toggleTheme());
+
+        saveButton.setDisable(!allKeysAssigned());
+
     }
 
     // ---------------- SETTINGS ----------------
@@ -210,6 +213,10 @@ public class OptionsController {
         button.setOnAction(e -> {
             currentKeyButton = button;
             button.setText("Press Key...");
+
+            // alle anderen Buttons deaktivieren
+            setAllKeyButtonsDisabled(true, button);
+
             listenForKey(button, keyName);
         });
     }
@@ -221,8 +228,7 @@ public class OptionsController {
 
         scene.setOnKeyPressed(event -> {
 
-            KeyCode keyCode = event.getCode();
-            String newKey = keyCode.toString();
+            String newKey = event.getCode().toString();
 
             // Prüfen ob Key schon vergeben ist
             if (isKeyAlreadyUsed(keyName, newKey)) {
@@ -233,18 +239,25 @@ public class OptionsController {
                 alert.setContentText("Die Taste \"" + newKey + "\" wird bereits verwendet!");
                 alert.showAndWait();
 
-                // Alten Wert wiederherstellen
+                // alten Wert wiederherstellen
                 button.setText(prefs.get(keyName, button.getText()));
 
             } else {
-                // Key übernehmen
+                // neuen Key übernehmen
                 button.setText(newKey);
                 prefs.put(keyName, newKey);
             }
 
+            // alle Buttons wieder aktivieren
+            setAllKeyButtonsDisabled(false, null);
+
+            // Save-Button nur aktivieren, wenn ALLE Keys gesetzt sind
+            saveButton.setDisable(!allKeysAssigned());
+
             scene.setOnKeyPressed(null);
         });
     }
+
 
 
     private boolean isKeyAlreadyUsed(String keyName, String newKey) {
@@ -276,4 +289,30 @@ public class OptionsController {
 
         return false;
     }
+    private boolean allKeysAssigned() {
+        return !upKeyButton.getText().equals("Press Key...")
+                && !downKeyButton.getText().equals("Press Key...")
+                && !leftKeyButton.getText().equals("Press Key...")
+                && !rightKeyButton.getText().equals("Press Key...")
+                && !rotateLeftButton.getText().equals("Press Key...")
+                && !rotateRightButton.getText().equals("Press Key...")
+                && !holdButton.getText().equals("Press Key...")
+                && !softdropButton.getText().equals("Press Key...")
+                && !harddropButton.getText().equals("Press Key...");
+    }
+
+    private void setAllKeyButtonsDisabled(boolean disabled, Button except) {
+
+        Button[] all = {
+                upKeyButton, downKeyButton, leftKeyButton, rightKeyButton,
+                rotateLeftButton, rotateRightButton,
+                holdButton, softdropButton, harddropButton, saveButton
+        };
+
+        for (Button b : all) {
+            if (b != except) b.setDisable(disabled);
+        }
+    }
+
+
 }
