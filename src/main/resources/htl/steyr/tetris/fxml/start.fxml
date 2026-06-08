@@ -1,37 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="htl.steyr.tetris.controller.StartController"
-            prefWidth="900"
-            prefHeight="600">
+<BorderPane prefHeight="600" prefWidth="900" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="htl.steyr.tetris.controller.StartController">
 
     <!-- Top-Bar -->
     <top>
         <BorderPane>
             <padding>
-                <Insets top="10" left="20" right="20"/>
+                <Insets left="20" right="20" top="10" />
             </padding>
 
             <!-- Registrieren links -->
             <left>
-                <Label text="Registrieren"
-                       style="-fx-font-size: 24;" styleClass="Label-darkmode"/>
+                <Label fx:id="methodLabel" onMouseClicked="#onMethodButtonClicked" style="-fx-font-size: 24;" styleClass="Label-darkmode" text="Registrieren">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Label>
             </left>
 
             <!-- X rechts -->
             <right>
-                <Button text="X"
-                        fx:id="closeButton"
-                        prefWidth="35"
-                        prefHeight="35"
-                        style="-fx-font-size: 14; -fx-font-weight: bold;"
-                        onAction="#onClosedButtonClicked"
-                />
+                <Button fx:id="closeButton" onAction="#onClosedButtonClicked" prefHeight="35" prefWidth="35" style="-fx-font-size: 14; -fx-font-weight: bold;" text="X" />
             </right>
         </BorderPane>
     </top>
@@ -40,36 +38,23 @@
     <center>
         <StackPane>
 
-            <VBox spacing="20"
-                  alignment="CENTER"
-                  maxWidth="300">
+            <VBox alignment="CENTER" maxWidth="300" spacing="20">
 
                 <!-- Titel -->
-                <Label text="TETRIS"
-                       style="-fx-font-size: 42; -fx-font-weight: bold;" styleClass="Label-darkmode"/>
+                <Label style="-fx-font-size: 42; -fx-font-weight: bold;" styleClass="Label-darkmode" text="TETRIS" />
 
                 <!-- Username -->
-                <Label text="Username"
-                       style="-fx-font-size: 16;" styleClass="Label-darkmode"/>
+                <Label style="-fx-font-size: 16;" styleClass="Label-darkmode" text="Username" />
 
-                <TextField fx:id="usernameField"
-                           prefHeight="40"/>
+                <TextField fx:id="usernameField" prefHeight="40" />
 
                 <!-- Passwort -->
-                <Label text="Passwort"
-                       style="-fx-font-size: 16;" styleClass="Label-darkmode"/>
+                <Label style="-fx-font-size: 16;" styleClass="Label-darkmode" text="Passwort" />
 
-                <PasswordField fx:id="passwordField"
-                               prefHeight="40"/>
+                <PasswordField fx:id="passwordField" prefHeight="40" />
 
                 <!-- Button -->
-                <Button text="OK"
-                        fx:id="okButton"
-                        prefWidth="120"
-                        prefHeight="40"
-                        style="-fx-font-size: 16;"
-                        onAction="#onOKButtonClicked"
-                />
+                <Button fx:id="okButton" onAction="#onOKButtonClicked" prefHeight="40" prefWidth="120" style="-fx-font-size: 16;" text="OK" />
 
             </VBox>
 

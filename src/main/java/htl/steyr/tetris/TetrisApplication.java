@@ -13,12 +13,11 @@ public class TetrisApplication extends Application {
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(TetrisApplication.class.getResource("options.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
-        ViewSwitcher.setStage(stage);
         stage.setTitle("Hello!");
+        ViewSwitcher.setStage(stage);
         scene.getStylesheets().add(
                 getClass().getResource("/stylesheets/whitemode.css").toExternalForm()
         );
-        ViewSwitcher.setDarkMode();
         stage.setScene(scene);
         stage.show();
 
