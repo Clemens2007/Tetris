@@ -34,7 +34,13 @@ public class MenuController {
     public void initialize(){
         highscoreList.getItems().addAll(HighscoreManager.loadHighscores());
         ud = UserSession.getUserData();
-        welcomeLabel.setText(welcomeLabel.getText().replace("User", ud.getUsername()));
+
+        //Fehler mit Ki behoben
+        if (ud != null) {
+            welcomeLabel.setText("Willkommen " + ud.getUsername());
+        } else {
+            welcomeLabel.setText("Willkommen Spieler");
+        }
     }
 
     public void onClosedButtonClicked(ActionEvent actionEvent) {
