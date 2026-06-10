@@ -1,5 +1,6 @@
 package htl.steyr.tetris.controller;
 
+import htl.steyr.tetris.utility.ViewSwitcher;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -73,13 +74,17 @@ public class OptionsController {
         setupKeyButton(harddropButton, "HARDDROP");
 
         saveButton.setOnAction(e -> saveSettings());
-        closeButton.setOnAction(e -> closeWindow());
+        closeButton.setOnAction(e -> returnToMenu());
         clearDataButton.setOnAction(e -> clearAllData());
 
         white_darkmode_button.setOnAction(e -> toggleTheme());
 
         saveButton.setDisable(!allKeysAssigned());
 
+    }
+
+    private void returnToMenu() {
+        ViewSwitcher.switchTo("menu.fxml");
     }
 
     // ---------------- SETTINGS ----------------
