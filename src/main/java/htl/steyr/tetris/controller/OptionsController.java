@@ -68,9 +68,34 @@ public class OptionsController {
         white_darkmode_button.setText(ViewSwitcher.isDarkMode() ? "Dark Mode" : "Light Mode");
         white_darkmode_button.setOnAction(e -> toggleTheme());
         saveButton.setOnAction(e -> saveSettings());
-        closeButton.setOnAction(e -> closeWindow());
+        closeButton.setOnAction(e -> returnToMenu());
         clearDataButton.setOnAction(e -> clearAllData());
         saveButton.setDisable(!allKeysAssigned());
+
+    }
+
+    private void returnToMenu() {
+        ViewSwitcher.switchTo("menu.fxml");
+    }
+
+    // ---------------- SETTINGS ----------------
+
+    private void loadSettings() {
+
+        musicSlider.setValue(prefs.getDouble("musicVolume", 50));
+        soundSlider.setValue(prefs.getDouble("soundVolume", 50));
+
+        upKeyButton.setText(prefs.get("UP", "W"));
+        downKeyButton.setText(prefs.get("DOWN", "S"));
+        leftKeyButton.setText(prefs.get("LEFT", "A"));
+        rightKeyButton.setText(prefs.get("RIGHT", "D"));
+
+        rotateLeftButton.setText(prefs.get("ROTATE_LEFT", "Q"));
+        rotateRightButton.setText(prefs.get("ROTATE_RIGHT", "E"));
+
+        holdButton.setText(prefs.get("HOLD", "SHIFT"));
+        softdropButton.setText(prefs.get("SOFTDROP", "S"));
+        harddropButton.setText(prefs.get("HARDDROP", "SPACE"));
     }
 
     private void saveSettings() {
