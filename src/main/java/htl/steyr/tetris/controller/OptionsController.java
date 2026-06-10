@@ -1,13 +1,13 @@
 package htl.steyr.tetris.controller;
 
+import htl.steyr.tetris.user.UserData;
+import htl.steyr.tetris.user.UserSession;
 import htl.steyr.tetris.utility.ViewSwitcher;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
-
-import java.util.prefs.Preferences;
 
 public class OptionsController {
 
@@ -46,39 +46,30 @@ public class OptionsController {
     @FXML
     private Button harddropButton;
 
-    //Preferences ist eine eingebaute Java-Klasse zum Speichern von kleinen
-    // Konfigurationsdaten (z.B. Einstellungen) direkt auf dem Computer des Users.
-    // Die Daten werden automatisch persistent gespeichert (auch nach dem Schließen der App).
-    // Du musst also keine eigene Datei schreiben.
-    private final Preferences prefs =
-            Preferences.userNodeForPackage(OptionsController.class);
-
     private Button currentKeyButton;
-
-    private boolean darkMode = false;
 
     @FXML
     public void initialize() {
+        UserData ud = UserSession.getUserData();
 
-        loadSettings();
-        loadTheme();
+        musicSlider.setValue(ud.getVolumeMusic());
+        soundSlider.setValue(ud.getVolumeSfx());
 
-        setupKeyButton(upKeyButton, "UP");
-        setupKeyButton(downKeyButton, "DOWN");
-        setupKeyButton(leftKeyButton, "LEFT");
-        setupKeyButton(rightKeyButton, "RIGHT");
-        setupKeyButton(rotateLeftButton, "ROTATE_LEFT");
-        setupKeyButton(rotateRightButton, "ROTATE_RIGHT");
-        setupKeyButton(holdButton, "HOLD");
-        setupKeyButton(softdropButton, "SOFTDROP");
-        setupKeyButton(harddropButton, "HARDDROP");
+        setupKeyButton(upKeyButton, "up", ud.getSetting("up"));
+        setupKeyButton(downKeyButton, "down", ud.getSetting("down"));
+        setupKeyButton(leftKeyButton, "left", ud.getSetting("left"));
+        setupKeyButton(rightKeyButton, "right", ud.getSetting("right"));
+        setupKeyButton(rotateLeftButton, "rotate_left", ud.getSetting("rotate_left"));
+        setupKeyButton(rotateRightButton, "rotate_right", ud.getSetting("rotate_right"));
+        setupKeyButton(holdButton, "hold", ud.getSetting("hold"));
+        setupKeyButton(softdropButton, "softdrop", ud.getSetting("softdrop"));
+        setupKeyButton(harddropButton, "harddrop", ud.getSetting("harddrop"));
 
+        white_darkmode_button.setText(ViewSwitcher.isDarkMode() ? "Dark Mode" : "Light Mode");
+        white_darkmode_button.setOnAction(e -> toggleTheme());
         saveButton.setOnAction(e -> saveSettings());
         closeButton.setOnAction(e -> returnToMenu());
         clearDataButton.setOnAction(e -> clearAllData());
-
-        white_darkmode_button.setOnAction(e -> toggleTheme());
-
         saveButton.setDisable(!allKeysAssigned());
 
     }
@@ -108,21 +99,9 @@ public class OptionsController {
     }
 
     private void saveSettings() {
-
-        prefs.putDouble("musicVolume", musicSlider.getValue());
-        prefs.putDouble("soundVolume", soundSlider.getValue());
-
-        prefs.put("UP", upKeyButton.getText());
-        prefs.put("DOWN", downKeyButton.getText());
-        prefs.put("LEFT", leftKeyButton.getText());
-        prefs.put("RIGHT", rightKeyButton.getText());
-
-        prefs.put("ROTATE_LEFT", rotateLeftButton.getText());
-        prefs.put("ROTATE_RIGHT", rotateRightButton.getText());
-
-        prefs.put("HOLD", holdButton.getText());
-        prefs.put("SOFTDROP", softdropButton.getText());
-        prefs.put("HARDDROP", harddropButton.getText());
+        UserData ud = UserSession.getUserData();
+        ud.setVolumeMusic((int) musicSlider.getValue());
+        ud.setVolumeSfx((int) soundSlider.getValue());
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Gespeichert");
@@ -131,27 +110,26 @@ public class OptionsController {
         alert.showAndWait();
     }
 
-    // ---------------- THEME ----------------
-
     private void loadTheme() {
-        darkMode = prefs.getBoolean("darkMode", false);
         applyTheme();
     }
 
     private void toggleTheme() {
-        darkMode = !darkMode;
-        prefs.putBoolean("darkMode", darkMode);
+        if (ViewSwitcher.isDarkMode()) {
+            ViewSwitcher.setLightMode();
+        } else {
+            ViewSwitcher.setDarkMode();
+        }
         applyTheme();
     }
 
     private void applyTheme() {
-
         Scene scene = white_darkmode_button.getScene();
         if (scene == null) return;
 
         scene.getStylesheets().clear();
 
-        if (darkMode) {
+        if (ViewSwitcher.isDarkMode()) {
             scene.getStylesheets().add(
                     getClass().getResource("/htl/steyr/tetris/stylesheets/darkmode.css").toExternalForm()
             );
@@ -164,146 +142,101 @@ public class OptionsController {
         }
     }
 
-    // ---------------- WINDOW ----------------
-
     private void closeWindow() {
         Stage stage = (Stage) closeButton.getScene().getWindow();
         stage.close();
     }
 
-    // ---------------- RESET ----------------
-
     private void clearAllData() {
-
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
         confirm.setTitle("Warnung");
         confirm.setHeaderText("Alles Änderungen zurücksetzen?");
         confirm.setContentText("Änderungen können nicht mehr rückgängig gemacht werden!");
 
         confirm.showAndWait().ifPresent(response -> {
+            if (response != ButtonType.OK) return;
 
-            if (response == ButtonType.OK) {
-                try {
-                    prefs.clear();
+            UserData ud = UserSession.getUserData();
+            ud.setVolumeMusic(50);
+            ud.setVolumeSfx(50);
+            musicSlider.setValue(50);
+            soundSlider.setValue(50);
 
-                    musicSlider.setValue(50);
-                    soundSlider.setValue(50);
+            ud.setSetting("up", KeyCode.W);
+            ud.setSetting("down", KeyCode.A);
+            ud.setSetting("left", KeyCode.S);
+            ud.setSetting("right", KeyCode.D);
+            ud.setSetting("rotate_left", KeyCode.Z);
+            ud.setSetting("rotate_right", KeyCode.X);
+            ud.setSetting("hold", KeyCode.C);
+            ud.setSetting("softdrop", KeyCode.S);
+            ud.setSetting("harddrop", KeyCode.SPACE);
+            ud.save();
 
-                    upKeyButton.setText("W");
-                    downKeyButton.setText("S");
-                    leftKeyButton.setText("A");
-                    rightKeyButton.setText("D");
-
-                    rotateLeftButton.setText("Q");
-                    rotateRightButton.setText("E");
-
-                    holdButton.setText("SHIFT");
-                    softdropButton.setText("S");
-                    harddropButton.setText("SPACE");
-
-                    darkMode = false;
-                    applyTheme();
-
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            }
+            upKeyButton.setText(KeyCode.W.getName());
+            downKeyButton.setText(KeyCode.A.getName());
+            leftKeyButton.setText(KeyCode.S.getName());
+            rightKeyButton.setText(KeyCode.D.getName());
+            rotateLeftButton.setText(KeyCode.Z.getName());
+            rotateRightButton.setText(KeyCode.X.getName());
+            holdButton.setText(KeyCode.C.getName());
+            softdropButton.setText(KeyCode.S.getName());
+            harddropButton.setText(KeyCode.SPACE.getName());
         });
     }
 
-    // ---------------- KEYBINDS ----------------
-
-    private void setupKeyButton(Button button, String keyName) {
-
+    private void setupKeyButton(Button button, String action, KeyCode currentKey) {
+        button.setText(currentKey.getName());
         button.setOnAction(e -> {
             currentKeyButton = button;
             button.setText("Press Key...");
-
-            // alle anderen Buttons deaktivieren
             setAllKeyButtonsDisabled(true, button);
-
-            listenForKey(button, keyName);
+            listenForKey(button, action);
         });
     }
 
-    private void listenForKey(Button button, String keyName) {
-
+    private void listenForKey(Button button, String action) {
         Scene scene = button.getScene();
         if (scene == null) return;
 
         scene.setOnKeyPressed(event -> {
-
             String newKey = event.getCode().toString();
 
-            // Prüfen ob Key schon vergeben ist
-            if (isKeyAlreadyUsed(keyName, newKey)) {
-
+            if (isKeyAlreadyUsed(action, newKey)) {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Taste bereits vergeben");
                 alert.setHeaderText(null);
                 alert.setContentText("Die Taste \"" + newKey + "\" wird bereits verwendet!");
                 alert.showAndWait();
-
-                // alten Wert wiederherstellen
-                button.setText(prefs.get(keyName, button.getText()));
-
+                button.setText(UserSession.getUserData().getSetting(action).getName());
             } else {
-                // neuen Key übernehmen
                 button.setText(newKey);
-                prefs.put(keyName, newKey);
+                UserSession.getUserData().setSetting(action, event.getCode());
+                UserSession.getUserData().save();
             }
 
-            // alle Buttons wieder aktivieren
             setAllKeyButtonsDisabled(false, null);
-
-            // Save-Button nur aktivieren, wenn ALLE Keys gesetzt sind
             saveButton.setDisable(!allKeysAssigned());
-
             scene.setOnKeyPressed(null);
         });
     }
 
-
-
-    private boolean isKeyAlreadyUsed(String keyName, String newKey) {
-
-        // Alle Buttons in ein Array packen
-        Button[] allButtons = {
-                upKeyButton, downKeyButton, leftKeyButton, rightKeyButton,
-                rotateLeftButton, rotateRightButton,
-                holdButton, softdropButton, harddropButton
-        };
-
-        // Alle Key-Namen in gleicher Reihenfolge
-        String[] keyNames = {
-                "UP", "DOWN", "LEFT", "RIGHT",
-                "ROTATE_LEFT", "ROTATE_RIGHT",
-                "HOLD", "SOFTDROP", "HARDDROP"
-        };
-
-        for (int i = 0; i < allButtons.length; i++) {
-
-            // Diesen Key ignorieren (sonst blockiert er sich selbst)
-            if (keyNames[i].equals(keyName)) continue;
-
-            // Prüfen gegen den Text des Buttons (nicht prefs!)
-            if (allButtons[i].getText().equals(newKey)) {
-                return true;
-            }
+    private boolean isKeyAlreadyUsed(String skipAction, String newKey) {
+        String[] actions = {"up", "down", "left", "right", "rotate_left", "rotate_right", "hold", "softdrop", "harddrop"};
+        UserData ud = UserSession.getUserData();
+        for (String a : actions) {
+            if (a.equals(skipAction)) continue;
+            if (ud.getSetting(a).toString().equals(newKey)) return true;
         }
-
         return false;
     }
+
     private boolean allKeysAssigned() {
-        return !upKeyButton.getText().equals("Press Key...")
-                && !downKeyButton.getText().equals("Press Key...")
-                && !leftKeyButton.getText().equals("Press Key...")
-                && !rightKeyButton.getText().equals("Press Key...")
-                && !rotateLeftButton.getText().equals("Press Key...")
-                && !rotateRightButton.getText().equals("Press Key...")
-                && !holdButton.getText().equals("Press Key...")
-                && !softdropButton.getText().equals("Press Key...")
-                && !harddropButton.getText().equals("Press Key...");
+        Button[] all = {upKeyButton, downKeyButton, leftKeyButton, rightKeyButton,
+                rotateLeftButton, rotateRightButton, holdButton, softdropButton, harddropButton};
+        for (Button b : all)
+            if (b.getText().equals("Press Key...")) return false;
+        return true;
     }
 
     private void setAllKeyButtonsDisabled(boolean disabled, Button except) {
@@ -318,6 +251,4 @@ public class OptionsController {
             if (b != except) b.setDisable(disabled);
         }
     }
-
-
 }
