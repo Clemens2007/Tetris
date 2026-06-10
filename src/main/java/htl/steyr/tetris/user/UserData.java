@@ -15,6 +15,8 @@ public class UserData {
     private List<Setting> settings;
     private int volumeMusic;
     private int volumeSfx;
+    private int highscore;
+
 
     public UserData(String username, String password, boolean isNew) {
         if (isNew) {
@@ -26,6 +28,7 @@ public class UserData {
             this.settings = getDefaultSettings();
             this.volumeMusic = 50;
             this.volumeSfx = 50;
+            this.highscore = 0;
             save();
         } else {
             load(username);
@@ -41,6 +44,7 @@ public class UserData {
         json.add("settings", s);
         json.addProperty("volumeMusic", volumeMusic);
         json.addProperty("volumeSfx", volumeSfx);
+        json.addProperty("highscore", highscore);
 
         Path file = Paths.get("users", username.toLowerCase() + ".txt");
         try {
@@ -62,6 +66,7 @@ public class UserData {
             passwordHash = json.get("password").getAsString();
             volumeMusic = json.get("volumeMusic").getAsInt();
             volumeSfx = json.get("volumeSfx").getAsInt();
+            highscore = json.get("highscore").getAsInt();
 
             settings = new ArrayList<>();
             json.getAsJsonObject("settings").entrySet().forEach(e -> settings.add(new Setting(e.getKey(), KeyCode.valueOf(e.getValue().getAsString()))));
@@ -127,5 +132,12 @@ public class UserData {
     public void setVolumeSfx(int num){
         volumeSfx = num;
         save();
+    }
+
+    public int getHighscore(){
+        return highscore;
+    }
+    public void setHighscore(int num){
+        highscore = num;
     }
 }

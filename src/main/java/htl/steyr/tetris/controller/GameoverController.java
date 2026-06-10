@@ -1,12 +1,11 @@
 package htl.steyr.tetris.controller;
 
 import htl.steyr.tetris.utility.ViewSwitcher;
+import htl.steyr.tetris.user.UserData;
+import htl.steyr.tetris.user.UserSession;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
-import javafx.stage.Stage;
-
-import java.util.prefs.Preferences;
 
 public class GameoverController {
 
@@ -20,26 +19,26 @@ public class GameoverController {
     private Button menuButton;
 
     private int score;
-    private Preferences prefs = Preferences.userRoot().node("tetris");
 
     public void initialize() {
         retryButton.setOnAction(e -> restartGame());
         menuButton.setOnAction(e -> returnToMenu());
     }
 
-    // Wird vom Spiel aufgerufen
+    //wird vom Spiel aufgerufen, um den Score zu setzen, wenn das Spiel vorbei ist
     public void setScore(int score) {
         this.score = score;
         scoreLabel.setText(String.valueOf(score));
 
-        int highscore = prefs.getInt("highscore", 0);
+        UserData user = UserSession.getUserData();
+        int oldHighscore = user.getHighscore();
 
-        if (score > highscore) {
-            prefs.putInt("highscore", score);
-            highscore = score;
+        if (score > oldHighscore) {
+            user.setHighscore(score);
+            oldHighscore = score;
         }
 
-        highscoreLabel.setText(String.valueOf(highscore));
+        highscoreLabel.setText(String.valueOf(oldHighscore));
     }
 
     private void restartGame() {
