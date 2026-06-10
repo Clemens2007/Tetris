@@ -13,10 +13,10 @@ public class TetrisApplication extends Application {
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(TetrisApplication.class.getResource("options.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
-        stage.setTitle("Hello!");
+        stage.setTitle("Tetris");
         ViewSwitcher.setStage(stage);
         scene.getStylesheets().add(
-                getClass().getResource("/stylesheets/whitemode.css").toExternalForm()
+                getClass().getResource("/htl/steyr/tetris/stylesheets/whitemode.css").toExternalForm()
         );
         stage.setScene(scene);
         stage.show();

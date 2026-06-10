@@ -56,8 +56,11 @@
                                 <HBox alignment="CENTER" spacing="10">
 
                                     <Label text="Music" />
-                                    <Slider fx:id="musicSlider" prefWidth="250" />
+                                    <Slider fx:id="musicSlider" onDragDetected="#musicVolumeSlider" prefWidth="250" />
                                 </HBox>
+
+                                <Button fx:id="prevSongButton" onAction="#prevSongButtonClicked" prefHeight="10" prefWidth="120" text="Previous song" />
+                                <Button fx:id="nextSongButton" onAction="#nextSongButtonClicked" prefHeight="10" prefWidth="120" text="Next Song" />
 
                                 <HBox alignment="CENTER" spacing="10">
 

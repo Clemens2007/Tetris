@@ -24,6 +24,8 @@ public class OptionsController {
 
     @FXML
     public Button resetHighscoreButton;
+    public Button prevSongButton;
+    public Button nextSongButton;
 
     @FXML
     private Slider musicSlider;
@@ -74,14 +76,18 @@ public class OptionsController {
 
     @FXML
     public void initialize() {
+        musicSlider.setMin(0);
+        musicSlider.setMax(100);
+        musicSlider.setValue(40);
 
         loadSettings();
         loadTheme();
-        loadSong(currentSongIndex);
 
         songList.add(getClass().getResource("/htl/steyr/tetris/music/music1.mp3").toExternalForm());
         songList.add(getClass().getResource("/htl/steyr/tetris/music/music2.mp3").toExternalForm());
         songList.add(getClass().getResource("/htl/steyr/tetris/music/music3.mp3").toExternalForm());
+
+        loadSong(currentSongIndex);
 
         setupKeyButton(upKeyButton, "UP");
         setupKeyButton(downKeyButton, "DOWN");
@@ -107,19 +113,30 @@ public class OptionsController {
         musicSlider.setValue(prefs.getDouble("musicVolume", 50));
         soundSlider.setValue(prefs.getDouble("soundVolume", 50));
 
-        upKeyButton.setText(prefs.get("UP", "W"));
-        downKeyButton.setText(prefs.get("DOWN", "S"));
-        leftKeyButton.setText(UserSession.getUserData().getSetting("left").getName());
-        rightKeyButton.setText(UserSession.getUserData().getSetting("right").getName());
-        holdButton.setText(UserSession.getUserData().getSetting("hold").getName());
-        softdropButton.setText(UserSession.getUserData().getSetting("softdrop").getName());
-        harddropButton.setText(UserSession.getUserData().getSetting("harddrop").getName());
-        rotateLeftButton.setText(UserSession.getUserData().getSetting("rotate_left").getName());
-        rotateRightButton.setText(UserSession.getUserData().getSetting("rotate_right").getName());
+        if (UserSession.getUserData() != null) {
+            upKeyButton.setText(prefs.get("UP", "W"));
+            downKeyButton.setText(prefs.get("DOWN", "S"));
+            leftKeyButton.setText(UserSession.getUserData().getSetting("left").getName());
+            rightKeyButton.setText(UserSession.getUserData().getSetting("right").getName());
+            holdButton.setText(UserSession.getUserData().getSetting("hold").getName());
+            softdropButton.setText(UserSession.getUserData().getSetting("softdrop").getName());
+            harddropButton.setText(UserSession.getUserData().getSetting("harddrop").getName());
+            rotateLeftButton.setText(UserSession.getUserData().getSetting("rotate_left").getName());
+            rotateRightButton.setText(UserSession.getUserData().getSetting("rotate_right").getName());
+        } else {
+            leftKeyButton.setText("A");
+            rightKeyButton.setText("D");
+            holdButton.setText("SHIFT");
+            softdropButton.setText("S");
+            harddropButton.setText("SPACE");
+            rotateLeftButton.setText("Q");
+            rotateRightButton.setText("E");
+        }
 
-        holdButton.setText(prefs.get("HOLD", "SHIFT"));
+        /**
         softdropButton.setText(prefs.get("SOFTDROP", "S"));
         harddropButton.setText(prefs.get("HARDDROP", "SPACE"));
+         **/
     }
 
     private void saveSettings() {
@@ -154,36 +171,36 @@ public class OptionsController {
     private void loadSong(int index) {
         if (mediaPlayer != null) {
             mediaPlayer.stop();
+            mediaPlayer.dispose();
         }
 
         Media media = new Media(songList.get(index));
         mediaPlayer = new MediaPlayer(media);
-        mediaPlayer.play();
+
+        mediaPlayer.volumeProperty().bind(musicSlider.valueProperty().divide(100));
 
         mediaPlayer.setOnEndOfMedia(() -> {
-            nextSong();
+            nextSongButtonClicked(new ActionEvent());
         });
+
+        mediaPlayer.play();
     }
 
-    public void nextSong() {
-        if (songList.isEmpty()) return;
-        currentSongIndex = (currentSongIndex + 1) % songList.size();
-        loadSong(currentSongIndex);
-    }
-
-    public void prevSong() {
+    public void prevSongButtonClicked(ActionEvent actionEvent) {
         if (songList.isEmpty()) return;
         currentSongIndex = (currentSongIndex - 1 + songList.size()) % songList.size();
         loadSong(currentSongIndex);
     }
 
-    public void musicVolumeSlider(MouseEvent mouseEvent) {
-        musicSlider.setMin(0);
-        musicSlider.setMax(100);
-        musicSlider.setValue(40);
+    public void nextSongButtonClicked(ActionEvent actionEvent) {
+        if (songList.isEmpty()) return;
+        currentSongIndex = (currentSongIndex + 1) % songList.size();
+        loadSong(currentSongIndex);
+    }
 
+    public void musicVolumeSlider(MouseEvent mouseEvent) {
         // passt die Lautstärke an:
-        mediaPlayer.volumeProperty().bind(musicSlider.valueProperty());
+        mediaPlayer.volumeProperty().bind(musicSlider.valueProperty().divide(100));
     }
 
     // ---------------- THEME ----------------
@@ -342,7 +359,7 @@ public class OptionsController {
         return false;
     }
 
-    public static void resetHighscoreClicked(ActionEvent actionEvent) {
+    public void resetHighscoreClicked(ActionEvent actionEvent) {
        HighscoreManager.clearData();
     }
 }
