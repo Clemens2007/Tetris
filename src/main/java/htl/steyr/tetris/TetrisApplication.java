@@ -16,7 +16,7 @@ public class TetrisApplication extends Application {
         stage.setTitle("Tetris");
         ViewSwitcher.setStage(stage);
         scene.getStylesheets().add(
-                getClass().getResource("/htl/steyr/tetris/stylesheets/whitemode.css").toExternalForm()
+                getClass().getResource("stylesheets/whitemode.css").toExternalForm()
         );
         stage.setScene(scene);
         stage.show();

@@ -109,11 +109,10 @@ public class OptionsController {
     // ---------------- SETTINGS ----------------
 
     private void loadSettings() {
-
-        musicSlider.setValue(prefs.getDouble("musicVolume", 50));
-        soundSlider.setValue(prefs.getDouble("soundVolume", 50));
-
         if (UserSession.getUserData() != null) {
+            musicSlider.setValue(UserSession.getUserData().getVolumeMusic());
+            soundSlider.setValue(UserSession.getUserData().getVolumeSfx());
+
             upKeyButton.setText(prefs.get("UP", "W"));
             downKeyButton.setText(prefs.get("DOWN", "S"));
             leftKeyButton.setText(UserSession.getUserData().getSetting("left").getName());
@@ -124,6 +123,8 @@ public class OptionsController {
             rotateLeftButton.setText(UserSession.getUserData().getSetting("rotate_left").getName());
             rotateRightButton.setText(UserSession.getUserData().getSetting("rotate_right").getName());
         } else {
+            musicSlider.setValue(50);
+            soundSlider.setValue(50);
             leftKeyButton.setText("A");
             rightKeyButton.setText("D");
             holdButton.setText("SHIFT");
@@ -140,6 +141,10 @@ public class OptionsController {
     }
 
     private void saveSettings() {
+        UserSession.getUserData().setVolumeMusic((int) musicSlider.getValue());
+        UserSession.getUserData().setVolumeSfx((int) soundSlider.getValue());
+
+        UserSession.getUserData().setSetting("left", KeyCode.valueOf(leftKeyButton.getText()));
 
         prefs.putDouble("musicVolume", musicSlider.getValue());
         prefs.putDouble("soundVolume", soundSlider.getValue());
@@ -177,7 +182,11 @@ public class OptionsController {
         Media media = new Media(songList.get(index));
         mediaPlayer = new MediaPlayer(media);
 
-        mediaPlayer.volumeProperty().bind(musicSlider.valueProperty().divide(100));
+        mediaPlayer.setVolume(musicSlider.getValue() / 100.0);
+
+        musicSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
+            mediaPlayer.setVolume(newVal.doubleValue() / 100.0);
+        });
 
         mediaPlayer.setOnEndOfMedia(() -> {
             nextSongButtonClicked(new ActionEvent());
@@ -196,11 +205,6 @@ public class OptionsController {
         if (songList.isEmpty()) return;
         currentSongIndex = (currentSongIndex + 1) % songList.size();
         loadSong(currentSongIndex);
-    }
-
-    public void musicVolumeSlider(MouseEvent mouseEvent) {
-        // passt die Lautstärke an:
-        mediaPlayer.volumeProperty().bind(musicSlider.valueProperty().divide(100));
     }
 
     // ---------------- THEME ----------------
