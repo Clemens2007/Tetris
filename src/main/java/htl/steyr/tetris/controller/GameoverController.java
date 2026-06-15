@@ -33,11 +33,11 @@ public class GameoverController {
         this.score = score;
         scoreLabel.setText(String.valueOf(score));
 
-        UserData user = UserSession.getUserData();
-        int oldHighscore = user.getHighscore();
+        UserData ud = UserSession.getUserData();
+        int oldHighscore = ud.getHighscore();
 
         if (score > oldHighscore) {
-            user.setHighscore(score);
+            ud.setHighscore(score);
             oldHighscore = score;
         }
 
