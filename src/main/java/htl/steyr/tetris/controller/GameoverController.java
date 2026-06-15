@@ -26,7 +26,7 @@ public class GameoverController {
         retryButton.setOnAction(e -> restartGame());
         menuButton.setOnAction(e -> returnToMenu());
         ud = UserSession.getUserData();
-        score = ud.getScore();
+        setScore(ud.getScore());
     }
 
     //wird vom Spiel aufgerufen, um den Score zu setzen, wenn das Spiel vorbei ist
