@@ -14,7 +14,7 @@ public class GameLoop extends AnimationTimer {
     private int frames = 0;
 
     private long usedMemory;
-    private long lastTime = 0;
+    private static long lastTime = 0;
     private long lastFpsTime = 0;
 
     private double fps = 0;
@@ -22,20 +22,24 @@ public class GameLoop extends AnimationTimer {
     private double accu;
     private double step = 1.0 / 60.0;
 
-    private boolean running = true;
+    private static boolean running = true;
     private boolean framerateSwitch = false;
 
 
     public GameLoop(TetrisGame tetrisGame) {
         this.tetrisGame = tetrisGame;
 
+        Thread gameThread = new Thread(() -> {
+            tetrisGame.move("DOWN");
+        });
+
     }
 
-    public void pause() {
+    public static void pause() {
         running = false;
     }
 
-    public void resume() {
+    public static void resume() {
         lastTime = 0;
         running = true;
     }
@@ -90,5 +94,9 @@ public class GameLoop extends AnimationTimer {
 
             System.out.println("fps: " + fps + " | Memory:  " + usedMB + " mb");
         }
+    }
+
+    public static boolean isRunning(){
+        return running;
     }
 }

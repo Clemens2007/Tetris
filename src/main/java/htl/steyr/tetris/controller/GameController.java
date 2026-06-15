@@ -1,16 +1,20 @@
 package htl.steyr.tetris.controller;
 
+import htl.steyr.tetris.GameLoop;
+import htl.steyr.tetris.TetrisGame;
 import htl.steyr.tetris.user.UserData;
 import htl.steyr.tetris.user.UserSession;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class GameController {
 
+    public Button pauseButton;
     @FXML
     private GridPane gameField;
 
@@ -52,5 +56,13 @@ public class GameController {
     }
 
     public void onPauseButtonClicked(ActionEvent actionEvent) {
+        if(GameLoop.isRunning()){
+            GameLoop.pause();
+            pauseButton.setText("▶");
+        }else{
+            GameLoop.resume();
+            pauseButton.setText("⏸");
+        }
+
     }
 }
