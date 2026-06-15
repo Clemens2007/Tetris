@@ -48,9 +48,11 @@ public class OptionsController {
 
     private Button currentKeyButton;
 
+    private UserData ud;
+
     @FXML
     public void initialize() {
-        UserData ud = UserSession.getUserData();
+        ud = UserSession.getUserData();
 
         musicSlider.setValue(ud.getVolumeMusic());
         soundSlider.setValue(ud.getVolumeSfx());
@@ -75,6 +77,7 @@ public class OptionsController {
     }
 
     private void returnToMenu() {
+        ud.save();
         ViewSwitcher.switchTo("menu.fxml");
     }
 
@@ -89,6 +92,7 @@ public class OptionsController {
         alert.setHeaderText(null);
         alert.setContentText("Einstellungen wurden gespeichert!");
         alert.showAndWait();
+        ud.save();
     }
 
     private void loadTheme() {
@@ -124,6 +128,7 @@ public class OptionsController {
     }
 
     private void closeWindow() {
+        ud.save();
         Stage stage = (Stage) closeButton.getScene().getWindow();
         stage.close();
     }
@@ -174,6 +179,7 @@ public class OptionsController {
             setAllKeyButtonsDisabled(true, button);
             listenForKey(button, action);
         });
+        ud.save();
     }
 
     private void listenForKey(Button button, String action) {

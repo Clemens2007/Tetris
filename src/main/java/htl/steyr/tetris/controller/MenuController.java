@@ -44,14 +44,17 @@ public class MenuController {
     }
 
     public void onClosedButtonClicked(ActionEvent actionEvent) {
+        ud.save();
         Platform.exit();
     }
 
     public void onPlayButtonClicked(ActionEvent actionEvent) {
+        ud.save();
         ViewSwitcher.switchTo("game.fxml");
     }
 
     public void onOptionsButtonClicked(ActionEvent actionEvent) {
+        ud.save();
         ViewSwitcher.switchTo("options.fxml");
     }
 }

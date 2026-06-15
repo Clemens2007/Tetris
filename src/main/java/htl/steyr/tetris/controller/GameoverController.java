@@ -20,9 +20,12 @@ public class GameoverController {
 
     private int score;
 
+    private UserData ud;
+
     public void initialize() {
         retryButton.setOnAction(e -> restartGame());
         menuButton.setOnAction(e -> returnToMenu());
+        ud = UserSession.getUserData();
     }
 
     //wird vom Spiel aufgerufen, um den Score zu setzen, wenn das Spiel vorbei ist
@@ -42,10 +45,12 @@ public class GameoverController {
     }
 
     private void restartGame() {
+        ud.save();
         ViewSwitcher.switchTo("game.fxml");
     }
 
     private void returnToMenu() {
+        ud.save();
         ViewSwitcher.switchTo("menu.fxml");
     }
 }

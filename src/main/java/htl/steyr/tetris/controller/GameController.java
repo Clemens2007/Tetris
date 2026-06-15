@@ -1,5 +1,7 @@
 package htl.steyr.tetris.controller;
 
+import htl.steyr.tetris.user.UserData;
+import htl.steyr.tetris.user.UserSession;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -19,6 +21,8 @@ public class GameController {
     private Rectangle[][] cells = new Rectangle[ROWS][COLS];
     private boolean[][] board = new boolean[ROWS][COLS];
 
+    private UserData ud;
+
     // Aktueller Block
     private int[][] shape;
     private int blockRow, blockCol;
@@ -26,6 +30,8 @@ public class GameController {
 
     @FXML
     public void initialize() {
+
+        ud = UserSession.getUserData();
 
         for (int row = 0; row < ROWS; row++) {
             for (int col = 0; col < COLS; col++) {
@@ -41,6 +47,7 @@ public class GameController {
 
 
     public void onCloseButtonClicked(ActionEvent actionEvent) {
+        ud.save();
         Platform.exit();
     }
 
