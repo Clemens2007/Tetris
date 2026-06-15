@@ -16,6 +16,7 @@ public class UserData {
     private int volumeMusic;
     private int volumeSfx;
     private int highscore;
+    private int score = 0;
 
 
     public UserData(String username, String password, boolean isNew) {
@@ -139,5 +140,15 @@ public class UserData {
     }
     public void setHighscore(int num){
         highscore = num;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        if(score > 0){
+            this.score = score;
+        }
     }
 }
