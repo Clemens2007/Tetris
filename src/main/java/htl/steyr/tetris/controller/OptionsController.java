@@ -132,7 +132,7 @@ public class OptionsController {
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
         confirm.setTitle("Warnung");
         confirm.setHeaderText("Alles Änderungen zurücksetzen?");
-        confirm.setContentText("Änderungen können nicht mehr rückgängig gemacht werden!");
+        confirm.setContentText("Diese Änderung kann nicht mehr rückgängig gemacht werden!");
 
         confirm.showAndWait().ifPresent(response -> {
             if (response != ButtonType.OK) return;
