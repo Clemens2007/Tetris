@@ -10,7 +10,9 @@ public class Tile extends Group {
     private Block a = new Block();
     private Block b = new Block();
     private Block c = new Block();
-
+    private double unit = 40;
+    private double scale = 0.75;
+    private double blockSize = unit * scale;
     private int x;
     private int y;
     private double oldDreh = 0;
@@ -22,6 +24,11 @@ public class Tile extends Group {
     private Point3D startpoint = new Point3D(10, 40, 0);
 
     public Tile(){
+        base.setScale(scale);
+        a.setScale(scale);
+        b.setScale(scale);
+        c.setScale(scale);
+        createZ();
         this.getChildren().addAll(base, a, b, c);
 
         double centerX = base.getBoundsInLocal().getCenterX();
@@ -34,54 +41,54 @@ public class Tile extends Group {
     }
 
     public void createT(){
-        a.setX(a.getX() + (40 * scale));
-        b.setY(b.getY() + (40 * scale));
-        c.setX(c.getX() - (40 * scale));
+        a.setX(a.getX() + blockSize);
+        b.setY(b.getY() + blockSize);
+        c.setX(c.getX() - blockSize);
     }
 
     public void createL(){
-        a.setX(a.getX() + (40 * scale));
-        b.setX(b.getX() - (40 * scale));
-        c.setY(c.getY() + (40 * scale));
-        c.setX(c.getX() + (40 * scale));
+        a.setX(a.getX() + blockSize);
+        b.setX(b.getX() - blockSize);
+        c.setY(c.getY() + blockSize);
+        c.setX(c.getX() + blockSize);
     }
 
     public void createRL(){
-        a.setX(a.getX() + (40 * scale));
-        b.setX(b.getX() - (40 * scale));
-        c.setY(c.getY() + (40 * scale));
-        c.setX(c.getX() - (40 * scale));
+        a.setX(a.getX() + blockSize);
+        b.setX(b.getX() - blockSize);
+        c.setY(c.getY() + blockSize);
+        c.setX(c.getX() - blockSize);
     }
 
     public void createI(){
         halfRotate = true;
-        a.setX(a.getX() + (40 * scale));
-        b.setX(b.getX() - (40 * scale));
-        c.setY(c.getY() - (40 * scale));
+        a.setX(a.getX() + blockSize);
+        b.setX(b.getX() - blockSize);
+        c.setY(c.getY() - blockSize);
     }
 
     public void createO(){
         noRotate = true;
-        a.setX(a.getX() + (40 * scale));
-        b.setY(b.getY() + (40 * scale));
-        c.setX(c.getX() + (40 * scale));
-        c.setY(c.getY() + (40 * scale));
+        a.setX(a.getX() + blockSize);
+        b.setY(b.getY() + blockSize);
+        c.setX(c.getX() + blockSize);
+        c.setY(c.getY() + blockSize);
     }
 
     public void createZ(){
         halfRotate = true;
-        a.setX(a.getX() + (40 * scale));
-        b.setY(b.getY() - (40 * scale));
-        c.setX(c.getX() - (40 * scale));
-        c.setY(c.getY() - (40 * scale));
+        a.setX(a.getX() + blockSize);
+        b.setY(b.getY() - blockSize);
+        c.setX(c.getX() - blockSize);
+        c.setY(c.getY() - blockSize);
     }
 
     public void createRZ(){
         halfRotate = true;
-        a.setX(a.getX() + (40 * scale));
-        b.setY(b.getY() + (40 * scale));
-        c.setX(c.getX() + (40 * scale));
-        c.setY(c.getY() - (40 * scale));
+        a.setX(a.getX() + blockSize);
+        b.setY(b.getY() + blockSize);
+        c.setX(c.getX() + blockSize);
+        c.setY(c.getY() - blockSize);
     }
 
     public void randomTile(String oldTile){
@@ -134,8 +141,7 @@ public class Tile extends Group {
     }
 
     public double getScale(){
-        System.out.println(base.getLayoutBounds().getWidth());
-        return base.getLayoutBounds().getWidth();
+        return scale;
     }
 
     public void setScale(double scale) {

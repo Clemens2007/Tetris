@@ -2,7 +2,6 @@ package htl.steyr.tetris;
 
 import javafx.animation.AnimationTimer;
 
-import java.sql.SQLOutput;
 
 
 public class GameLoop extends AnimationTimer {

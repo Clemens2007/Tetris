@@ -7,9 +7,6 @@ public class Block extends Rectangle {
     public Block(){
         setWidth(40);
         setHeight(40);
-
-        setX(200);
-        setY(100);
     }
 
     public void setScale(double scale){
@@ -17,10 +14,6 @@ public class Block extends Rectangle {
         setHeight(getHeight() * scale);
     }
 
-    public void setStartingPosition(int x, int y){
-        setX(x);
-        setY(y);
-    }
 
 
 
