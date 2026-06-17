@@ -109,9 +109,6 @@
 
                                 <GridPane alignment="CENTER" hgap="15" vgap="12">
 
-                                    <Label text="UP" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                                    <Button fx:id="upKeyButton" prefWidth="140" text="W" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-
                                     <Label text="DOWN" GridPane.columnIndex="0" GridPane.rowIndex="1" />
                                     <Button fx:id="downKeyButton" prefWidth="140" text="S" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 

@@ -7,8 +7,10 @@ import java.security.Key;
 public class KeyAssignment implements Serializable {
     private KeyCode moveLeft = KeyCode.LEFT;
     private KeyCode moveRight = KeyCode.RIGHT;
-    private KeyCode rotate = KeyCode.UP;
-    private KeyCode softDrop = KeyCode.DOWN;
+    private KeyCode moveDown = KeyCode.DOWN;
+    private KeyCode rotateRight = KeyCode.R;
+    private KeyCode rotateLeft = KeyCode.Z;
+    private KeyCode softDrop = KeyCode.S;
     private KeyCode hardDrop = KeyCode.SPACE;
     private KeyCode hold = KeyCode.Y;
 
@@ -28,12 +30,12 @@ public class KeyAssignment implements Serializable {
         this.moveRight = moveRight;
     }
 
-    public KeyCode getRotate() {
-        return rotate;
+    public KeyCode getRotateRight() {
+        return rotateRight;
     }
 
-    public void setRotate(KeyCode rotate) {
-        this.rotate = rotate;
+    public void setRotateRight(KeyCode rotateRight) {
+        this.rotateRight = rotateRight;
     }
 
     public KeyCode getSoftDrop() {
@@ -58,5 +60,21 @@ public class KeyAssignment implements Serializable {
 
     public void setHold(KeyCode hold) {
         this.hold = hold;
+    }
+
+    public KeyCode getRotateLeft() {
+        return rotateLeft;
+    }
+
+    public void setRotateLeft(KeyCode rotateLeft) {
+        this.rotateLeft = rotateLeft;
+    }
+
+    public KeyCode getMoveDown() {
+        return moveDown;
+    }
+
+    public void setMoveDown(KeyCode moveDown) {
+        this.moveDown = moveDown;
     }
 }

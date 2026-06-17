@@ -27,7 +27,9 @@ public class TetrisGame {
         keys.setSoftDrop(UserSession.getUserData().getSetting("softdrop"));
         keys.setHardDrop(UserSession.getUserData().getSetting("harddrop"));
         keys.setHold(UserSession.getUserData().getSetting("hold"));
-        keys.setRotate(UserSession.getUserData().getSetting("rotate_right"));
+        keys.setRotateRight(UserSession.getUserData().getSetting("rotate_right"));
+        keys.setRotateLeft(UserSession.getUserData().getSetting("rotate_left"));
+        keys.setMoveDown(UserSession.getUserData().getSetting("down"));
 
         root.getChildren().add(tile);
         scale = (int) tile.getScale();
@@ -64,8 +66,10 @@ public class TetrisGame {
             tile.moveHorizon(-scale);
         } else if (key == keys.getSoftDrop()) {
             tile.moveVertic(-scale);
-        } else if (key == keys.getRotate()) {
+        } else if (key == keys.getRotateRight()) {
             tile.rotato(90);
+        } else if (key == keys.getRotateLeft()) {
+            tile.rotato(-90);
         } else if (key == keys.getHardDrop()) {
             tile.hardDrop();
         } else if (key == keys.getHold()) {
@@ -104,9 +108,13 @@ public class TetrisGame {
                 keys.setMoveRight(key);
                 UserSession.getUserData().setSetting("right", key);
                 break;
-            case "rotate":
-                keys.setRotate(key);
+            case "rotate_right":
+                keys.setRotateRight(key);
                 UserSession.getUserData().setSetting("rotate_right", key);
+                break;
+            case "rotate_left":
+                keys.setRotateLeft(key);
+                UserSession.getUserData().setSetting("rotate_left", key);
                 break;
             case "down":
                 keys.setSoftDrop(key);

@@ -40,8 +40,6 @@ public class OptionsController {
     private Button clearDataButton;
 
     @FXML
-    private Button upKeyButton;
-    @FXML
     private Button downKeyButton;
     @FXML
     private Button leftKeyButton;
@@ -89,7 +87,6 @@ public class OptionsController {
 
         loadSong(currentSongIndex);
 
-        setupKeyButton(upKeyButton, "UP");
         setupKeyButton(downKeyButton, "DOWN");
         setupKeyButton(leftKeyButton, "LEFT");
         setupKeyButton(rightKeyButton, "RIGHT");
@@ -113,8 +110,7 @@ public class OptionsController {
             musicSlider.setValue(UserSession.getUserData().getVolumeMusic());
             soundSlider.setValue(UserSession.getUserData().getVolumeSfx());
 
-            upKeyButton.setText(prefs.get("UP", "W"));
-            downKeyButton.setText(prefs.get("DOWN", "S"));
+            downKeyButton.setText(UserSession.getUserData().getSetting("down").getName());
             leftKeyButton.setText(UserSession.getUserData().getSetting("left").getName());
             rightKeyButton.setText(UserSession.getUserData().getSetting("right").getName());
             holdButton.setText(UserSession.getUserData().getSetting("hold").getName());
@@ -125,13 +121,14 @@ public class OptionsController {
         } else {
             musicSlider.setValue(50);
             soundSlider.setValue(50);
-            leftKeyButton.setText("A");
-            rightKeyButton.setText("D");
-            holdButton.setText("SHIFT");
+            downKeyButton.setText("DOWN");
+            leftKeyButton.setText("LEFT");
+            rightKeyButton.setText("RIGHT");
+            rotateLeftButton.setText("UP");
+            rotateRightButton.setText("Z");
+            holdButton.setText("C");
             softdropButton.setText("S");
             harddropButton.setText("SPACE");
-            rotateLeftButton.setText("Q");
-            rotateRightButton.setText("E");
         }
 
         /**
@@ -144,13 +141,7 @@ public class OptionsController {
         UserSession.getUserData().setVolumeMusic((int) musicSlider.getValue());
         UserSession.getUserData().setVolumeSfx((int) soundSlider.getValue());
 
-        UserSession.getUserData().setSetting("left", KeyCode.valueOf(leftKeyButton.getText()));
-
-        prefs.putDouble("musicVolume", musicSlider.getValue());
-        prefs.putDouble("soundVolume", soundSlider.getValue());
-
-        prefs.put("UP", upKeyButton.getText());
-        prefs.put("DOWN", downKeyButton.getText());
+        UserSession.getUserData().setSetting("down", KeyCode.valueOf(downKeyButton.getText()));
         UserSession.getUserData().setSetting("left", KeyCode.valueOf(leftKeyButton.getText()));
         UserSession.getUserData().setSetting("right", KeyCode.valueOf(rightKeyButton.getText()));
         UserSession.getUserData().setSetting("hold", KeyCode.valueOf(holdButton.getText()));
@@ -159,10 +150,6 @@ public class OptionsController {
         UserSession.getUserData().setSetting("rotate_left", KeyCode.valueOf(rotateLeftButton.getText()));
         UserSession.getUserData().setSetting("rotate_right", KeyCode.valueOf(rotateRightButton.getText()));
         UserSession.getUserData().save();
-
-        prefs.put("HOLD", holdButton.getText());
-        prefs.put("SOFTDROP", softdropButton.getText());
-        prefs.put("HARDDROP", harddropButton.getText());
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Gespeichert");
@@ -265,15 +252,12 @@ public class OptionsController {
                     musicSlider.setValue(50);
                     soundSlider.setValue(50);
 
-                    upKeyButton.setText("W");
-                    downKeyButton.setText("S");
-                    leftKeyButton.setText("A");
-                    rightKeyButton.setText("D");
-
-                    rotateLeftButton.setText("Q");
-                    rotateRightButton.setText("E");
-
-                    holdButton.setText("SHIFT");
+                    downKeyButton.setText("DOWN");
+                    leftKeyButton.setText("LEFT");
+                    rightKeyButton.setText("RIGHT");
+                    rotateLeftButton.setText("UP");
+                    rotateRightButton.setText("Z");
+                    holdButton.setText("C");
                     softdropButton.setText("S");
                     harddropButton.setText("SPACE");
 
@@ -337,14 +321,14 @@ public class OptionsController {
 
         // Alle Buttons in ein Array packen
         Button[] allButtons = {
-                upKeyButton, downKeyButton, leftKeyButton, rightKeyButton,
+                downKeyButton, leftKeyButton, rightKeyButton,
                 rotateLeftButton, rotateRightButton,
                 holdButton, softdropButton, harddropButton
         };
 
         // Alle Key-Namen in gleicher Reihenfolge
         String[] keyNames = {
-                "UP", "DOWN", "LEFT", "RIGHT",
+                "DOWN", "LEFT", "RIGHT",
                 "ROTATE_LEFT", "ROTATE_RIGHT",
                 "HOLD", "SOFTDROP", "HARDDROP"
         };
