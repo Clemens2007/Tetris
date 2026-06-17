@@ -11,12 +11,17 @@ public class TetrisGame {
     private Tile tile = new Tile();
     private Tile spare = new Tile();
     private Tile hold = new Tile();
-    private int scale;
+    private int blocksize;
     private boolean holdBool = false;
     private String keyString;
     private KeyAssignment keys;
     private boolean waitingForKey = false;
     private String actionToBind = null;
+    private static final int COLS = 10;
+    private static final int ROWS = 20;
+    private boolean[][] grid = new boolean[ROWS][COLS];
+    private double fallTimer = 0;
+    private double fallInterval = 0.5;
 
     public TetrisGame(AnchorPane root){
         this.root = root;
@@ -32,7 +37,8 @@ public class TetrisGame {
         keys.setMoveDown(UserSession.getUserData().getSetting("down"));
 
         root.getChildren().add(tile);
-        scale = (int) tile.getScale();
+        tile.randomTile("");
+        blocksize = (int) tile.getScale();
 
         root.sceneProperty().addListener((obs, oldScene, scene) -> {
             if (scene != null) {
@@ -52,7 +58,18 @@ public class TetrisGame {
     }
 
     public void update(double dt){
-        // tile.moveHorizon(-1);
+        fallTimer += dt;
+
+        if (fallTimer >= fallInterval) {
+            fallTimer = 0;
+
+            if (canMoveDown(tile)) {
+                tile.moveVertic(-blocksize);
+            } else {
+                freezeTile(tile);
+                spawnNewTile();
+            }
+        }
     }
 
     public void move(KeyCode key){
@@ -61,17 +78,17 @@ public class TetrisGame {
         }
 
         if (key == keys.getMoveLeft()) {
-            tile.moveHorizon(scale);
+            tile.moveHorizon(blocksize);
         } else if (key == keys.getMoveRight()) {
-            tile.moveHorizon(-scale);
+            tile.moveHorizon(-blocksize);
         } else if (key == keys.getSoftDrop()) {
-            tile.moveVertic(-scale);
+            tile.moveVertic(-blocksize);
         } else if (key == keys.getRotateRight()) {
             tile.rotato(90);
         } else if (key == keys.getRotateLeft()) {
             tile.rotato(-90);
         } else if (key == keys.getHardDrop()) {
-            tile.hardDrop();
+            hardDrop();
         } else if (key == keys.getHold()) {
             handleHold();
         }
@@ -131,5 +148,55 @@ public class TetrisGame {
         }
 
         UserSession.getUserData().save();
+    }
+
+    private boolean canMoveDown(Tile t) {
+        int[][] cells = t.getTakenCells();
+
+        for (int[] cell : cells) {
+            int col = cell[0];
+            int row = cell[1] + 1;
+
+            if (row >= ROWS) {
+                return false;
+            }
+
+            if (grid[row][col]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void freezeTile(Tile t) {
+        int[][] cells = t.getTakenCells();
+
+        for (int[] cell : cells) {
+            int col = cell[0];
+            int row = cell[1];
+
+            if (row >= 0 && row < ROWS && col >= 0 && col < COLS) {
+                grid[row][col] = true;
+            }
+        }
+    }
+
+    private void spawnNewTile() {
+        root.getChildren().remove(tile);
+        tile = new Tile();
+        root.getChildren().add(tile);
+        tile.randomTile("");
+        tile.applyCss();
+        tile.layout();
+    }
+
+    private void hardDrop() {
+        int safety = 0;
+        while (canMoveDown(tile) && safety < ROWS) {
+            tile.moveVertic(-blocksize);
+            safety++;
+        }
+        freezeTile(tile);
+        spawnNewTile();
     }
 }

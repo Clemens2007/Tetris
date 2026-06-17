@@ -1,14 +1,9 @@
 package htl.steyr.tetris;
 
-
-import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
 import javafx.scene.Group;
-import javafx.scene.shape.Shape;
 import javafx.scene.transform.Rotate;
-
 import java.util.Random;
-
 
 public class Tile extends Group {
     private Block base = new Block(); // basis spawn block, doesnt change
@@ -27,8 +22,6 @@ public class Tile extends Group {
     private Point3D startpoint = new Point3D(10, 40, 0);
 
     public Tile(){
-
-        createZ();
         this.getChildren().addAll(base, a, b, c);
 
         double centerX = base.getBoundsInLocal().getCenterX();
@@ -38,9 +31,6 @@ public class Tile extends Group {
         rotate.setPivotY(centerY);
 
         this.getTransforms().add(rotate);
-
-        System.out.println(a.getBoundsInLocal());
-        System.out.println(b.getBoundsInParent());
     }
 
     public void createT(){
@@ -171,22 +161,29 @@ public class Tile extends Group {
         }
     }
 
-    public void hardDrop() {
-        double step = 40 * scale;
-
-        int safety = 0;
-
-        while (!collidesBelow() && safety < 50) {
-            this.setTranslateY(this.getTranslateY() + step);
-            safety++;
-        }
-    }
-
     private boolean collidesBelow() {
         double blockSize = 40 * scale;
 
         double nextY = getTranslateY() + blockSize;
 
         return nextY >= 20 * blockSize;
+    }
+
+    public int[][] getTakenCells() {
+        Block[] blocks = { base, a, b, c };
+        int[][] cells = new int[4][2];
+
+        for (int i = 0; i < blocks.length; i++) {
+            double sceneX = this.getLayoutX() + this.getTranslateX() + blocks[i].getX();
+            double sceneY = this.getLayoutY() + this.getTranslateY() + blocks[i].getY();
+
+            int col = (int) (sceneX / (40 * scale));
+            int row = (int) (sceneY / (40 * scale));
+
+            cells[i][0] = col;
+            cells[i][1] = row;
+        }
+
+        return cells;
     }
 }
