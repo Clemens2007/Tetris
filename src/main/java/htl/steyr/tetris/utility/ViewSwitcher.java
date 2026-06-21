@@ -7,13 +7,16 @@ import javafx.stage.Stage;
 
 import java.util.Objects;
 
+// Zentrale Klasse zum Wechseln zwischen den verschiedenen FXML-Screens (Start, Menü, Spiel, ...).
+// Hält die einzige Stage der App und wendet bei jedem Wechsel das passende Stylesheet an.
 public class ViewSwitcher {
 
-    private static Stage stage;
+    private static Stage stage; // die eine Stage der gesamten Anwendung
 
     // Dark/Light Mode speichern
     private static boolean darkMode = false;
 
+    // Wird einmalig beim App-Start aufgerufen (TetrisApplication), um die Stage zu hinterlegen
     public static void setStage(Stage s) {
         stage = s;
     }
@@ -33,6 +36,8 @@ public class ViewSwitcher {
         return darkMode;
     }
 
+    // Lädt ein neues FXML, baut daraus eine neue Scene und zeigt sie auf der bestehenden Stage an.
+    // Wird von allen Controllern verwendet, um zwischen Screens zu wechseln (z.B. "menu.fxml").
     public static void switchTo(String fxml) {
 
         try {
@@ -42,7 +47,7 @@ public class ViewSwitcher {
 
             Scene scene = new Scene(root);
 
-            // Stylesheet setzen
+            // Stylesheet setzen (Dark- oder Lightmode), passend zum aktuellen Zustand
             scene.getStylesheets().clear();
 
             if (darkMode) {
@@ -63,6 +68,8 @@ public class ViewSwitcher {
         }
     }
 
+    // Gibt einen FXMLLoader zurück, ohne ihn direkt zu laden (für Sonderfälle, falls man
+    // z.B. noch vor dem Laden Zugriff auf den Controller braucht)
     public static FXMLLoader getLoader(String fxml) {
         return new FXMLLoader(ViewSwitcher.class.getResource("/htl/steyr/tetris/fxml/" + fxml));
     }

@@ -9,6 +9,8 @@ import javafx.scene.control.Button;
 import htl.steyr.tetris.highscore_management.HighscoreManager;
 import htl.steyr.tetris.highscore_management.Score;
 
+// Controller für den Gameover-Screen. Zeigt den erreichten Score, vergleicht ihn mit dem
+// persönlichen Highscore und trägt ihn in die globale Highscore-Liste ein.
 public class GameoverController {
 
     @FXML
@@ -24,14 +26,16 @@ public class GameoverController {
 
     private UserData ud;
 
+    // Wird automatisch beim Laden von gameover.fxml aufgerufen
     public void initialize() {
         retryButton.setOnAction(e -> restartGame());
         menuButton.setOnAction(e -> returnToMenu());
         ud = UserSession.getUserData();
-        setScore(ud.getScore());
+        setScore(ud.getScore()); // Score wurde vorher im GameController in UserData gespeichert
     }
 
-    //wird vom Spiel aufgerufen, um den Score zu setzen, wenn das Spiel vorbei ist
+    // Verarbeitet den finalen Score: Anzeige, persönlicher Highscore-Vergleich,
+    // und Eintrag in die globale Highscore-Liste (highscore_management)
     public void setScore(int score) {
         this.score = score;
         scoreLabel.setText(String.valueOf(score));
@@ -39,6 +43,7 @@ public class GameoverController {
         UserData ud = UserSession.getUserData();
         int oldHighscore = ud.getHighscore();
 
+        // neuer persönlicher Highscore? -> direkt übernehmen
         if (score > oldHighscore) {
             ud.setHighscore(score);
             oldHighscore = score;
@@ -46,14 +51,17 @@ public class GameoverController {
 
         highscoreLabel.setText(String.valueOf(oldHighscore));
 
+        // Score zusätzlich in die globale Top-10-Liste eintragen (wird im Menü angezeigt)
         HighscoreManager.writeHighscore(new Score(ud.getUsername(), score));
     }
 
+    // "Retry"-Button: direkt eine neue Runde starten
     private void restartGame() {
         ud.save();
         ViewSwitcher.switchTo("game.fxml");
     }
 
+    // "Menu"-Button: zurück zum Hauptmenü
     private void returnToMenu() {
         ud.save();
         ViewSwitcher.switchTo("menu.fxml");
