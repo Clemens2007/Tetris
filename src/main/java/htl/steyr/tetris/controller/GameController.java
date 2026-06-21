@@ -146,6 +146,7 @@ public class GameController {
         if (board.canPlace(current.getShape(), newRow, newCol)) {
             blockRow = newRow;
             blockCol = newCol;
+            lastMoveWasRotate = false;
             return true;
         }
         return false;
