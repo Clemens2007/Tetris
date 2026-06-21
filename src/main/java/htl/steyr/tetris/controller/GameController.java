@@ -11,6 +11,7 @@ import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
@@ -33,6 +34,8 @@ public class GameController {
     private Pane holdPane;
     @FXML
     private Pane nextPane;
+    @FXML
+    private Button pauseButton;
 
     private static final int CELL_SIZE = 24;
 
@@ -283,5 +286,7 @@ public class GameController {
 
     public void onPauseButtonClicked(ActionEvent actionEvent) {
         paused = !paused;
+        pauseButton.setText(paused ? "▶" : "⏸");
+        gameField.requestFocus();
     }
 }
