@@ -2,6 +2,7 @@ package htl.steyr.tetris.controller;
 
 import htl.steyr.tetris.Board;
 import htl.steyr.tetris.Pieces;
+import htl.steyr.tetris.Score;
 import htl.steyr.tetris.user.UserData;
 import htl.steyr.tetris.user.UserSession;
 import htl.steyr.tetris.utility.ViewSwitcher;
@@ -54,6 +55,9 @@ public class GameController {
     private int lines = 0;
     private int level = 1;
 
+    private final Score scoreCalc = new Score();
+    private boolean lastMoveWasRotate = false;
+
     @FXML
     public void initialize() {
         ud = UserSession.getUserData();
@@ -104,7 +108,12 @@ public class GameController {
         } else if (code == ud.getSetting("right")) {
             move(0, 1);
         } else if (code == ud.getSetting("down") || code == ud.getSetting("softdrop")) {
-            if (!move(1, 0)) lockPiece();
+            if (move(1, 0)) {
+                score += scoreCalc.softDrop(1);
+                scoreLabel.setText(String.valueOf(score));
+            } else {
+                lockPiece();
+            }
         } else if (code == ud.getSetting("rotate_left")) {
             rotate(false);
         } else if (code == ud.getSetting("rotate_right")) {
@@ -161,9 +170,12 @@ public class GameController {
     }
 
     private void hardDrop() {
+        int rows = 0;
         while (move(1, 0)) {
-            // fällt bis zur Kollision
+            rows++;
         }
+        score += scoreCalc.hardDrop(rows);
+        scoreLabel.setText(String.valueOf(score));
         lockPiece();
     }
 
@@ -186,21 +198,34 @@ public class GameController {
     }
 
     private void lockPiece() {
+        boolean tSpin = current.isT() && lastMoveWasRotate && board.isTSpin(blockRow, blockCol);
+
         board.lock(current.getShape(), blockRow, blockCol, current.getColor());
 
         int cleared = board.clearFullLines();
-        if (cleared > 0) {
-            lines += cleared;
-            score += cleared * 100 * level;
-            level = 1 + lines / 10;
 
-            startTimeline(Math.max(150, 600 - (level - 1) * 50));
-
-            scoreLabel.setText(String.valueOf(score));
-            linesLabel.setText(String.valueOf(lines));
-            levelLabel.setText(String.valueOf(level));
+        int gained = 0;
+        if (tSpin) {
+            gained = scoreCalc.tSpin(cleared);
+        } else if (cleared > 0) {
+            gained = scoreCalc.linesCleared(cleared);
         }
 
+        if (gained > 0) {
+            score += gained * level;
+        }
+
+        if (cleared > 0) {
+            lines += cleared;
+            level = 1 + lines / 10;
+            startTimeline(Math.max(150, 600 - (level - 1) * 50));
+        }
+
+        scoreLabel.setText(String.valueOf(score));
+        linesLabel.setText(String.valueOf(lines));
+        levelLabel.setText(String.valueOf(level));
+
+        lastMoveWasRotate = false;
         spawnPiece();
     }
 
