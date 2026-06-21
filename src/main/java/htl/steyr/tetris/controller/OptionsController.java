@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
+import javafx.event.ActionEvent;
 
 public class OptionsController {
 
@@ -55,6 +56,9 @@ public class OptionsController {
         ud = UserSession.getUserData();
 
         musicSlider.setValue(ud.getVolumeMusic());
+        musicSlider.valueProperty().addListener((obs, oldVal, newVal) ->
+                htl.steyr.tetris.Music.getInstance().setVolume(newVal.doubleValue())
+        );
         soundSlider.setValue(ud.getVolumeSfx());
 
         setupKeyButton(upKeyButton, "up", ud.getSetting("up"));
@@ -79,6 +83,25 @@ public class OptionsController {
     private void returnToMenu() {
         ud.save();
         ViewSwitcher.switchTo("menu.fxml");
+    }
+
+    public void prevSongButtonClicked(ActionEvent actionEvent) {
+        htl.steyr.tetris.Music.getInstance().previous();
+    }
+
+    public void nextSongButtonClicked(ActionEvent actionEvent) {
+        htl.steyr.tetris.Music.getInstance().next();
+    }
+
+    public void resetHighscoreClicked(ActionEvent actionEvent) {
+        ud.setHighscore(0);
+        ud.save();
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Highscore zurückgesetzt");
+        alert.setHeaderText(null);
+        alert.setContentText("Dein Highscore wurde zurückgesetzt!");
+        alert.showAndWait();
     }
 
 

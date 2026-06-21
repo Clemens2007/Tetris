@@ -5,6 +5,8 @@ module htl.steyr.tetris {
     requires com.google.gson;
     requires java.sql;
     requires java.prefs;
+    requires javafx.media;
+    requires java.desktop;
 
     opens htl.steyr.tetris to javafx.fxml;
     exports htl.steyr.tetris;

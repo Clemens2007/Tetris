@@ -38,9 +38,12 @@ public class MenuController {
         //Fehler mit Ki behoben
         if (ud != null) {
             welcomeLabel.setText("Willkommen " + ud.getUsername());
+            htl.steyr.tetris.Music.getInstance().setVolume(ud.getVolumeMusic());
         } else {
             welcomeLabel.setText("Willkommen Spieler");
         }
+
+        htl.steyr.tetris.Music.getInstance().start();
     }
 
     public void onClosedButtonClicked(ActionEvent actionEvent) {
