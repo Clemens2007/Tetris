@@ -69,4 +69,27 @@ public class Board {
         }
         return clearedLines;
     }
+
+    public boolean isTSpin(int row, int col) {
+        // mittelpunkt des T-Steins liegt im 4x4-Raster bei (1,1)
+        int centerRow = row + 1;
+        int centerCol = col + 1;
+
+        int[][] corners = {
+                {centerRow - 1, centerCol - 1},
+                {centerRow - 1, centerCol + 1},
+                {centerRow + 1, centerCol - 1},
+                {centerRow + 1, centerCol + 1}
+        };
+
+        int filled = 0;
+        for (int[] corner : corners) {
+            int r = corner[0];
+            int c = corner[1];
+            if (r < 0 || r >= ROWS || c < 0 || c >= COLS || grid[r][c] != null) {
+                filled++;
+            }
+        }
+        return filled >= 3;
+    }
 }
