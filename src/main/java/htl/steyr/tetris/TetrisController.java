@@ -2,7 +2,14 @@ package htl.steyr.tetris;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.Slider;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TetrisController {
 
@@ -29,5 +36,4 @@ public class TetrisController {
 
         //loop.start(); // Toast mit Schinken
     }
-
 }
