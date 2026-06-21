@@ -6,7 +6,6 @@ module htl.steyr.tetris {
     requires java.sql;
     requires java.prefs;
     requires javafx.media;
-    requires java.desktop;
 
     opens htl.steyr.tetris to javafx.fxml;
     exports htl.steyr.tetris;

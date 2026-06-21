@@ -6,6 +6,8 @@ import htl.steyr.tetris.user.UserSession;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
+import htl.steyr.tetris.highscore_management.HighscoreManager;
+import htl.steyr.tetris.highscore_management.Score;
 
 public class GameoverController {
 
@@ -43,6 +45,8 @@ public class GameoverController {
         }
 
         highscoreLabel.setText(String.valueOf(oldHighscore));
+
+        HighscoreManager.writeHighscore(new Score(ud.getUsername(), score));
     }
 
     private void restartGame() {
