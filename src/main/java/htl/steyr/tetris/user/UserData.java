@@ -96,8 +96,8 @@ public class UserData {
     private List<Setting> getDefaultSettings() {
         return new ArrayList<>(List.of(
                 new Setting("up", KeyCode.W),
-                new Setting("down", KeyCode.A),
-                new Setting("left", KeyCode.S),
+                new Setting("down", KeyCode.S),
+                new Setting("left", KeyCode.A),
                 new Setting("right", KeyCode.D),
                 new Setting("rotate_left", KeyCode.Z),
                 new Setting("rotate_right", KeyCode.X),
