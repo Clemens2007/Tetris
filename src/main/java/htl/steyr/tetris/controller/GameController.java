@@ -156,6 +156,7 @@ public class GameController {
         int[][] rotated = current.rotated(clockwise);
         if (board.canPlace(rotated, blockRow, blockCol)) {
             current.setShape(rotated);
+            lastMoveWasRotate = true;
         }
     }
 
