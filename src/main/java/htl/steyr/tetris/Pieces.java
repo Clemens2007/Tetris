@@ -22,18 +22,25 @@ public class Pieces {
     };
 
     private static final Random random = new Random();
+    public static final int T_INDEX = 2;
 
     private int[][] shape;
     private final Color color;
+    private final boolean isT;
 
-    public Pieces(int[][] shape, Color color) {
+    public Pieces(int[][] shape, Color color, boolean isT) {
         this.shape = shape;
         this.color = color;
+        this.isT = isT;
     }
 
     public static Pieces random() {
         int index = random.nextInt(SHAPES.length);
-        return new Pieces(SHAPES[index], COLORS[index]);
+        return new Pieces(SHAPES[index], COLORS[index], index == T_INDEX);
+    }
+
+    public boolean isT() {
+        return isT;
     }
 
     public int[][] getShape() {
