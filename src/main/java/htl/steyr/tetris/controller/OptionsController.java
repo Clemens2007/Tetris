@@ -10,6 +10,8 @@ import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 
+// Controller für den Options-Screen. Verwaltet Lautstärke, Tastenbelegung,
+// Dark/Light Mode und das Zurücksetzen von Daten/Highscore.
 public class OptionsController {
 
     public Button white_darkmode_button;
@@ -26,6 +28,7 @@ public class OptionsController {
     @FXML
     private Button clearDataButton;
 
+    // Buttons für die Tastenbelegung der einzelnen Spielaktionen
     @FXML
     private Button upKeyButton;
     @FXML
@@ -47,7 +50,7 @@ public class OptionsController {
     @FXML
     private Button harddropButton;
 
-    private Button currentKeyButton;
+    private Button currentKeyButton; // merkt sich, welcher Button gerade auf Tasteneingabe wartet
 
     private UserData ud;
 
@@ -55,12 +58,16 @@ public class OptionsController {
     public void initialize() {
         ud = UserSession.getUserData();
 
+        // Slider mit den gespeicherten Werten initialisieren
         musicSlider.setValue(ud.getVolumeMusic());
+        // Lautstärke live anpassen, während der Slider bewegt wird (noch ohne zu speichern)
         musicSlider.valueProperty().addListener((obs, oldVal, newVal) ->
                 htl.steyr.tetris.Music.getInstance().setVolume(newVal.doubleValue())
         );
         soundSlider.setValue(ud.getVolumeSfx());
 
+        // Für jede Spielaktion den passenden Button mit der aktuellen Taste beschriften
+        // und Klick-Listener zum Neubelegen einrichten
         setupKeyButton(upKeyButton, "up", ud.getSetting("up"));
         setupKeyButton(downKeyButton, "down", ud.getSetting("down"));
         setupKeyButton(leftKeyButton, "left", ud.getSetting("left"));
@@ -76,6 +83,7 @@ public class OptionsController {
         saveButton.setOnAction(e -> saveSettings());
         closeButton.setOnAction(e -> returnToMenu());
         clearDataButton.setOnAction(e -> clearAllData());
+        // Speichern erst erlauben, wenn wirklich jeder Taste eine Belegung zugewiesen ist
         saveButton.setDisable(!allKeysAssigned());
 
     }
@@ -85,6 +93,7 @@ public class OptionsController {
         ViewSwitcher.switchTo("menu.fxml");
     }
 
+    // Musik-Steuerung: zum vorherigen/nächsten Song wechseln
     public void prevSongButtonClicked(ActionEvent actionEvent) {
         htl.steyr.tetris.Music.getInstance().previous();
     }
@@ -93,6 +102,7 @@ public class OptionsController {
         htl.steyr.tetris.Music.getInstance().next();
     }
 
+    // Setzt den persönlichen Highscore in UserData zurück (nicht die globale Liste!)
     public void resetHighscoreClicked(ActionEvent actionEvent) {
         ud.setHighscore(0);
         ud.save();
@@ -105,6 +115,7 @@ public class OptionsController {
     }
 
 
+    // Übernimmt die aktuellen Sliderwerte dauerhaft in UserData und speichert sie ab
     private void saveSettings() {
         UserData ud = UserSession.getUserData();
         ud.setVolumeMusic((int) musicSlider.getValue());
@@ -122,6 +133,7 @@ public class OptionsController {
         applyTheme();
     }
 
+    // Wechselt zwischen Dark- und Lightmode hin und her
     private void toggleTheme() {
         if (ViewSwitcher.isDarkMode()) {
             ViewSwitcher.setLightMode();
@@ -131,6 +143,7 @@ public class OptionsController {
         applyTheme();
     }
 
+    // Wendet das passende Stylesheet auf die aktuelle Scene an und passt den Button-Text an
     private void applyTheme() {
         Scene scene = white_darkmode_button.getScene();
         if (scene == null) return;
@@ -156,6 +169,8 @@ public class OptionsController {
         stage.close();
     }
 
+    // Setzt ALLE Einstellungen (Lautstärke + Tastenbelegung) auf die Standardwerte zurück,
+    // nach vorheriger Bestätigung durch den User
     private void clearAllData() {
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
         confirm.setTitle("Warnung");
@@ -163,7 +178,7 @@ public class OptionsController {
         confirm.setContentText("Diese Änderung kann nicht mehr rückgängig gemacht werden!");
 
         confirm.showAndWait().ifPresent(response -> {
-            if (response != ButtonType.OK) return;
+            if (response != ButtonType.OK) return; // Abbrechen -> nichts tun
 
             UserData ud = UserSession.getUserData();
             ud.setVolumeMusic(50);
@@ -171,6 +186,7 @@ public class OptionsController {
             musicSlider.setValue(50);
             soundSlider.setValue(50);
 
+            // Standard-Tastenbelegung wiederherstellen
             ud.setSetting("up", KeyCode.W);
             ud.setSetting("down", KeyCode.A);
             ud.setSetting("left", KeyCode.S);
@@ -182,6 +198,7 @@ public class OptionsController {
             ud.setSetting("harddrop", KeyCode.SPACE);
             ud.save();
 
+            // Buttons in der UI ebenfalls aktualisieren
             upKeyButton.setText(KeyCode.W.getName());
             downKeyButton.setText(KeyCode.A.getName());
             leftKeyButton.setText(KeyCode.S.getName());
@@ -194,17 +211,21 @@ public class OptionsController {
         });
     }
 
+    // Beschriftet einen Tasten-Button mit der aktuellen Belegung und richtet den Klick-Listener
+    // ein, der das "Tasten-Neubelegen" startet
     private void setupKeyButton(Button button, String action, KeyCode currentKey) {
         button.setText(currentKey.getName());
         button.setOnAction(e -> {
             currentKeyButton = button;
-            button.setText("Press Key...");
-            setAllKeyButtonsDisabled(true, button);
+            button.setText("Press Key..."); // visuelles Feedback, dass jetzt eine Taste erwartet wird
+            setAllKeyButtonsDisabled(true, button); // alle anderen Buttons währenddessen sperren
             listenForKey(button, action);
         });
         ud.save();
     }
 
+    // Wartet auf den nächsten Tastendruck und weist ihn der gegebenen Aktion zu,
+    // sofern die Taste nicht schon für eine andere Aktion verwendet wird
     private void listenForKey(Button button, String action) {
         Scene scene = button.getScene();
         if (scene == null) return;
@@ -218,29 +239,31 @@ public class OptionsController {
                 alert.setHeaderText(null);
                 alert.setContentText("Die Taste \"" + newKey + "\" wird bereits verwendet!");
                 alert.showAndWait();
-                button.setText(UserSession.getUserData().getSetting(action).getName());
+                button.setText(UserSession.getUserData().getSetting(action).getName()); // alten Wert wiederherstellen
             } else {
                 button.setText(newKey);
                 UserSession.getUserData().setSetting(action, event.getCode());
                 UserSession.getUserData().save();
             }
 
-            setAllKeyButtonsDisabled(false, null);
+            setAllKeyButtonsDisabled(false, null); // Buttons wieder freigeben
             saveButton.setDisable(!allKeysAssigned());
-            scene.setOnKeyPressed(null);
+            scene.setOnKeyPressed(null); // Listener wieder entfernen, sonst würde jede Taste danach reagieren
         });
     }
 
+    // Prüft, ob eine bestimmte Taste schon einer anderen Aktion zugewiesen ist
     private boolean isKeyAlreadyUsed(String skipAction, String newKey) {
         String[] actions = {"up", "down", "left", "right", "rotate_left", "rotate_right", "hold", "softdrop", "harddrop"};
         UserData ud = UserSession.getUserData();
         for (String a : actions) {
-            if (a.equals(skipAction)) continue;
+            if (a.equals(skipAction)) continue; // die eigene Aktion überspringen (man darf die gleiche Taste behalten)
             if (ud.getSetting(a).toString().equals(newKey)) return true;
         }
         return false;
     }
 
+    // Prüft, ob wirklich jede Aktion eine Taste zugewiesen hat (kein Button zeigt noch "Press Key...")
     private boolean allKeysAssigned() {
         Button[] all = {upKeyButton, downKeyButton, leftKeyButton, rightKeyButton,
                 rotateLeftButton, rotateRightButton, holdButton, softdropButton, harddropButton};
@@ -249,6 +272,8 @@ public class OptionsController {
         return true;
     }
 
+    // Sperrt/entsperrt alle Tasten-Buttons (außer einem optionalen "except"-Button),
+    // damit während des Neubelegens nicht mehrere Buttons gleichzeitig aktiv sein können
     private void setAllKeyButtonsDisabled(boolean disabled, Button except) {
 
         Button[] all = {

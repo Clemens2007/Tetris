@@ -20,10 +20,14 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
+// Controller für den eigentlichen Spiel-Screen (game.fxml).
+// Verbindet die FXML-Elemente mit der Spiellogik aus Board, Pieces und Score.
+// Enthält selbst keine Spielregeln mehr, sondern delegiert an die ausgelagerten Klassen.
 public class GameController {
 
+    // FXML-Elemente, die per fx:id aus game.fxml gebunden werden
     @FXML
-    private GridPane gameField;
+    private GridPane gameField;   // das Spielfeld-Raster
     @FXML
     private Label scoreLabel;
     @FXML
@@ -31,44 +35,48 @@ public class GameController {
     @FXML
     private Label levelLabel;
     @FXML
-    private Pane holdPane;
+    private Pane holdPane;        // Vorschau-Feld für den gehaltenen Stein
     @FXML
-    private Pane nextPane;
+    private Pane nextPane;        // Vorschau-Feld für den nächsten Stein
     @FXML
     private Button pauseButton;
 
-    private static final int CELL_SIZE = 24;
+    private static final int CELL_SIZE = 24; // Pixelgröße einer einzelnen Spielfeldzelle
 
+    // Visuelle Darstellung des Spielfelds: ein Rectangle pro Zelle, wird in render() neu eingefärbt
     private final Rectangle[][] cells = new Rectangle[Board.ROWS][Board.COLS];
-    private final Board board = new Board();
+    private final Board board = new Board(); // die eigentliche Spiellogik des Feldes
 
-    private UserData ud;
+    private UserData ud; // aktueller eingeloggter User (für Settings/Tastenbelegung/Highscore)
 
-    private Pieces current;
-    private Pieces next;
-    private Pieces hold;
-    private boolean holdUsed = false;
+    private Pieces current; // der aktuell fallende Stein
+    private Pieces next;    // Vorschau auf den nächsten Stein
+    private Pieces hold;    // der gerade gehaltene Stein (kann nichts oder ein Stein sein)
+    private boolean holdUsed = false; // verhindert mehrfaches Holden in derselben Runde
 
-    private int blockRow, blockCol;
+    private int blockRow, blockCol; // Position der oberen linken Ecke des 4x4-Rasters von "current"
 
-    private Timeline timeline;
+    private Timeline timeline;  // steuert das automatische Fallen des Steins
     private boolean paused = false;
 
     private int score = 0;
     private int lines = 0;
     private int level = 1;
 
-    private final Score scoreCalc = new Score();
-    private boolean lastMoveWasRotate = false;
+    private final Score scoreCalc = new Score(); // berechnet Punktewerte
+    private boolean lastMoveWasRotate = false;   // wird für die T-Spin-Erkennung gebraucht
 
+    // Wird automatisch von JavaFX aufgerufen, sobald game.fxml geladen ist
     @FXML
     public void initialize() {
         ud = UserSession.getUserData();
-        buildGrid();
+        buildGrid(); // visuelles Raster aus Rectangles erzeugen
 
-        next = Pieces.random();
-        spawnPiece();
+        next = Pieces.random(); // ersten "next"-Stein vorbereiten
+        spawnPiece();           // den ersten echten Stein spawnen
 
+        // Tastatursteuerung kann erst gesetzt werden, sobald die Scene existiert
+        // (beim ersten initialize() ist die Scene oft noch null)
         gameField.sceneProperty().addListener((obs, oldScene, scene) -> {
             if (scene != null) {
                 gameField.setFocusTraversable(true);
@@ -77,10 +85,11 @@ public class GameController {
             }
         });
 
-        startTimeline(600);
+        startTimeline(600); // Stein fällt anfangs alle 600ms eine Reihe
         render();
     }
 
+    // Erstellt einmalig das 20x10-Raster aus Rectangle-Objekten und fügt sie ins GridPane ein
     private void buildGrid() {
         for (int row = 0; row < Board.ROWS; row++) {
             for (int col = 0; col < Board.COLS; col++) {
@@ -94,6 +103,8 @@ public class GameController {
         }
     }
 
+    // (Neu)Startet die Fall-Timeline mit einer bestimmten Geschwindigkeit (in Millisekunden pro Reihe).
+    // Wird bei Levelaufstieg aufgerufen, um das Spiel schneller zu machen.
     private void startTimeline(double millis) {
         if (timeline != null) timeline.stop();
         timeline = new Timeline(new KeyFrame(Duration.millis(millis), e -> tick()));
@@ -101,6 +112,8 @@ public class GameController {
         timeline.play();
     }
 
+    // Zentrale Tastatur-Eingabeverarbeitung. Liest die individuellen Tastenbelegungen
+    // aus UserData aus (siehe Options-Screen) statt fix verdrahteter Tasten.
     private void handleKey(javafx.scene.input.KeyEvent event) {
         if (paused) return;
 
@@ -112,10 +125,10 @@ public class GameController {
             move(0, 1);
         } else if (code == ud.getSetting("down") || code == ud.getSetting("softdrop")) {
             if (move(1, 0)) {
-                score += scoreCalc.softDrop(1);
+                score += scoreCalc.softDrop(1); // Punkte für manuelles schnelleres Fallen
                 scoreLabel.setText(String.valueOf(score));
             } else {
-                lockPiece();
+                lockPiece(); // kann nicht mehr weiter fallen -> sofort einfrieren
             }
         } else if (code == ud.getSetting("rotate_left")) {
             rotate(false);
@@ -127,30 +140,36 @@ public class GameController {
             hardDrop();
         }
 
-        render();
+        render(); // nach jeder Eingabe das Spielfeld neu zeichnen
     }
 
+    // Wird von der Timeline regelmäßig aufgerufen (automatisches Fallen)
     private void tick() {
         if (paused) return;
-        if (!move(1, 0)) lockPiece();
+        if (!move(1, 0)) lockPiece(); // kann nicht weiter fallen -> locken
         render();
     }
 
+    // Setzt einen neuen aktuellen Stein, bereitet den nächsten vor und prüft auf Game Over
     private void spawnPiece() {
         current = next;
         next = Pieces.random();
 
         blockRow = 0;
-        blockCol = Board.COLS / 2 - 2;
+        blockCol = Board.COLS / 2 - 2; // mittig oben starten
         holdUsed = false;
 
+        // Wenn der neue Stein gleich an seiner Startposition nicht platziert werden kann,
+        // ist das Spielfeld voll -> Game Over
         if (!board.canPlace(current.getShape(), blockRow, blockCol)) {
             gameOver();
         }
 
-        drawPreview(nextPane, next);
+        drawPreview(nextPane, next); // "Next"-Vorschau aktualisieren
     }
 
+    // Versucht den aktuellen Stein um (dRow, dCol) zu verschieben.
+    // Gibt true zurück, wenn die Bewegung erlaubt war, sonst false (z.B. Kollision).
     private boolean move(int dRow, int dCol) {
         int newRow = blockRow + dRow;
         int newCol = blockCol + dCol;
@@ -158,38 +177,43 @@ public class GameController {
         if (board.canPlace(current.getShape(), newRow, newCol)) {
             blockRow = newRow;
             blockCol = newCol;
-            lastMoveWasRotate = false;
+            lastMoveWasRotate = false; // letzte Aktion war eine Bewegung, kein Dreh -> für T-Spin relevant
             return true;
         }
         return false;
     }
 
+    // Dreht den aktuellen Stein, wenn die gedrehte Form an der aktuellen Position erlaubt ist
     private void rotate(boolean clockwise) {
         int[][] rotated = current.rotated(clockwise);
         if (board.canPlace(rotated, blockRow, blockCol)) {
             current.setShape(rotated);
-            lastMoveWasRotate = true;
+            lastMoveWasRotate = true; // wird für die T-Spin-Erkennung beim Locken gebraucht
         }
     }
 
+    // Lässt den Stein sofort bis zur Kollision nach unten fallen ("Hard Drop")
     private void hardDrop() {
         int rows = 0;
         while (move(1, 0)) {
-            rows++;
+            rows++; // zählt, wie viele Reihen tatsächlich gefallen sind, für die Punkteberechnung
         }
         score += scoreCalc.hardDrop(rows);
         scoreLabel.setText(String.valueOf(score));
         lockPiece();
     }
 
+    // Tauscht den aktuellen Stein mit dem gehaltenen Stein (einmal pro Spawn erlaubt)
     private void holdCurrent() {
         if (holdUsed) return;
         holdUsed = true;
 
         if (hold == null) {
+            // noch nichts gehalten -> aktuellen Stein "parken" und neuen spawnen
             hold = current;
             spawnPiece();
         } else {
+            // schon ein Stein gehalten -> tauschen
             Pieces temp = current;
             current = hold;
             hold = temp;
@@ -197,10 +221,14 @@ public class GameController {
             blockCol = Board.COLS / 2 - 2;
         }
 
-        drawPreview(holdPane, hold);
+        drawPreview(holdPane, hold); // "Hold"-Vorschau aktualisieren
     }
 
+    // Friert den aktuellen Stein im Spielfeld ein, berechnet Punkte, prüft Level-Aufstieg
+    // und spawnt danach den nächsten Stein.
     private void lockPiece() {
+        // T-Spin liegt vor, wenn: Stein ist ein T, letzte Aktion war eine Drehung,
+        // UND die 3-Corner-Regel im Board erfüllt ist
         boolean tSpin = current.isT() && lastMoveWasRotate && board.isTSpin(blockRow, blockCol);
 
         board.lock(current.getShape(), blockRow, blockCol, current.getColor());
@@ -215,13 +243,13 @@ public class GameController {
         }
 
         if (gained > 0) {
-            score += gained * level;
+            score += gained * level; // höheres Level = mehr Punkte pro Clear
         }
 
         if (cleared > 0) {
             lines += cleared;
-            level = 1 + lines / 10;
-            startTimeline(Math.max(150, 600 - (level - 1) * 50));
+            level = 1 + lines / 10; // alle 10 Reihen ein Level höher
+            startTimeline(Math.max(150, 600 - (level - 1) * 50)); // Spiel wird mit jedem Level schneller (min. 150ms)
         }
 
         scoreLabel.setText(String.valueOf(score));
@@ -232,7 +260,9 @@ public class GameController {
         spawnPiece();
     }
 
+    // Zeichnet das gesamte Spielfeld neu: zuerst das gelockte Board, dann der fallende Stein darüber
     private void render() {
+        // Hintergrund: alle bereits gelockten Blöcke aus dem Board-Array
         for (int row = 0; row < Board.ROWS; row++) {
             for (int col = 0; col < Board.COLS; col++) {
                 Color c = board.get(row, col);
@@ -240,6 +270,7 @@ public class GameController {
             }
         }
 
+        // Vordergrund: der aktuell fallende Stein wird über das Board gelegt
         int[][] shape = current.getShape();
         for (int r = 0; r < 4; r++) {
             for (int c = 0; c < 4; c++) {
@@ -254,9 +285,10 @@ public class GameController {
         }
     }
 
+    // Zeichnet eine kleine 4x4-Vorschau eines Steins (für Hold- und Next-Pane)
     private void drawPreview(Pane pane, Pieces piece) {
-        pane.getChildren().clear();
-        int size = 18;
+        pane.getChildren().clear(); // alte Vorschau-Rectangles entfernen
+        int size = 18; // kleinere Blockgröße als im echten Spielfeld
         int[][] shape = piece.getShape();
 
         for (int r = 0; r < 4; r++) {
@@ -272,6 +304,8 @@ public class GameController {
         }
     }
 
+    // Wird aufgerufen, wenn ein neuer Stein nicht mehr platziert werden kann (Spielfeld voll).
+    // Speichert den Score im UserData und wechselt zum Gameover-Screen.
     private void gameOver() {
         timeline.stop();
         ud.setScore(score);
@@ -279,14 +313,17 @@ public class GameController {
         ViewSwitcher.switchTo("gameover.fxml");
     }
 
+    // Button oben rechts: Spiel beenden
     public void onCloseButtonClicked(ActionEvent actionEvent) {
         ud.save();
         Platform.exit();
     }
 
+    // Pause-Button: stoppt/startet die Eingabeverarbeitung und das Fallen,
+    // ändert das Symbol auf dem Button entsprechend
     public void onPauseButtonClicked(ActionEvent actionEvent) {
         paused = !paused;
         pauseButton.setText(paused ? "▶" : "⏸");
-        gameField.requestFocus();
+        gameField.requestFocus(); // Fokus zurück aufs Spielfeld, damit Tastatureingaben weiter ankommen
     }
 }
