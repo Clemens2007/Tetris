@@ -30,10 +30,6 @@ public class OptionsController {
 
     // Buttons für die Tastenbelegung der einzelnen Spielaktionen
     @FXML
-    private Button upKeyButton;
-    @FXML
-    private Button downKeyButton;
-    @FXML
     private Button leftKeyButton;
     @FXML
     private Button rightKeyButton;
@@ -68,8 +64,7 @@ public class OptionsController {
 
         // Für jede Spielaktion den passenden Button mit der aktuellen Taste beschriften
         // und Klick-Listener zum Neubelegen einrichten
-        setupKeyButton(upKeyButton, "up", ud.getSetting("up"));
-        setupKeyButton(downKeyButton, "down", ud.getSetting("down"));
+
         setupKeyButton(leftKeyButton, "left", ud.getSetting("left"));
         setupKeyButton(rightKeyButton, "right", ud.getSetting("right"));
         setupKeyButton(rotateLeftButton, "rotate_left", ud.getSetting("rotate_left"));
@@ -187,8 +182,6 @@ public class OptionsController {
             soundSlider.setValue(50);
 
             // Standard-Tastenbelegung wiederherstellen
-            ud.setSetting("up", KeyCode.W);
-            ud.setSetting("down", KeyCode.A);
             ud.setSetting("left", KeyCode.S);
             ud.setSetting("right", KeyCode.D);
             ud.setSetting("rotate_left", KeyCode.Z);
@@ -199,8 +192,6 @@ public class OptionsController {
             ud.save();
 
             // Buttons in der UI ebenfalls aktualisieren
-            upKeyButton.setText(KeyCode.W.getName());
-            downKeyButton.setText(KeyCode.A.getName());
             leftKeyButton.setText(KeyCode.S.getName());
             rightKeyButton.setText(KeyCode.D.getName());
             rotateLeftButton.setText(KeyCode.Z.getName());
@@ -254,7 +245,7 @@ public class OptionsController {
 
     // Prüft, ob eine bestimmte Taste schon einer anderen Aktion zugewiesen ist
     private boolean isKeyAlreadyUsed(String skipAction, String newKey) {
-        String[] actions = {"up", "down", "left", "right", "rotate_left", "rotate_right", "hold", "softdrop", "harddrop"};
+        String[] actions = { "left", "right", "rotate_left", "rotate_right", "hold", "softdrop", "harddrop"};
         UserData ud = UserSession.getUserData();
         for (String a : actions) {
             if (a.equals(skipAction)) continue; // die eigene Aktion überspringen (man darf die gleiche Taste behalten)
@@ -265,7 +256,7 @@ public class OptionsController {
 
     // Prüft, ob wirklich jede Aktion eine Taste zugewiesen hat (kein Button zeigt noch "Press Key...")
     private boolean allKeysAssigned() {
-        Button[] all = {upKeyButton, downKeyButton, leftKeyButton, rightKeyButton,
+        Button[] all = { leftKeyButton, rightKeyButton,
                 rotateLeftButton, rotateRightButton, holdButton, softdropButton, harddropButton};
         for (Button b : all)
             if (b.getText().equals("Press Key...")) return false;
@@ -277,7 +268,7 @@ public class OptionsController {
     private void setAllKeyButtonsDisabled(boolean disabled, Button except) {
 
         Button[] all = {
-                upKeyButton, downKeyButton, leftKeyButton, rightKeyButton,
+                leftKeyButton, rightKeyButton,
                 rotateLeftButton, rotateRightButton,
                 holdButton, softdropButton, harddropButton, saveButton
         };

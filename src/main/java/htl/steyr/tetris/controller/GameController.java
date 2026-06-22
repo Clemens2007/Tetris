@@ -316,7 +316,7 @@ public class GameController {
     // Button oben rechts: Spiel beenden
     public void onCloseButtonClicked(ActionEvent actionEvent) {
         ud.save();
-        Platform.exit();
+        ViewSwitcher.switchTo("menu.fxml");
     }
 
     // Pause-Button: stoppt/startet die Eingabeverarbeitung und das Fallen,
