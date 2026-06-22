@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="640" prefWidth="900" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="htl.steyr.tetris.controller.GameController">
+<BorderPane prefHeight="640" prefWidth="900" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="htl.steyr.tetris.controller.GameController">
 
     <!-- Schließen Button oben rechts -->
     <top>
@@ -19,7 +19,7 @@
                 <Insets right="10" top="10" />
             </padding>
 
-            <Button fx:id="closeButton" onAction="#onCloseButtonClicked" prefHeight="30" prefWidth="50.0" text="✕" />
+            <Button fx:id="closeButton" onAction="#onCloseButtonClicked" prefHeight="30" prefWidth="52.0" text="✕" />
         </HBox>
     </top>
 
@@ -33,10 +33,10 @@
                 <!-- Linke Seite -->
                 <VBox alignment="TOP_CENTER" prefWidth="120" spacing="20">
 
-                    <Label text="SCORE" />
-                    <Label fx:id="scoreLabel" text="000" />
+                    <Label text="SCORE" styleClass="Label-darkmode" />
+                    <Label fx:id="scoreLabel" styleClass="Label-darkmode" text="000" />
 
-                    <Label text="HOLD" />
+                    <Label text="HOLD" styleClass="Label-darkmode" />
                     <Pane fx:id="holdPane" prefHeight="100" prefWidth="100" />
 
                     <Button fx:id="pauseButton" onAction="#onPauseButtonClicked" prefHeight="40" prefWidth="60" text="⏸" />
@@ -48,14 +48,14 @@
                 <!-- Rechte Seite -->
                 <VBox alignment="TOP_CENTER" prefWidth="120" spacing="20">
 
-                    <Label text="NEXT" />
+                    <Label text="NEXT" styleClass="Label-darkmode" />
                     <Pane fx:id="nextPane" prefHeight="100" prefWidth="100" />
 
-                    <Label text="LINES" />
-                    <Label fx:id="linesLabel" text="00" />
+                    <Label text="LINES" styleClass="Label-darkmode" />
+                    <Label fx:id="linesLabel" styleClass="Label-darkmode" text="00" />
 
-                    <Label text="LEVEL" />
-                    <Label fx:id="levelLabel" text="01" />
+                    <Label text="LEVEL" styleClass="Label-darkmode" />
+                    <Label fx:id="levelLabel" styleClass="Label-darkmode" text="01" />
                 </VBox>
 
             </HBox>
