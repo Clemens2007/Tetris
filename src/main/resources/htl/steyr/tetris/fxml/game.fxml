@@ -19,7 +19,7 @@
                 <Insets right="10" top="10" />
             </padding>
 
-            <Button fx:id="closeButton" onAction="#onCloseButtonClicked" prefHeight="30" prefWidth="30" text="✕" />
+            <Button fx:id="closeButton" onAction="#onCloseButtonClicked" prefHeight="30" prefWidth="50.0" text="✕" />
         </HBox>
     </top>
 
