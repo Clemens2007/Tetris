@@ -44,7 +44,7 @@ Die Bl√∂cke fallen mit der Zeit immer schneller. Das Spiel endet, sobald die Bl√
 
 ---
 ## Mitarbeiter
-* Kara Sena | [@skara1](https://github.com/s-karaa0) 
+* Kara Sena | [@s-karaa0](https://github.com/s-karaa0) 
  * Lehner David | [@dlehner1](https://github.com/dlehner1) 
  * Seiler Clemens| [@clemens2007](https://github.com/clemens2007)) 
  * Thurner Samuel| [@samthurner](https://github.com/samthurner) 
