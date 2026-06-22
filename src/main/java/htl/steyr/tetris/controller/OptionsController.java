@@ -233,7 +233,7 @@ public class OptionsController {
         scene.setOnKeyPressed(event -> {
             String newKey = event.getCode().toString();
 
-            if (isKeyAlreadyUsed(action, newKey)) {
+            if (isKeyAlreadyUsed(action, newKey) || newKey.equals("ESCAPE")) {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Taste bereits vergeben");
                 alert.setHeaderText(null);
