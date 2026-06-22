@@ -138,6 +138,8 @@ public class GameController {
             holdCurrent();
         } else if (code == ud.getSetting("harddrop")) {
             hardDrop();
+        } else if (code.toString().equals("ESCAPE")){
+            onPauseButtonClicked(new ActionEvent());
         }
 
         render(); // nach jeder Eingabe das Spielfeld neu zeichnen

@@ -5,7 +5,6 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-// Einstiegspunkt der JavaFX-Anwendung. start() wird einmalig beim Programmstart aufgerufen.
 public class TetrisApplication extends Application {
     @Override
     public void start(Stage stage) {
@@ -16,8 +15,8 @@ public class TetrisApplication extends Application {
         stage.setResizable(false); // feste Fenstergröße, damit kein Layout zerschossen wird
 
         stage.setTitle("Tetris");
-        ViewSwitcher.setStage(stage);     // Stage einmalig im ViewSwitcher hinterlegen
-        ViewSwitcher.switchTo("start.fxml"); // ersten Screen (Login) laden
+        ViewSwitcher.setStage(stage);
+        ViewSwitcher.switchTo("start.fxml");
         stage.show();
     }
 }
