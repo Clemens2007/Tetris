@@ -1,8 +1,10 @@
 package htl.steyr.tetris.utility;
 
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.util.Objects;
@@ -62,6 +64,16 @@ public class ViewSwitcher {
 
             stage.setScene(scene);
             stage.show();
+
+            Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
+            stage.setX(bounds.getMinX());
+            stage.setY(bounds.getMinY());
+            stage.setWidth(bounds.getWidth());
+            stage.setHeight(bounds.getHeight());
+
+            // Fenstergröße fixieren
+            stage.setResizable(false);
+
 
         } catch (Exception e) {
             e.printStackTrace();
