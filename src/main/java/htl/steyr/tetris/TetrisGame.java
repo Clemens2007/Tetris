@@ -136,10 +136,6 @@ public class TetrisGame {
         actionToBind = action;
     }
 
-    public void getKey(String key){
-        this.keyString = key;
-    }
-
     private void setKey(String action, KeyCode key) {
         switch (action) {
             case "left":

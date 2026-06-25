@@ -16,7 +16,6 @@ public class Tile extends Group {
     private int x;
     private int y;
     private double oldDreh = 0;
-    private double scale = 1;
     private Rotate rotate = new Rotate();
     private boolean noRotate = false;
     private boolean halfRotate = false;

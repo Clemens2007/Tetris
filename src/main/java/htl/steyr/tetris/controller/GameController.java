@@ -6,20 +6,19 @@ import htl.steyr.tetris.GameLoop;
 import htl.steyr.tetris.TetrisGame;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.input.KeyCode;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class GameController {
 
     @FXML
-    private AnchorPane root;
+    private BorderPane root;
+    @FXML
+    private GridPane gameField;
 
     // Visual Game Grid Field + logic layer (movement, collision, usw. )
-    private GridPane gameField;
     private Pane gameLayer;
     // StackPane contains those <-
     private StackPane gameStack;
@@ -46,14 +45,13 @@ public class GameController {
 
         // (GRID + Logic Layer) inside StackPane, inside root setup -->
         gameStack = new StackPane();
-        gameField = new GridPane();
         gameLayer = new Pane();
 
         gameField.setPrefSize(CELL_SIZE*COLS, CELL_SIZE*ROWS);
         gameLayer.setPrefSize(CELL_SIZE*COLS, CELL_SIZE*ROWS);
 
         gameStack.getChildren().addAll(gameField, gameLayer);
-        root.getChildren().add(gameStack);
+        root.setCenter(gameStack);
 
         System.out.println(gameLayer.getLayoutBounds());
         System.out.println(gameField.getLayoutX());
@@ -101,7 +99,7 @@ public class GameController {
                     if(keyString == "I"){
 
                     }
-                    tetrisGame.move(keyString);
+                    tetrisGame.move(KeyCode.valueOf(keyString));
                 });
             }
         });
