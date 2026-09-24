@@ -50,6 +50,6 @@ Die BlÃ¶cke fallen mit der Zeit immer schneller. Das Spiel endet, sobald die BlÃ
  * Thurner Samuel| [@samthurner](https://github.com/samthurner) 
 
 ---
-![Logo der HTL Steyr]([https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_h579B_mXbe1JuYwooZStEuySqG-9cMsy5A&s](https://upload.wikimedia.org/wikipedia/commons/8/8e/HTL_Steyr_Logo_quadr_blau_3c.jpg?utm_source=de.wikipedia.org&utm_campaign=index&utm_content=original))
+![Logo der HTL Steyr](https://upload.wikimedia.org/wikipedia/commons/8/8e/HTL_Steyr_Logo_quadr_blau_3c.jpg?utm_source=de.wikipedia.org&utm_campaign=index&utm_content=original)
 Dies ist ein Schulprojekt der **HTL Steyr**.
 > @htlsteyr
