@@ -75,6 +75,18 @@ public class GameController {
         next = Pieces.random(); // ersten "next"-Stein vorbereiten
         spawnPiece();           // den ersten echten Stein spawnen
 
+        // WICHTIG: Listener für die Preview-Pane
+        nextPane.widthProperty().addListener((obs, oldVal, newVal) -> {
+            drawPreview(nextPane, next);
+        });
+
+        nextPane.heightProperty().addListener((obs, oldVal, newVal) -> {
+            drawPreview(nextPane, next);
+        });
+
+        // Ersten Preview korrekt zeichnen (nach Layout-Pass)
+        Platform.runLater(() -> drawPreview(nextPane, next));
+
         // Tastatursteuerung kann erst gesetzt werden, sobald die Scene existiert
         // (beim ersten initialize() ist die Scene oft noch null)
         gameField.sceneProperty().addListener((obs, oldScene, scene) -> {
@@ -289,22 +301,49 @@ public class GameController {
 
     // Zeichnet eine kleine 4x4-Vorschau eines Steins (für Hold- und Next-Pane)
     private void drawPreview(Pane pane, Pieces piece) {
-        pane.getChildren().clear(); // alte Vorschau-Rectangles entfernen
-        int size = 18; // kleinere Blockgröße als im echten Spielfeld
+        pane.getChildren().clear();
+
+        int size = 18;
         int[][] shape = piece.getShape();
 
-        for (int r = 0; r < 4; r++) {
-            for (int c = 0; c < 4; c++) {
+        // Bounding Box berechnen
+        int minRow = 4, maxRow = -1;
+        int minCol = 4, maxCol = -1;
+
+        for (int r = 0; r < shape.length; r++) {
+            for (int c = 0; c < shape[r].length; c++) {
+                if (shape[r][c] == 1) {
+                    minRow = Math.min(minRow, r);
+                    maxRow = Math.max(maxRow, r);
+                    minCol = Math.min(minCol, c);
+                    maxCol = Math.max(maxCol, c);
+                }
+            }
+        }
+
+        int blockWidth = (maxCol - minCol + 1) * size;
+        int blockHeight = (maxRow - minRow + 1) * size;
+
+        // Zentrier-Offset
+        double offsetX = (pane.getWidth() - blockWidth) / 2;
+        double offsetY = (pane.getHeight() - blockHeight) / 2;
+
+        // Zeichnen mit Offset
+        for (int r = 0; r < shape.length; r++) {
+            for (int c = 0; c < shape[r].length; c++) {
                 if (shape[r][c] == 1) {
                     Rectangle rect = new Rectangle(size, size);
                     rect.setFill(piece.getColor());
-                    rect.setX(c * size);
-                    rect.setY(r * size);
+
+                    rect.setX(offsetX + (c - minCol) * size);
+                    rect.setY(offsetY + (r - minRow) * size);
+
                     pane.getChildren().add(rect);
                 }
             }
         }
     }
+
 
     // Wird aufgerufen, wenn ein neuer Stein nicht mehr platziert werden kann (Spielfeld voll).
     // Speichert den Score im UserData und wechselt zum Gameover-Screen.
