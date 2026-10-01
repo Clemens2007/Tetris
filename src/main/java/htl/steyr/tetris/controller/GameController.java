@@ -151,7 +151,7 @@ public class GameController {
             rotate(false);
         } else if (code == ud.getSetting("rotate_right")) {
             rotate(true);
-        } else if (code == ud.getSetting("hold")) {
+        } else if (code == ud.getSetting("hold") && ud.isHoldEnabled()) {
             holdCurrent();
         } else if (code == ud.getSetting("harddrop")) {
             hardDrop();
@@ -224,7 +224,7 @@ public class GameController {
 
     // Tauscht den aktuellen Stein mit dem gehaltenen Stein (einmal pro Spawn erlaubt)
     private void holdCurrent() {
-        if (holdUsed) return;
+        if (!ud.isHoldEnabled() || holdUsed) return;
         holdUsed = true;
 
         if (hold == null) {
@@ -240,7 +240,7 @@ public class GameController {
             blockCol = Board.COLS / 2 - 2;
         }
 
-        drawPreview(holdPane, hold); // "Hold"-Vorschau aktualisieren
+        updateHoldPreview(); // "Hold"-Vorschau aktualisieren
     }
 
     // Friert den aktuellen Stein im Spielfeld ein, berechnet Punkte, prüft Level-Aufstieg
@@ -311,6 +311,15 @@ public class GameController {
             drawPreview(nextPane, next);
         } else {
             nextPane.getChildren().clear();
+        }
+    }
+
+    private void updateHoldPreview() {
+        // Vorschau nur anzeigen, wenn Hold aktiviert ist und ein Stein gehalten wird.
+        if (ud.isHoldEnabled() && hold != null) {
+            drawPreview(holdPane, hold);
+        } else {
+            holdPane.getChildren().clear();
         }
     }
 
