@@ -77,15 +77,15 @@ public class GameController {
 
         // WICHTIG: Listener für die Preview-Pane
         nextPane.widthProperty().addListener((obs, oldVal, newVal) -> {
-            drawPreview(nextPane, next);
+            updateNextPreview();
         });
 
         nextPane.heightProperty().addListener((obs, oldVal, newVal) -> {
-            drawPreview(nextPane, next);
+            updateNextPreview();
         });
 
         // Ersten Preview korrekt zeichnen (nach Layout-Pass)
-        Platform.runLater(() -> drawPreview(nextPane, next));
+        Platform.runLater(this::updateNextPreview);
 
         // Tastatursteuerung kann erst gesetzt werden, sobald die Scene existiert
         // (beim ersten initialize() ist die Scene oft noch null)
@@ -179,7 +179,7 @@ public class GameController {
             gameOver();
         }
 
-        drawPreview(nextPane, next); // "Next"-Vorschau aktualisieren
+        updateNextPreview(); // "Next"-Vorschau aktualisieren (oder leer lassen, je nach Setting)
     }
 
     // Versucht den aktuellen Stein um (dRow, dCol) zu verschieben.
@@ -296,6 +296,16 @@ public class GameController {
                     }
                 }
             }
+        }
+    }
+
+    // Zeichnet die "Next"-Vorschau, sofern der User sie in den Einstellungen aktiviert hat.
+    // Ist "Blind-Modus" aktiv (showNextPiece == false), bleibt die Pane leer.
+    private void updateNextPreview() {
+        if (ud.isShowNextPiece()) {
+            drawPreview(nextPane, next);
+        } else {
+            nextPane.getChildren().clear();
         }
     }
 
