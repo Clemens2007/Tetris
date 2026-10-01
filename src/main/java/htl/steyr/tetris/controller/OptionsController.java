@@ -27,6 +27,8 @@ public class OptionsController {
     private Button closeButton;
     @FXML
     private Button clearDataButton;
+    @FXML
+    private CheckBox showNextPieceCheckBox;
 
     // Buttons für die Tastenbelegung der einzelnen Spielaktionen
     @FXML
@@ -61,6 +63,8 @@ public class OptionsController {
                 htl.steyr.tetris.Music.getInstance().setVolume(newVal.doubleValue())
         );
         soundSlider.setValue(ud.getVolumeSfx());
+
+        showNextPieceCheckBox.setSelected(ud.isShowNextPiece());
 
         // Für jede Spielaktion den passenden Button mit der aktuellen Taste beschriften
         // und Klick-Listener zum Neubelegen einrichten
@@ -115,6 +119,7 @@ public class OptionsController {
         UserData ud = UserSession.getUserData();
         ud.setVolumeMusic((int) musicSlider.getValue());
         ud.setVolumeSfx((int) soundSlider.getValue());
+        ud.setShowNextPiece(showNextPieceCheckBox.isSelected());
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Gespeichert");
@@ -178,8 +183,10 @@ public class OptionsController {
             UserData ud = UserSession.getUserData();
             ud.setVolumeMusic(50);
             ud.setVolumeSfx(50);
+            ud.setShowNextPiece(true);
             musicSlider.setValue(50);
             soundSlider.setValue(50);
+            showNextPieceCheckBox.setSelected(true);
 
             // Standard-Tastenbelegung wiederherstellen
             ud.setSetting("left", KeyCode.S);

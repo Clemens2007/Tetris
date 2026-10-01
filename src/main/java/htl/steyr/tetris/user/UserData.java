@@ -17,6 +17,7 @@ public class UserData {
     private int volumeSfx;
     private int highscore;
     private int score = 0;
+    private boolean showNextPiece = true;
 
 
     public UserData(String username, String password, boolean isNew) {
@@ -30,6 +31,7 @@ public class UserData {
             this.volumeMusic = 50;
             this.volumeSfx = 50;
             this.highscore = 0;
+            this.showNextPiece = true;
             save();
         } else {
             load(username);
@@ -46,6 +48,7 @@ public class UserData {
         json.addProperty("volumeMusic", volumeMusic);
         json.addProperty("volumeSfx", volumeSfx);
         json.addProperty("highscore", highscore);
+        json.addProperty("showNextPiece", showNextPiece);
 
         Path file = Paths.get("users", username.toLowerCase() + ".txt");
         try {
@@ -68,6 +71,7 @@ public class UserData {
             volumeMusic = json.get("volumeMusic").getAsInt();
             volumeSfx = json.get("volumeSfx").getAsInt();
             highscore = json.get("highscore").getAsInt();
+            showNextPiece = !json.has("showNextPiece") || json.get("showNextPiece").getAsBoolean();
 
             settings = new ArrayList<>();
             json.getAsJsonObject("settings").entrySet().forEach(e -> settings.add(new Setting(e.getKey(), KeyCode.valueOf(e.getValue().getAsString()))));
@@ -150,5 +154,13 @@ public class UserData {
         if(score > 0){
             this.score = score;
         }
+    }
+
+    public boolean isShowNextPiece() {
+        return showNextPiece;
+    }
+
+    public void setShowNextPiece(boolean showNextPiece) {
+        this.showNextPiece = showNextPiece;
     }
 }
