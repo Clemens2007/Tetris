@@ -35,6 +35,8 @@ public class GameController {
     @FXML
     private Label levelLabel;
     @FXML
+    private Label holdLabel;
+    @FXML
     private Pane holdPane;        // Vorschau-Feld für den gehaltenen Stein
     @FXML
     private Pane nextPane;        // Vorschau-Feld für den nächsten Stein
@@ -42,6 +44,11 @@ public class GameController {
     private Button pauseButton;
 
     private static final int CELL_SIZE = 24; // Pixelgröße einer einzelnen Spielfeldzelle
+    // Nach jeweils 1000 Punkten steigt das Level um eins.
+    private static final int POINTS_PER_LEVEL = 1000;
+    // Ab diesen Levels gelten die Einschränkungen auch für alle höheren Levels.
+    private static final int HOLD_DISABLED_LEVEL = 2;
+    private static final int NEXT_DISABLED_LEVEL = 3;
 
     // Visuelle Darstellung des Spielfelds: ein Rectangle pro Zelle, wird in render() neu eingefärbt
     private final Rectangle[][] cells = new Rectangle[Board.ROWS][Board.COLS];
@@ -138,7 +145,7 @@ public class GameController {
         } else if (code == ud.getSetting("down") || code == ud.getSetting("softdrop")) {
             if (move(1, 0)) {
                 score += scoreCalc.softDrop(1); // Punkte für manuelles schnelleres Fallen
-                scoreLabel.setText(String.valueOf(score));
+                updateScoreAndLevel();
             } else {
                 lockPiece(); // kann nicht mehr weiter fallen -> sofort einfrieren
             }
@@ -219,8 +226,9 @@ public class GameController {
 
     // Tauscht den aktuellen Stein mit dem gehaltenen Stein (einmal pro Spawn erlaubt)
     private void holdCurrent() {
-        if (holdUsed) return;
-        holdUsed = true;
+        // return beendet die Methode sofort: Ab Level 2 bewirkt die Hold-Taste nichts mehr.
+        // holdUsed verhindert außerdem mehrfaches Tauschen beim selben fallenden Stein.
+        if (holdUsed || level >= HOLD_DISABLED_LEVEL) return;
 
         if (hold == null) {
             // noch nichts gehalten -> aktuellen Stein "parken" und neuen spawnen
@@ -235,6 +243,8 @@ public class GameController {
             blockCol = Board.COLS / 2 - 2;
         }
 
+        // Erst nach spawnPiece setzen, weil spawnPiece diese Variable auf false zurücksetzt.
+        holdUsed = true;
         drawPreview(holdPane, hold); // "Hold"-Vorschau aktualisieren
     }
 
@@ -262,16 +272,40 @@ public class GameController {
 
         if (cleared > 0) {
             lines += cleared;
-            level = 1 + lines / 10; // alle 10 Reihen ein Level höher
-            startTimeline(Math.max(150, 600 - (level - 1) * 50)); // Spiel wird mit jedem Level schneller (min. 150ms)
         }
 
-        scoreLabel.setText(String.valueOf(score));
+        updateScoreAndLevel();
         linesLabel.setText(String.valueOf(lines));
-        levelLabel.setText(String.valueOf(level));
 
         lastMoveWasRotate = false;
         spawnPiece();
+    }
+
+    // Alle Punkte (auch Drops) zählen für den Levelaufstieg.
+    private void updateScoreAndLevel() {
+        // Ganzzahldivision: 0–999 Punkte = Level 1, 1000–1999 = Level 2, usw.
+        int newLevel = 1 + score / POINTS_PER_LEVEL;
+        if (newLevel != level) {
+            level = newLevel;
+            // Pro Level fällt der Stein 50 ms schneller, mindestens aber alle 150 ms.
+            startTimeline(Math.max(150, 600 - (level - 1) * 50));
+        }
+
+        scoreLabel.setText(String.valueOf(score));
+        levelLabel.setText(String.valueOf(level));
+
+        if (level >= HOLD_DISABLED_LEVEL) {
+            // Den gespeicherten Stein entfernen und das Hold-Feld sichtbar als gesperrt markieren.
+            // Die Tastatursperre selbst steht in holdCurrent().
+            hold = null;
+            holdPane.getChildren().clear();
+            holdPane.setDisable(true);
+            holdPane.setOpacity(0.4);
+            holdLabel.setText("HOLD gesperrt");
+        }
+
+        // Auch bei einem Levelaufstieg durch Soft Drop sofort die Next-Vorschau aktualisieren.
+        updateNextPreview();
     }
 
     // Zeichnet das gesamte Spielfeld neu: zuerst das gelockte Board, dann der fallende Stein darüber
@@ -299,12 +333,16 @@ public class GameController {
         }
     }
 
-    // Zeichnet die "Next"-Vorschau, sofern der User sie in den Einstellungen aktiviert hat.
-    // Ist "Blind-Modus" aktiv (showNextPiece == false), bleibt die Pane leer.
+    // Die Next-Vorschau ist nur unter Level 3 und bei aktivierter Einstellung sichtbar.
     private void updateNextPreview() {
-        if (ud.isShowNextPiece()) {
+        boolean showPreview = level < NEXT_DISABLED_LEVEL && ud.isShowNextPiece();
+        // Blendet auch den Rahmen aus. Der Platz bleibt erhalten, damit das Layout nicht springt.
+        nextPane.setVisible(showPreview);
+        if (showPreview) {
             drawPreview(nextPane, next);
         } else {
+            // Entfernen verhindert, dass ein zuvor gezeichneter Stein sichtbar bleibt.
+            // Der nächste Spielstein wird weiterhin in spawnPiece() erzeugt.
             nextPane.getChildren().clear();
         }
     }
