@@ -9,6 +9,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.Pane;
@@ -35,6 +36,18 @@ public class MenuController {
 
     public void initialize(){
         // bestehende Highscores aus der Datei laden und in die Liste eintragen
+        highscoreList.setCellFactory(list -> new ListCell<>() {
+            @Override
+            protected void updateItem(Score score, boolean empty) {
+                super.updateItem(score, empty);
+                if (empty || score == null) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    setText(String.format("%02d   %-12s   %,d", getIndex() + 1, score.name(), score.value()));
+                }
+            }
+        });
         highscoreList.getItems().addAll(HighscoreManager.loadHighscores());
         ud = UserSession.getUserData();
 

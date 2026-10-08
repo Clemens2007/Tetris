@@ -41,7 +41,7 @@ public class GameController {
     @FXML
     private Button pauseButton;
 
-    private static final int CELL_SIZE = 24; // Pixelgröße einer einzelnen Spielfeldzelle
+    private static final int CELL_SIZE = 25; // Pixelgröße einer einzelnen Spielfeldzelle
 
     // Visuelle Darstellung des Spielfelds: ein Rectangle pro Zelle, wird in render() neu eingefärbt
     private final Rectangle[][] cells = new Rectangle[Board.ROWS][Board.COLS];
@@ -93,7 +93,7 @@ public class GameController {
             if (scene != null) {
                 gameField.setFocusTraversable(true);
                 Platform.runLater(() -> gameField.requestFocus());
-                scene.setOnKeyPressed(this::handleKey);
+                scene.addEventFilter(javafx.scene.input.KeyEvent.KEY_PRESSED, this::handleKey);
             }
         });
 
@@ -106,8 +106,8 @@ public class GameController {
         for (int row = 0; row < Board.ROWS; row++) {
             for (int col = 0; col < Board.COLS; col++) {
                 Rectangle r = new Rectangle(CELL_SIZE, CELL_SIZE);
-                r.setFill(Color.WHITE);
-                r.setStroke(Color.LIGHTGRAY);
+                r.setFill(Color.web("#0A1628"));
+                r.setStroke(Color.web("#17263C"));
                 r.setStrokeWidth(1);
                 cells[row][col] = r;
                 gameField.add(r, col, row);
@@ -127,6 +127,7 @@ public class GameController {
     // Zentrale Tastatur-Eingabeverarbeitung. Liest die individuellen Tastenbelegungen
     // aus UserData aus (siehe Options-Screen) statt fix verdrahteter Tasten.
     private void handleKey(javafx.scene.input.KeyEvent event) {
+        event.consume();
         if (paused) return;
 
         KeyCode code = event.getCode();
@@ -138,7 +139,7 @@ public class GameController {
         } else if (code == ud.getSetting("down") || code == ud.getSetting("softdrop")) {
             if (move(1, 0)) {
                 score += scoreCalc.softDrop(1); // Punkte für manuelles schnelleres Fallen
-                scoreLabel.setText(String.valueOf(score));
+                scoreLabel.setText(String.format("%03d", score));
             } else {
                 lockPiece(); // kann nicht mehr weiter fallen -> sofort einfrieren
             }
@@ -213,7 +214,7 @@ public class GameController {
             rows++; // zählt, wie viele Reihen tatsächlich gefallen sind, für die Punkteberechnung
         }
         score += scoreCalc.hardDrop(rows);
-        scoreLabel.setText(String.valueOf(score));
+        scoreLabel.setText(String.format("%03d", score));
         lockPiece();
     }
 
@@ -266,9 +267,9 @@ public class GameController {
             startTimeline(Math.max(150, 600 - (level - 1) * 50)); // Spiel wird mit jedem Level schneller (min. 150ms)
         }
 
-        scoreLabel.setText(String.valueOf(score));
-        linesLabel.setText(String.valueOf(lines));
-        levelLabel.setText(String.valueOf(level));
+        scoreLabel.setText(String.format("%03d", score));
+        linesLabel.setText(String.format("%02d", lines));
+        levelLabel.setText(String.format("%02d", level));
 
         lastMoveWasRotate = false;
         spawnPiece();
@@ -280,7 +281,7 @@ public class GameController {
         for (int row = 0; row < Board.ROWS; row++) {
             for (int col = 0; col < Board.COLS; col++) {
                 Color c = board.get(row, col);
-                cells[row][col].setFill(c != null ? c : Color.WHITE);
+                cells[row][col].setFill(c != null ? c : Color.web("#0A1628"));
             }
         }
 
