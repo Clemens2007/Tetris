@@ -29,6 +29,8 @@ public class OptionsController {
     private Button clearDataButton;
     @FXML
     private CheckBox showNextPieceCheckBox;
+    @FXML
+    private CheckBox holdEnabledCheckBox;
 
     // Buttons für die Tastenbelegung der einzelnen Spielaktionen
     @FXML
@@ -65,6 +67,7 @@ public class OptionsController {
         soundSlider.setValue(ud.getVolumeSfx());
 
         showNextPieceCheckBox.setSelected(ud.isShowNextPiece());
+        holdEnabledCheckBox.setSelected(ud.isHoldEnabled());
 
         // Für jede Spielaktion den passenden Button mit der aktuellen Taste beschriften
         // und Klick-Listener zum Neubelegen einrichten
@@ -120,6 +123,7 @@ public class OptionsController {
         ud.setVolumeMusic((int) musicSlider.getValue());
         ud.setVolumeSfx((int) soundSlider.getValue());
         ud.setShowNextPiece(showNextPieceCheckBox.isSelected());
+        ud.setHoldEnabled(holdEnabledCheckBox.isSelected());
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Gespeichert");
@@ -184,9 +188,11 @@ public class OptionsController {
             ud.setVolumeMusic(50);
             ud.setVolumeSfx(50);
             ud.setShowNextPiece(true);
+            ud.setHoldEnabled(true);
             musicSlider.setValue(50);
             soundSlider.setValue(50);
             showNextPieceCheckBox.setSelected(true);
+            holdEnabledCheckBox.setSelected(true);
 
             // Standard-Tastenbelegung wiederherstellen
             ud.setSetting("left", KeyCode.S);

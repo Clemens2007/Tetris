@@ -86,6 +86,7 @@
                                 </Label>
 
                                 <CheckBox fx:id="showNextPieceCheckBox" text="Nächsten Block anzeigen" />
+                                <CheckBox fx:id="holdEnabledCheckBox" text="Hold-Funktion aktivieren" />
                             </VBox>
 
                                   <!-- DATA -->

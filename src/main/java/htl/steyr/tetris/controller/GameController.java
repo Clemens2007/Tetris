@@ -40,8 +40,11 @@ public class GameController {
     private Pane nextPane;        // Vorschau-Feld für den nächsten Stein
     @FXML
     private Button pauseButton;
+    @FXML
+    private Label pauseLabel;
 
     private static final int CELL_SIZE = 24; // Pixelgröße einer einzelnen Spielfeldzelle
+    private static final int MAX_PAUSE_BUTTON_PRESSES = 3;
 
     // Visuelle Darstellung des Spielfelds: ein Rectangle pro Zelle, wird in render() neu eingefärbt
     private final Rectangle[][] cells = new Rectangle[Board.ROWS][Board.COLS];
@@ -58,6 +61,7 @@ public class GameController {
 
     private Timeline timeline;  // steuert das automatische Fallen des Steins
     private boolean paused = false;
+    private int pauseButtonPresses = 0;
 
     private int score = 0;
     private int lines = 0;
@@ -70,6 +74,7 @@ public class GameController {
     @FXML
     public void initialize() {
         ud = UserSession.getUserData();
+        updatePauseLabel();
         buildGrid(); // visuelles Raster aus Rectangles erzeugen
 
         next = Pieces.random(); // ersten "next"-Stein vorbereiten
@@ -146,7 +151,7 @@ public class GameController {
             rotate(false);
         } else if (code == ud.getSetting("rotate_right")) {
             rotate(true);
-        } else if (code == ud.getSetting("hold")) {
+        } else if (code == ud.getSetting("hold") && ud.isHoldEnabled()) {
             holdCurrent();
         } else if (code == ud.getSetting("harddrop")) {
             hardDrop();
@@ -219,7 +224,7 @@ public class GameController {
 
     // Tauscht den aktuellen Stein mit dem gehaltenen Stein (einmal pro Spawn erlaubt)
     private void holdCurrent() {
-        if (holdUsed) return;
+        if (!ud.isHoldEnabled() || holdUsed) return;
         holdUsed = true;
 
         if (hold == null) {
@@ -235,7 +240,7 @@ public class GameController {
             blockCol = Board.COLS / 2 - 2;
         }
 
-        drawPreview(holdPane, hold); // "Hold"-Vorschau aktualisieren
+        updateHoldPreview(); // "Hold"-Vorschau aktualisieren
     }
 
     // Friert den aktuellen Stein im Spielfeld ein, berechnet Punkte, prüft Level-Aufstieg
@@ -309,6 +314,15 @@ public class GameController {
         }
     }
 
+    private void updateHoldPreview() {
+        // Vorschau nur anzeigen, wenn Hold aktiviert ist und ein Stein gehalten wird.
+        if (ud.isHoldEnabled() && hold != null) {
+            drawPreview(holdPane, hold);
+        } else {
+            holdPane.getChildren().clear();
+        }
+    }
+
     // Zeichnet eine kleine 4x4-Vorschau eines Steins (für Hold- und Next-Pane)
     private void drawPreview(Pane pane, Pieces piece) {
         pane.getChildren().clear();
@@ -374,8 +388,23 @@ public class GameController {
     // Pause-Button: stoppt/startet die Eingabeverarbeitung und das Fallen,
     // ändert das Symbol auf dem Button entsprechend
     public void onPauseButtonClicked(ActionEvent actionEvent) {
+        // Wenn das Spiel nicht pausiert ist und die maximale Anzahl an Pausen erreicht wurde, wird die Pause-Funktion nicht ausgeführt
+        if (!paused && pauseButtonPresses >= MAX_PAUSE_BUTTON_PRESSES) return;
+
+
         paused = !paused;
+        if (paused) {
+            pauseButtonPresses++;
+        }
+        // Timeline anhalten oder fortsetzen
         pauseButton.setText(paused ? "▶" : "⏸");
+        updatePauseLabel();
+        pauseButton.setDisable(!paused && pauseButtonPresses >= MAX_PAUSE_BUTTON_PRESSES); // deaktiviert den Button, wenn die maximale Anzahl an Pausen erreicht ist
         gameField.requestFocus(); // Fokus zurück aufs Spielfeld, damit Tastatureingaben weiter ankommen
+    }
+
+    // Aktualisiert das Label, das die verbleibenden Pausen anzeigt
+    private void updatePauseLabel() {
+        pauseLabel.setText("Mögliche Pausen: " + (MAX_PAUSE_BUTTON_PRESSES - pauseButtonPresses));
     }
 }
