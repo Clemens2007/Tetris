@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="640" prefWidth="900" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="htl.steyr.tetris.controller.GameController">
+<BorderPane prefHeight="640" prefWidth="900" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="htl.steyr.tetris.controller.GameController">
 
     <!-- Schließen Button oben rechts -->
     <top>
@@ -36,10 +36,11 @@
                     <Label styleClass="Label-darkmode" text="SCORE" />
                     <Label fx:id="scoreLabel" styleClass="Label-darkmode" text="000" />
 
-                    <Label styleClass="Label-darkmode" text="HOLD" />
+                    <Label fx:id="holdLabel" styleClass="Label-darkmode" text="HOLD" />
                     <Pane fx:id="holdPane" prefHeight="100" prefWidth="100" style="-fx-border-color: black; -fx-border-width: 4; -fx-border-radius: 4;" />
 
                     <Button fx:id="pauseButton" onAction="#onPauseButtonClicked" prefHeight="40" prefWidth="60" text="⏸" />
+                    <Label fx:id="pauseLabel" text="Mögliche Pausen: 3" />
                 </VBox>
 
                 <!-- Spielfeld -->
