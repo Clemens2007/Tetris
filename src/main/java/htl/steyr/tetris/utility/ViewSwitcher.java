@@ -1,10 +1,8 @@
 package htl.steyr.tetris.utility;
 
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.util.Objects;
@@ -16,7 +14,7 @@ public class ViewSwitcher {
     private static Stage stage; // die eine Stage der gesamten Anwendung
 
     // Dark/Light Mode speichern
-    private static boolean darkMode = false;
+    private static boolean darkMode = true;
 
     // Wird einmalig beim App-Start aufgerufen (TetrisApplication), um die Stage zu hinterlegen
     public static void setStage(Stage s) {
@@ -44,7 +42,6 @@ public class ViewSwitcher {
 
         try {
             String fxmlFilePath = "/htl/steyr/tetris/fxml/" + fxml;
-            System.out.println("URL: " + ViewSwitcher.class.getResource(fxmlFilePath));
             Parent root = FXMLLoader.load(Objects.requireNonNull(ViewSwitcher.class.getResource(fxmlFilePath)));
 
             Scene scene = new Scene(root);
@@ -62,18 +59,15 @@ public class ViewSwitcher {
                 );
             }
 
+            double width = 900;
+            double height = 700;
+
             stage.setScene(scene);
-            stage.show();
-
-            Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
-            stage.setX(bounds.getMinX());
-            stage.setY(bounds.getMinY());
-            stage.setWidth(bounds.getWidth());
-            stage.setHeight(bounds.getHeight());
-
-            // Fenstergröße fixieren
+            stage.setWidth(width);
+            stage.setHeight(height);
             stage.setResizable(false);
-
+            stage.show();
+            stage.centerOnScreen();
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -16,7 +16,7 @@ public class StartController {
 
     public Label methodLabel;
 
-    private boolean isRegister = true;
+    private boolean isRegister = false;
 
     @FXML private Button closeButton;
     @FXML private Button okButton;

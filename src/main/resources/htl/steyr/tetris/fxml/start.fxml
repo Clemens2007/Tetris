@@ -10,18 +10,18 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="600" prefWidth="900" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="htl.steyr.tetris.controller.StartController">
+<BorderPane prefHeight="700" prefWidth="900" styleClass="auth-screen" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="htl.steyr.tetris.controller.StartController">
 
     <!-- Top-Bar -->
     <top>
-        <BorderPane>
+        <BorderPane styleClass="auth-header">
             <padding>
                 <Insets left="20" right="20" top="10" />
             </padding>
 
             <!-- Registrieren links -->
             <left>
-                <Label fx:id="methodLabel" onMouseClicked="#onMethodButtonClicked" style="-fx-font-size: 24;" styleClass="Label-darkmode" text="Registrieren">
+                <Label fx:id="methodLabel" onMouseClicked="#onMethodButtonClicked" styleClass="auth-switch" text="Registrieren">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Label>
@@ -29,7 +29,7 @@
 
             <!-- X rechts -->
             <right>
-                <Button fx:id="closeButton" onAction="#onClosedButtonClicked" prefHeight="35" prefWidth="35" style="-fx-font-size: 14; -fx-font-weight: bold;" text="X" />
+                <Button fx:id="closeButton" onAction="#onClosedButtonClicked" prefHeight="35" prefWidth="35" styleClass="exitButton" text="X" />
             </right>
         </BorderPane>
     </top>
@@ -38,23 +38,24 @@
     <center>
         <StackPane>
 
-            <VBox alignment="CENTER" maxWidth="300" spacing="20">
+            <VBox alignment="CENTER" maxWidth="390" spacing="16" styleClass="auth-card">
 
                 <!-- Titel -->
-                <Label style="-fx-font-size: 42; -fx-font-weight: bold;" styleClass="Label-darkmode" text="TETRIS" />
+                <Label styleClass="auth-title logo-title" text="TETRIS" />
+                <Label styleClass="muted-label" text="ENTER THE BLOCKS" />
 
                 <!-- Username -->
-                <Label style="-fx-font-size: 16;" styleClass="Label-darkmode" text="Username" />
+                <Label styleClass="field-label" text="USERNAME" />
 
                 <TextField fx:id="usernameField" onAction="#onUserFieldAction" prefHeight="40" />
 
                 <!-- Passwort -->
-                <Label style="-fx-font-size: 16;" styleClass="Label-darkmode" text="Passwort" />
+                <Label styleClass="field-label" text="PASSWORD" />
 
                 <PasswordField fx:id="passwordField" onAction="#onTextFieldAction" prefHeight="40" />
 
                 <!-- Button -->
-                <Button fx:id="okButton" onAction="#onOKButtonClicked" prefHeight="40" prefWidth="120" style="-fx-font-size: 16;" text="OK" />
+                <Button fx:id="okButton" onAction="#onOKButtonClicked" prefHeight="44" prefWidth="230" styleClass="playButton" text="CONTINUE" />
 
             </VBox>
 
