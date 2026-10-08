@@ -366,6 +366,7 @@ public class GameController {
 
     // Button oben rechts: Spiel beenden
     public void onCloseButtonClicked(ActionEvent actionEvent) {
+        timeline.stop();
         ud.save();
         ViewSwitcher.switchTo("menu.fxml");
     }
