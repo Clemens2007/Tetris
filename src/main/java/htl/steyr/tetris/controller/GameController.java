@@ -128,8 +128,6 @@ public class GameController {
     // aus UserData aus (siehe Options-Screen) statt fix verdrahteter Tasten.
     private void handleKey(javafx.scene.input.KeyEvent event) {
         event.consume();
-        if (paused) return;
-
         KeyCode code = event.getCode();
 
         if (code == ud.getSetting("left")) {
@@ -151,8 +149,9 @@ public class GameController {
             holdCurrent();
         } else if (code == ud.getSetting("harddrop")) {
             hardDrop();
-        } else if (code.toString().equals("ESCAPE")){
-            onPauseButtonClicked(new ActionEvent());
+        }
+        if (code == KeyCode.ESCAPE) {
+            onPauseButtonClicked(null); // Pause-Taste
         }
 
         render(); // nach jeder Eingabe das Spielfeld neu zeichnen
